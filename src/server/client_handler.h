@@ -5,66 +5,73 @@
 
 class ClientInfo
 {
+ private:
+    std::string _ip_address;;
+    uint32_t _port;
  public:
-  std::string _ip_address;;
-  uint32_t _port;
 
-  explicit ClientInfo(sf::TcpSocket *sock) :
-      _ip_address(sock->getRemoteAddress().toString()),
-      _port(sock->getRemotePort())
-  {}
+    explicit ClientInfo(sf::TcpSocket *sock) :
+        _ip_address(sock->getRemoteAddress().toString()),
+        _port(sock->getRemotePort())
+    {}
 
-};
+    explicit ClientInfo(const std::pair<std::string, uint32_t> &ip_port) :
+        _ip_address(ip_port.first),
+        _port(ip_port.second)
+    {}
 
-class ClientHandler
-{
+    std::pair<std::string, uint32_t> info()
+    {
+        return std::make_pair(_ip_address, _port);
+    }
 
- public:
-  sf::TcpSocket *_socket;
-  ClientInfo _info;
-
-  explicit ClientHandler(sf::TcpSocket *sock) :
-      _socket(sock),
-      _info(sock)
-  {}
-
-  ClientHandler() :
-      _socket(new sf::TcpSocket),
-      _info(_socket)
-  {}
-
-  ClientHandler(ClientHandler &&other_client) noexcept:
-      _socket(other_client._socket),
-      _info(_socket)
-  {
-      other_client._socket = nullptr;
-  }
-
-  ClientHandler &operator=(ClientHandler &&other_client) noexcept
-  {
-      this->_socket = other_client._socket;
-      this->_info = other_client._info;
-
-      other_client._socket = nullptr;
-      return *this;
-  }
-
-  ~ClientHandler()
-  {
-      std::cout << "Client was deleted" << std::endl;
-      delete _socket;
-  }
 };
 
 class ClientPacket
 {
  private:
+    sf::Packet _packet;
+    ClientInfo _info;
  public:
-  sf::Packet packet;
-  ClientInfo _info;
 
-  explicit ClientPacket(ClientInfo &info) :
-      packet(),
-      _info(info)
-  {}
+    explicit ClientPacket(ClientInfo &info) :
+        _packet(),
+        _info(info)
+    {}
+
+    explicit ClientPacket(const std::pair<std::string, uint32_t> &ip_port) :
+        _info(ip_port)
+    {}
+
+    sf::Packet &data()
+    {
+        return _packet;
+    }
+
+    std::pair<std::string, uint32_t> info()
+    {
+        return _info.info();
+    }
+};
+
+class ClientHandler
+{
+ private:
+    sf::TcpSocket *_socket;
+    ClientInfo _info;
+ public:
+
+    explicit ClientHandler(sf::TcpSocket *sock);
+
+    ClientHandler();
+
+    ClientHandler(ClientHandler &&other_client) noexcept;
+
+    ClientHandler &operator=(ClientHandler &&other_client) noexcept;
+
+    ~ClientHandler();
+
+    sf::TcpSocket *get_socket_ptr();
+
+    std::pair<std::string, uint32_t> info();
 };
