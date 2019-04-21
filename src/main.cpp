@@ -3,6 +3,7 @@
 
 #include "server/server.h"
 
+
 int main()
 {
     std::string type;
@@ -12,13 +13,12 @@ int main()
     if (type == "s")
     {
         Server server(default_port);
-        server.handle();
+        server.connect_clients();
     } else
     {
         std::string name, message;
         auto ip = sf::IpAddress(sf::IpAddress::getLocalAddress());
         sf::TcpSocket socket;
-
 
         socket.connect(ip, default_port);
 

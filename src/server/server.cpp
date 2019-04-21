@@ -1,9 +1,11 @@
 #include "server.h"
 
 
-Server::Server(uint16_t port) :
+Server::Server(uint16_t port, uint32_t max_num_of_players) :
     _port(port),
-    _ip_address(sf::IpAddress::getLocalAddress())
+    _ip_address(sf::IpAddress::getLocalAddress()),
+    _current_num_of_players(0),
+    _max_num_of_players(max_num_of_players)
 {
     std::cout << "Server ip is: " << _ip_address << std::endl;
     _listener.listen(_port);
@@ -11,20 +13,21 @@ Server::Server(uint16_t port) :
 }
 
 
-int Server::handle()
+int Server::connect_clients()
 {
     while (true)
     {
         // Make the selector wait for data on any socket
-        if (_selector.wait(sf::seconds(15)))
+        if (_selector.wait())
         {
             // Test the listener
             if (_selector.isReady(_listener))
                 add_new_client();
-            else
-                read_ready_sockets();
-        } else
-            return 1;
+            if (_current_num_of_players == _max_num_of_players)
+                return 1;
+            //else
+            //read_ready_sockets();
+        }
     }
 }
 
@@ -42,9 +45,11 @@ int Server::add_new_client()
         _clients.emplace_back(new_client_socket);
 
         std::cout << "new client connected" << std::endl;
+        _current_num_of_players++;
         return 1;
     }
-    // Error, we won't get a new connection, delete the socket
+
+    delete new_client_socket;
     return -1;
 }
 
@@ -71,6 +76,7 @@ std::vector<ClientPacket> Server::receive_packets()
                 it = _clients.erase(it);
 
                 std::cout << "client was disconnected" << std::endl;
+                _current_num_of_players--;
             }
         }
     }
