@@ -20,10 +20,7 @@ int Server::handle()
             if (_selector.isReady(_listener))
                 add_new_client();
             else
-            {
-                auto data = receive_data();
-                process_received_data(std::move(data));
-            }
+                read_ready_sockets();
         } else
             return 1;
     }
@@ -31,24 +28,23 @@ int Server::handle()
 
 int Server::add_new_client()
 {
-    ClientHandler client;
-    if (_listener.accept(*client._socket) == sf::Socket::Done)
+    // Add the new client to the clients list
+    _clients.emplace_back(ClientHandler());
+    auto &cli = _clients.back();
+
+    if (_listener.accept(*cli._socket) == sf::Socket::Done)
     {
         // Add the new client to the selector
-        _selector.add(*client._socket);
-
-        // Add the new client to the clients list
-        _clients.emplace_back(std::move(client));
+        _selector.add(*cli._socket);
 
         std::cout << "new client connected" << std::endl;
         return 1;
     }
-
     // Error, we won't get a new connection, delete the socket
     return -1;
 }
 
-std::vector<ClientPacket> Server::receive_data()
+std::vector<ClientPacket> Server::receive_packets()
 {
     std::vector<ClientPacket> received_data;
 
@@ -73,9 +69,11 @@ std::vector<ClientPacket> Server::receive_data()
     return received_data;
 }
 
-int Server::process_received_data(std::vector<ClientPacket> &&received_data)
+int Server::read_ready_sockets()
 {
+    auto received_data = receive_packets();
     std::vector<std::pair<std::string, uint32_t >> processed_messages;
+
     for (auto &msg: received_data)
     {
         std::string data;
@@ -84,9 +82,7 @@ int Server::process_received_data(std::vector<ClientPacket> &&received_data)
     }
 
     for (auto &msg: processed_messages)
-    {
         std::cout << msg.second << "  " << msg.first << std::endl;
-    }
     return 1;
 }
 
