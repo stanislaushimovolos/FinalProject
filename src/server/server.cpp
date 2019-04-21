@@ -44,8 +44,10 @@ int Server::add_new_client()
         // Add the new client to the clients list
         _clients.emplace_back(new_client_socket);
 
-        std::cout << "new client connected" << std::endl;
         _current_num_of_players++;
+
+        std::cout << "new client connected" << std::endl;
+        std::cout << "current number of players - " << _current_num_of_players << std::endl;
         return 1;
     }
 
@@ -57,12 +59,12 @@ int Server::add_new_client()
 std::vector<ClientPacket> Server::receive_packets()
 {
     std::vector<ClientPacket> received_data;
+    received_data.reserve(_clients.size());
 
     for (auto it = _clients.begin(); it != _clients.end(); ++it)
     {
         auto &client = *it;
         auto client_socket_ptr = client.get_socket_ptr();
-
         if (_selector.isReady(*client_socket_ptr))
         {
             // The client has sent some data, we can receive it
@@ -93,12 +95,48 @@ int Server::read_ready_sockets()
     {
         std::string data;
         msg.data() >> data;
-        std::cout << msg.info().second;
         processed_messages.emplace_back(std::make_pair(data, msg.info()));
     }
 
     for (auto &msg: processed_messages)
         std::cout << "  " << msg.first << std::endl;
+    return 1;
+}
+
+
+int Server::start_session()
+{
+    sf::Clock clock;
+    while (true)
+    {
+        auto time = clock.getElapsedTime().asSeconds();
+
+        if (time > 3)
+        {
+            send_pong_to_ready_sockets();
+            if (_selector.wait())
+            {
+                read_ready_sockets();
+            }
+            clock.restart();
+        }
+    }
+
+}
+
+
+int Server::send_pong_to_ready_sockets()
+{
+    std::string pong = "pong";
+    sf::Packet packet;
+    packet << pong;
+
+    for (auto &it:_clients)
+    {
+        auto &client = it;
+        auto client_socket_ptr = client.get_socket_ptr();
+        client_socket_ptr->send(packet);
+    }
     return 1;
 }
 

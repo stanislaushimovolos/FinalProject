@@ -14,21 +14,22 @@ int main()
     {
         Server server(default_port);
         server.connect_clients();
+        server.start_session();
     } else
     {
-        std::string name, message;
         auto ip = sf::IpAddress(sf::IpAddress::getLocalAddress());
         sf::TcpSocket socket;
+        std::string message = "ping", received;
+        sf::Packet send_packet, receive_packet;
+        send_packet << message;
 
         socket.connect(ip, default_port);
-
         while (true)
         {
-            std::cin >> message;
-            sf::Packet packet;
-
-            packet << message;
-            socket.send(packet);
+            socket.receive(receive_packet);
+            receive_packet >> received;
+            auto res = socket.send(send_packet);
+            std::cout << res << std::endl;
         }
     }
     return 0;

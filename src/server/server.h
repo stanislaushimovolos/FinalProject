@@ -18,6 +18,8 @@ class Server
 
     int connect_clients();
 
+    int start_session();
+
     ~Server();
 
  private:
@@ -33,6 +35,8 @@ class Server
     int add_new_client();
 
     int read_ready_sockets();
+
+    int send_pong_to_ready_sockets();
 
     std::vector<ClientPacket> receive_packets();
 };
