@@ -6,15 +6,26 @@
 #include <iostream>
 #include <SFML/Network.hpp>
 #include <iostream>
+#include <unistd.h>
 
-const uint16_t default_port = 8081;
-const uint32_t REQUIRED_NUM_OF_PLAYERS = 3;
+const uint16_t DEFAULT_PORT = 8081;
+const uint32_t REQUIRED_NUM_OF_PLAYERS = 1;
+const uint32_t CONNECTION_DELAY = 10;
+
+enum Direction
+{
+    Up,
+    Down,
+    Left,
+    Right
+};
 
 class Server
 {
  public:
-    explicit Server(uint16_t port = default_port,
-                    uint32_t max_num_of_players = REQUIRED_NUM_OF_PLAYERS);
+    explicit Server(uint16_t port = DEFAULT_PORT,
+                    uint32_t max_num_of_players = REQUIRED_NUM_OF_PLAYERS,
+                    uint32_t connection_delay = CONNECTION_DELAY);
 
     int connect_clients();
 
@@ -31,6 +42,7 @@ class Server
 
     uint32_t _max_num_of_players;
     uint32_t _current_num_of_players;
+    uint32_t _connection_delay;
 
     int add_new_client();
 

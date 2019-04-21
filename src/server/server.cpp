@@ -1,10 +1,11 @@
 #include "server.h"
 
 
-Server::Server(uint16_t port, uint32_t max_num_of_players) :
+Server::Server(uint16_t port, uint32_t max_num_of_players, uint32_t connection_delay) :
     _port(port),
     _ip_address(sf::IpAddress::getLocalAddress()),
     _current_num_of_players(0),
+    _connection_delay(connection_delay),
     _max_num_of_players(max_num_of_players)
 {
     std::cout << "Server ip is: " << _ip_address << std::endl;
@@ -25,8 +26,6 @@ int Server::connect_clients()
                 add_new_client();
             if (_current_num_of_players == _max_num_of_players)
                 return 1;
-            //else
-            //read_ready_sockets();
         }
     }
 }
@@ -59,7 +58,7 @@ int Server::add_new_client()
 std::vector<ClientPacket> Server::receive_packets()
 {
     std::vector<ClientPacket> received_data;
-    received_data.reserve(_clients.size());
+    //received_data.reserve(_clients.size());
 
     for (auto it = _clients.begin(); it != _clients.end(); ++it)
     {
@@ -71,17 +70,18 @@ std::vector<ClientPacket> Server::receive_packets()
             ClientPacket pkg(client.info());
 
             if (client_socket_ptr->receive(pkg.data()) == sf::Socket::Done)
-                received_data.emplace_back(pkg);
-            else
-            {
-                _selector.remove(*client_socket_ptr);
-                it = _clients.erase(it);
+                received_data.push_back(pkg);
 
-                std::cout << "client was disconnected" << std::endl;
-                _current_num_of_players--;
-            }
+        } else
+        {
+            _selector.remove(*client_socket_ptr);
+            it = _clients.erase(it);
+
+            std::cout << "client was disconnected" << std::endl;
+            _current_num_of_players--;
         }
     }
+
     return received_data;
 }
 
@@ -89,17 +89,44 @@ std::vector<ClientPacket> Server::receive_packets()
 int Server::read_ready_sockets()
 {
     auto received_data = receive_packets();
-    std::vector<std::pair<std::string, ClientInfo >> processed_messages;
+    std::vector<std::pair<sf::Uint16, ClientInfo >> processed_messages;
 
     for (auto &msg: received_data)
     {
-        std::string data;
-        msg.data() >> data;
-        processed_messages.emplace_back(std::make_pair(data, msg.info()));
+        sf::Uint16 direction = 0;
+        msg.data() >> direction;
+        processed_messages.emplace_back(direction, msg.info());
     }
 
-    for (auto &msg: processed_messages)
-        std::cout << "  " << msg.first << std::endl;
+    for (auto &msg:  processed_messages)
+    {
+        int speed = 10;
+        switch (msg.first)
+        {
+            case (Left):
+            {
+                _clients.begin()->position += sf::Vector2f(-speed, 0);
+                break;
+            }
+            case (Right):
+            {
+                _clients.begin()->position += sf::Vector2f(speed, 0);
+                break;
+            }
+            case (Up):
+            {
+                _clients.begin()->position += sf::Vector2f(0, -speed);
+                break;
+            }
+            case (Down):
+            {
+                _clients.begin()->position += sf::Vector2f(0, speed);
+                break;
+            }
+            default:return 1;
+        }
+    }
+
     return 1;
 }
 
@@ -109,9 +136,9 @@ int Server::start_session()
     sf::Clock clock;
     while (true)
     {
-        auto time = clock.getElapsedTime().asSeconds();
+        auto time = clock.getElapsedTime().asMilliseconds();
 
-        if (time > 3)
+        if (time > _connection_delay)
         {
             send_pong_to_ready_sockets();
             if (_selector.wait())
@@ -121,20 +148,20 @@ int Server::start_session()
             clock.restart();
         }
     }
-
 }
 
 
 int Server::send_pong_to_ready_sockets()
 {
-    std::string pong = "pong";
     sf::Packet packet;
-    packet << pong;
 
     for (auto &it:_clients)
     {
+
         auto &client = it;
         auto client_socket_ptr = client.get_socket_ptr();
+        auto pos = client.position;
+        packet << pos.x << pos.y;
         client_socket_ptr->send(packet);
     }
     return 1;

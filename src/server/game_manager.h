@@ -1,6 +1,6 @@
 #pragma once
 
-class GameEngine
+class game_manager
 {
 
 };

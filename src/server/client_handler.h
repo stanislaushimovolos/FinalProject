@@ -60,6 +60,9 @@ class ClientHandler
     sf::TcpSocket *_socket;
     ClientInfo _info;
  public:
+    //delete
+
+    sf::Vector2f position = {0, 0};
 
     explicit ClientHandler(sf::TcpSocket *sock);
 
