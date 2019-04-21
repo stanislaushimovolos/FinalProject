@@ -14,71 +14,58 @@ int Server::handle()
     while (true)
     {
         // Make the selector wait for data on any socket
-        if (_selector.wait(sf::seconds(5)))
+        if (_selector.wait(sf::seconds(51)))
         {
             // Test the listener
             if (_selector.isReady(_listener))
-            {
-                // The listener is ready: add new client
-                auto new_client = new sf::TcpSocket;
-                add_new_client(new_client);
-            } else
+                add_new_client();
+            else
             {
                 auto data = receive_data();
-                if (data.empty())
-                {
-                    std::cout << "No clients, so bb" << std::endl;
-                    return 1;
-                }
-                for (auto &pkg: data)
-                {
-                    std::string msg;
-                    pkg >> msg;
-                    std::cout << msg << std::endl;
-                }
+                process_received_data(std::move(data));
             }
         } else
             return 1;
     }
 }
 
-int Server::add_new_client(sf::TcpSocket *client)
+int Server::add_new_client()
 {
-    if (_listener.accept(*client) == sf::Socket::Done)
+    ClientHandler client;
+    if (_listener.accept(*client._socket) == sf::Socket::Done)
     {
+        // Add the new client to the selector
+        _selector.add(*client._socket);
+
         // Add the new client to the clients list
-        _clients.push_back(client);
+        _clients.emplace_back(std::move(client));
 
         std::cout << "new client connected" << std::endl;
-        // Add the new client to the selector
-        _selector.add(*client);
         return 1;
     }
 
     // Error, we won't get a new connection, delete the socket
-    delete client;
     return -1;
 }
 
-std::vector<sf::Packet> Server::receive_data()
+std::vector<ClientPacket> Server::receive_data()
 {
-    std::vector<sf::Packet> received_data(_clients.size());
+    std::vector<ClientPacket> received_data;
 
     for (auto it = _clients.begin(); it != _clients.end(); ++it)
     {
-        sf::TcpSocket &client = **it;
-        if (_selector.isReady(client))
+        auto &client = *it;
+        if (_selector.isReady(*client._socket))
         {
             // The client has sent some data, we can receive it
-            sf::Packet packet;
-            if (client.receive(packet) == sf::Socket::Done)
-                received_data.push_back(std::move(packet));
+            ClientPacket pkg(client._info);
+
+            if (client._socket->receive(pkg.packet) == sf::Socket::Done)
+                received_data.emplace_back(pkg);
             else
             {
                 std::cout << "client was disconnected" << std::endl;
-                _selector.remove(client);
-
-                delete *it;
+                _selector.remove(*client._socket);
                 it = _clients.erase(it);
             }
         }
@@ -86,14 +73,24 @@ std::vector<sf::Packet> Server::receive_data()
     return received_data;
 }
 
-int Server::process_received_data(const std::vector<sf::Packet> &received_data)
+int Server::process_received_data(std::vector<ClientPacket> &&received_data)
 {
+    std::vector<std::pair<std::string, uint32_t >> processed_messages;
+    for (auto &msg: received_data)
+    {
+        std::string data;
+        msg.packet >> data;
+        processed_messages.emplace_back(std::make_pair(data, msg._info._port));
+    }
 
+    for (auto &msg: processed_messages)
+    {
+        std::cout << msg.second << "  " << msg.first << std::endl;
+    }
+    return 1;
 }
 
 Server::~Server()
 {
     std::cout << "server was destroyed" << std::endl;
-    for (auto client: _clients)
-        delete client;
 }

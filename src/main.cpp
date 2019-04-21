@@ -19,9 +19,6 @@ int main()
         auto ip = sf::IpAddress(sf::IpAddress::getLocalAddress());
         sf::TcpSocket socket;
 
-        std::cout << "Enter your name" << std::endl;
-        std::cin >> name;
-        name += " ";
 
         socket.connect(ip, default_port);
 
@@ -30,7 +27,7 @@ int main()
             std::cin >> message;
             sf::Packet packet;
 
-            packet << name + message;
+            packet << message;
             socket.send(packet);
         }
     }
