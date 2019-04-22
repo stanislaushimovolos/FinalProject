@@ -44,7 +44,7 @@ class Server
 
     int add_new_client();
 
-    int send_packets_to_ready_sockets(std::vector<Packet> &received_data);
+    int send_state_to_ready_sockets(sf::Packet &current_state);
 };
 
 }

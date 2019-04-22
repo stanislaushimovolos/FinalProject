@@ -15,7 +15,7 @@ GameObject::GameObject(sf::Vector2f pos,
 {}
 
 
-void GameObject::move(sf::Vector2f shift)
+void GameObject::move(sf::Vector2f &&shift)
 {
     _position += shift;
 }

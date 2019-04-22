@@ -20,9 +20,9 @@ class BaseManager
     std::vector<std::pair<sf::Uint16,
                           ser::Info >> process_packets(std::vector<ser::Packet> &received_data) const;
 
-    int update_state(std::vector<ser::Packet> &received_data);
+    sf::Packet create_current_state_packet();
 
-    std::vector<ser::Packet> get_players_states();
+    int update_state(std::vector<ser::Packet> &received_data);
 
     int add_players(const std::list<ser::Handler> &clients);
 

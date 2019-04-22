@@ -14,7 +14,7 @@ class GameObject
                         sf::Vector2f velocity,
                         float speed);
 
-    void move(sf::Vector2f shift);
+    void move(sf::Vector2f &&shift);
 
     sf::Vector2f get_position() const;
 

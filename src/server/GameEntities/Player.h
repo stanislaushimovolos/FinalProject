@@ -10,6 +10,11 @@ class Player : public ser::GameObject
     Player(sf::Vector2f start_position, sf::Vector2f start_velocity, float speed);
 
     Player();
+
+    sf::Vector2f get_position()
+    {
+        return _position;
+    }
 };
 
 }

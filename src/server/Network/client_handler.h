@@ -22,7 +22,7 @@ class Info
         _port(ip_port.second)
     {}
 
-    std::pair<uint32_t, uint32_t> info() const
+    std::pair<uint32_t, uint32_t> get_info() const
     {
         return std::make_pair(_ip_address, _port);
     }
@@ -52,7 +52,7 @@ class Packet
 
     std::pair<uint32_t, uint32_t> info()
     {
-        return _info.info();
+        return _info.get_info();
     }
 };
 

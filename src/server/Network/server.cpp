@@ -61,25 +61,27 @@ std::vector<Packet> Server::receive_packets()
     std::vector<Packet> received_data;
     received_data.reserve(_clients.size());
 
+    int client_counter = 0;
     for (auto it = _clients.begin(); it != _clients.end(); ++it)
     {
         auto &client = *it;
         auto client_socket_ptr = client.get_socket_ptr();
         if (_selector.isReady(*client_socket_ptr))
         {
+            client_counter++;
             // The client has sent some data, we can receive it
             Packet pkg(client.info());
 
             if (client_socket_ptr->receive(pkg.data()) == sf::Socket::Done)
                 received_data.push_back(pkg);
+            else
+            {
+                _selector.remove(*client_socket_ptr);
+                it = _clients.erase(it);
 
-        } else
-        {
-            _selector.remove(*client_socket_ptr);
-            it = _clients.erase(it);
-
-            std::cout << "client was disconnected" << std::endl;
-            _current_num_of_players--;
+                std::cout << "client was disconnected" << std::endl;
+                _current_num_of_players--;
+            }
         }
     }
     return received_data;
@@ -91,19 +93,18 @@ int Server::start_session()
     sf::Clock clock;
 
     manager.add_players(_clients);
-    auto states = manager.get_players_states();
+    auto current_state = manager.create_current_state_packet();
     while (true)
     {
         auto time = clock.getElapsedTime().asMilliseconds();
         if (time > _connection_delay)
         {
-            send_packets_to_ready_sockets(states);
-
+            send_state_to_ready_sockets(current_state);
             if (_selector.wait())
             {
                 auto ready_packets = receive_packets();
                 manager.update_state(ready_packets);
-                states = manager.get_players_states();
+                current_state = manager.create_current_state_packet();
             }
             clock.restart();
         }
@@ -111,14 +112,13 @@ int Server::start_session()
 }
 
 
-int Server::send_packets_to_ready_sockets(std::vector<Packet> &received_data)
+int Server::send_state_to_ready_sockets(sf::Packet &current_state)
 {
-    // Super kludge
     for (auto &it:_clients)
     {
         auto &client = it;
         auto client_socket_ptr = client.get_socket_ptr();
-        client_socket_ptr->send(received_data[0].data());
+        client_socket_ptr->send(current_state);
     }
     return 1;
 }
