@@ -31,22 +31,22 @@ int BaseManager::update_state(std::vector<ser::Packet> &received_data)
         {
             case (config::Left):
             {
-                player.position += sf::Vector2f(-player.speed, 0);
+                player.move(sf::Vector2f(-20, 0));
                 break;
             }
             case (config::Right):
             {
-                player.position += sf::Vector2f(player.speed, 0);
+                player.move(sf::Vector2f(20, 0));
                 break;
             }
             case (config::Up):
             {
-                player.position += sf::Vector2f(0, -player.speed);
+                player.move(sf::Vector2f(0, -20));
                 break;
             }
             case (config::Down):
             {
-                player.position += sf::Vector2f(0, player.speed);
+                player.move(sf::Vector2f(0, 20));
                 break;
             }
             default:return 1;
@@ -62,7 +62,7 @@ int BaseManager::add_players(const std::list<ser::Handler> &clients)
         for (auto &cli:clients)
         {
             auto id = ser::Info(cli.info());
-            players[id] = Player();
+            players[id] = ser::Player();
         }
         return 1;
     }
@@ -77,7 +77,9 @@ std::vector<ser::Packet> BaseManager::get_players_states()
     for (auto[key, value] : players)
     {
         ser::Packet packet(key.info());
-        packet.data() << value.position.x << value.position.y;
+        auto pos = value.get_position();
+
+        packet.data() << pos.x << pos.y;
         current_states.push_back(packet);
     }
     return current_states;

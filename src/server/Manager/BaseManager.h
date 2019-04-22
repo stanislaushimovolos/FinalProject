@@ -1,8 +1,11 @@
 #pragma once
 
-#include "../Network/client_handler.h"
 #include "../../configuration/config.h"
+#include "../Network/client_handler.h"
 #include "Utils.h"
+
+
+#include "../GameEntities/Player.h"
 
 #include <unordered_map>
 #include <list>
@@ -11,7 +14,7 @@ class BaseManager
 {
 
  private:
-    std::unordered_map<ser::Info, Player, ClientHasher, EqualClients>
+    std::unordered_map<ser::Info, ser::Player, ClientHasher, EqualClients>
         players;
  public:
     std::vector<std::pair<sf::Uint16,

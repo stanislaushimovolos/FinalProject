@@ -19,18 +19,3 @@ class ClientHasher
         return cli.info().first;
     }
 };
-
-class Player
-{
- public:
-    Player() :
-        position(0, 0),
-        velocity(0, 0),
-        speed(20)
-    {}
-
-    sf::Vector2f position;
-    sf::Vector2f velocity;
-    float speed;
- private:
-};
