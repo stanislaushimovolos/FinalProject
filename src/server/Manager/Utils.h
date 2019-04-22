@@ -5,7 +5,7 @@
 class EqualClients
 {
  public:
-    bool operator()(Info const &first, Info const &second) const
+    bool operator()(ser::Info const &first, ser::Info const &second) const
     {
         return first.info() == second.info();
     }
@@ -14,7 +14,7 @@ class EqualClients
 class ClientHasher
 {
  public:
-    size_t operator()(Info const &cli) const
+    size_t operator()(ser::Info const &cli) const
     {
         return cli.info().first;
     }

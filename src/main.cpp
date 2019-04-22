@@ -13,7 +13,7 @@ int main()
 
     if (type == "s")
     {
-        Server server(config::DEFAULT_PORT);
+        ser::Server server(config::DEFAULT_PORT);
         server.connect_clients();
         server.start_session();
     } else

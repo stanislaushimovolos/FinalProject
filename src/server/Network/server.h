@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../Manager/Manager.h"
+#include "../Manager/BaseManager.h"
 #include "client_handler.h"
 #include "../../configuration/config.h"
 
@@ -10,6 +10,8 @@
 #include <iostream>
 #include <unistd.h>
 
+namespace ser
+{
 
 class Server
 {
@@ -36,7 +38,7 @@ class Server
     uint32_t _current_num_of_players;
     uint32_t _connection_delay;
 
-    Manager manager;
+    BaseManager manager;
 
     std::vector<Packet> receive_packets();
 
@@ -44,3 +46,5 @@ class Server
 
     int send_packets_to_ready_sockets(std::vector<Packet> &received_data);
 };
+
+}

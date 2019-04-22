@@ -1,5 +1,8 @@
 #include "client_handler.h"
 
+namespace ser
+{
+
 Handler::Handler(sf::TcpSocket *sock) :
     _socket(sock),
     _info(sock)
@@ -46,4 +49,6 @@ sf::TcpSocket *Handler::get_socket_ptr() const
 std::pair<uint32_t, uint32_t> Handler::info() const
 {
     return _info.info();
+}
+
 }

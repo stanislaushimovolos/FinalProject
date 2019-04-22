@@ -3,6 +3,8 @@
 #include <SFML/Network.hpp>
 #include <iostream>
 
+namespace ser{
+
 class Info
 {
  private:
@@ -75,3 +77,5 @@ class Handler
 
     std::pair<uint32_t, uint32_t> info() const;
 };
+
+}

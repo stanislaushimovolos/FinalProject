@@ -1,5 +1,7 @@
 #include "server.h"
 
+namespace ser
+{
 
 Server::Server(uint16_t port, uint32_t max_num_of_players, uint32_t connection_delay) :
     _port(port),
@@ -125,4 +127,6 @@ int Server::send_packets_to_ready_sockets(std::vector<Packet> &received_data)
 Server::~Server()
 {
     std::cout << "server was destroyed!!" << std::endl;
+}
+
 }

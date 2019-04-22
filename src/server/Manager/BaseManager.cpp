@@ -1,11 +1,11 @@
-#include "Manager.h"
+#include "BaseManager.h"
 
 
-std::vector<std::pair<sf::Uint16, Info >> Manager::
-process_packets(std::vector<Packet> &received_data) const
+std::vector<std::pair<sf::Uint16, ser::Info >> BaseManager::
+process_packets(std::vector<ser::Packet> &received_data) const
 {
     {
-        std::vector<std::pair<sf::Uint16, Info >> processed_messages;
+        std::vector<std::pair<sf::Uint16, ser::Info >> processed_messages;
         processed_messages.reserve(players.size());
 
         for (auto &msg: received_data)
@@ -19,7 +19,7 @@ process_packets(std::vector<Packet> &received_data) const
 }
 
 
-int Manager::update_state(std::vector<Packet> &received_data)
+int BaseManager::update_state(std::vector<ser::Packet> &received_data)
 {
     auto players_states = process_packets(received_data);
     for (auto &new_state : players_states)
@@ -56,12 +56,12 @@ int Manager::update_state(std::vector<Packet> &received_data)
 }
 
 
-int Manager::add_players(const std::list<Handler> &clients)
+int BaseManager::add_players(const std::list<ser::Handler> &clients)
 {
     {
         for (auto &cli:clients)
         {
-            auto id = Info(cli.info());
+            auto id = ser::Info(cli.info());
             players[id] = Player();
         }
         return 1;
@@ -69,14 +69,14 @@ int Manager::add_players(const std::list<Handler> &clients)
 }
 
 
-std::vector<Packet> Manager::get_players_states()
+std::vector<ser::Packet> BaseManager::get_players_states()
 {
-    std::vector<Packet> current_states;
+    std::vector<ser::Packet> current_states;
     current_states.reserve(players.size());
 
     for (auto[key, value] : players)
     {
-        Packet packet(key.info());
+        ser::Packet packet(key.info());
         packet.data() << value.position.x << value.position.y;
         current_states.push_back(packet);
     }
