@@ -1,6 +1,7 @@
 #pragma once
 
 #include "client_handler.h"
+#include "GameManager.h"
 
 #include <list>
 #include <iostream>
@@ -10,7 +11,7 @@
 
 const uint16_t DEFAULT_PORT = 8081;
 const uint32_t REQUIRED_NUM_OF_PLAYERS = 1;
-const uint32_t CONNECTION_DELAY = 10;
+const uint32_t CONNECTION_DELAY = 1;
 
 enum Direction
 {
@@ -22,6 +23,7 @@ enum Direction
 
 class Server
 {
+
  public:
     explicit Server(uint16_t port = DEFAULT_PORT,
                     uint32_t max_num_of_players = REQUIRED_NUM_OF_PLAYERS,
@@ -44,11 +46,11 @@ class Server
     uint32_t _current_num_of_players;
     uint32_t _connection_delay;
 
+    GameManager manager;
+
     int add_new_client();
 
-    int read_ready_sockets();
-
-    int send_pong_to_ready_sockets();
+    int send_packets_to_ready_sockets(std::vector<ClientPacket> &received_data);
 
     std::vector<ClientPacket> receive_packets();
 };

@@ -38,13 +38,13 @@ ClientHandler::~ClientHandler()
 }
 
 
-sf::TcpSocket *ClientHandler::get_socket_ptr()
+sf::TcpSocket *ClientHandler::get_socket_ptr() const
 {
     return _socket;
 }
 
 
-std::pair<std::string, uint32_t> ClientHandler::info()
+std::pair<uint32_t, uint32_t> ClientHandler::info() const
 {
     return _info.info();
 }

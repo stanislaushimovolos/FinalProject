@@ -44,7 +44,6 @@ int Server::add_new_client()
         _clients.emplace_back(new_client_socket);
 
         _current_num_of_players++;
-
         std::cout << "new client connected" << std::endl;
         std::cout << "current number of players - " << _current_num_of_players << std::endl;
         return 1;
@@ -58,7 +57,7 @@ int Server::add_new_client()
 std::vector<ClientPacket> Server::receive_packets()
 {
     std::vector<ClientPacket> received_data;
-    //received_data.reserve(_clients.size());
+    received_data.reserve(_clients.size());
 
     for (auto it = _clients.begin(); it != _clients.end(); ++it)
     {
@@ -81,69 +80,29 @@ std::vector<ClientPacket> Server::receive_packets()
             _current_num_of_players--;
         }
     }
-
     return received_data;
-}
-
-
-int Server::read_ready_sockets()
-{
-    auto received_data = receive_packets();
-    std::vector<std::pair<sf::Uint16, ClientInfo >> processed_messages;
-
-    for (auto &msg: received_data)
-    {
-        sf::Uint16 direction = 0;
-        msg.data() >> direction;
-        processed_messages.emplace_back(direction, msg.info());
-    }
-
-    for (auto &msg:  processed_messages)
-    {
-        int speed = 10;
-        switch (msg.first)
-        {
-            case (Left):
-            {
-                _clients.begin()->position += sf::Vector2f(-speed, 0);
-                break;
-            }
-            case (Right):
-            {
-                _clients.begin()->position += sf::Vector2f(speed, 0);
-                break;
-            }
-            case (Up):
-            {
-                _clients.begin()->position += sf::Vector2f(0, -speed);
-                break;
-            }
-            case (Down):
-            {
-                _clients.begin()->position += sf::Vector2f(0, speed);
-                break;
-            }
-            default:return 1;
-        }
-    }
-
-    return 1;
 }
 
 
 int Server::start_session()
 {
     sf::Clock clock;
+
+    manager.add_players(_clients);
+    auto states = manager.get_players_states();
+
     while (true)
     {
         auto time = clock.getElapsedTime().asMilliseconds();
 
         if (time > _connection_delay)
         {
-            send_pong_to_ready_sockets();
+            send_packets_to_ready_sockets(states);
             if (_selector.wait())
             {
-                read_ready_sockets();
+                auto ready_packets = receive_packets();
+                manager.update_state(ready_packets);
+                states = manager.get_players_states();
             }
             clock.restart();
         }
@@ -151,18 +110,14 @@ int Server::start_session()
 }
 
 
-int Server::send_pong_to_ready_sockets()
+int Server::send_packets_to_ready_sockets(std::vector<ClientPacket> &received_data)
 {
-    sf::Packet packet;
 
     for (auto &it:_clients)
     {
-
         auto &client = it;
         auto client_socket_ptr = client.get_socket_ptr();
-        auto pos = client.position;
-        packet << pos.x << pos.y;
-        client_socket_ptr->send(packet);
+        client_socket_ptr->send(received_data[0].data());
     }
     return 1;
 }

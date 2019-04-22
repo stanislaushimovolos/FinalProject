@@ -60,6 +60,7 @@ int main()
             socket.receive(receive_packet);
             receive_packet >> x >> y;
             player.setPosition(x, y);
+            std::cout << x << " " << y << std::endl;
 
             direction = 320;
 
