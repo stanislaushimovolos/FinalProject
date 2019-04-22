@@ -54,9 +54,9 @@ int Server::add_new_client()
 }
 
 
-std::vector<ClientPacket> Server::receive_packets()
+std::vector<Packet> Server::receive_packets()
 {
-    std::vector<ClientPacket> received_data;
+    std::vector<Packet> received_data;
     received_data.reserve(_clients.size());
 
     for (auto it = _clients.begin(); it != _clients.end(); ++it)
@@ -66,7 +66,7 @@ std::vector<ClientPacket> Server::receive_packets()
         if (_selector.isReady(*client_socket_ptr))
         {
             // The client has sent some data, we can receive it
-            ClientPacket pkg(client.info());
+            Packet pkg(client.info());
 
             if (client_socket_ptr->receive(pkg.data()) == sf::Socket::Done)
                 received_data.push_back(pkg);
@@ -90,14 +90,13 @@ int Server::start_session()
 
     manager.add_players(_clients);
     auto states = manager.get_players_states();
-
     while (true)
     {
         auto time = clock.getElapsedTime().asMilliseconds();
-
         if (time > _connection_delay)
         {
             send_packets_to_ready_sockets(states);
+
             if (_selector.wait())
             {
                 auto ready_packets = receive_packets();
@@ -110,9 +109,9 @@ int Server::start_session()
 }
 
 
-int Server::send_packets_to_ready_sockets(std::vector<ClientPacket> &received_data)
+int Server::send_packets_to_ready_sockets(std::vector<Packet> &received_data)
 {
-
+    // Super kludge
     for (auto &it:_clients)
     {
         auto &client = it;

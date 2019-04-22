@@ -3,19 +3,19 @@
 #include <SFML/Network.hpp>
 #include <iostream>
 
-class ClientInfo
+class Info
 {
  private:
     uint32_t _ip_address;;
     uint32_t _port;
  public:
 
-    explicit ClientInfo(sf::TcpSocket *sock) :
+    explicit Info(sf::TcpSocket *sock) :
         _ip_address(sock->getRemoteAddress().toInteger()),
         _port(sock->getRemotePort())
     {}
 
-    explicit ClientInfo(const std::pair<uint32_t, uint32_t> &ip_port) :
+    explicit Info(const std::pair<uint32_t, uint32_t> &ip_port) :
         _ip_address(ip_port.first),
         _port(ip_port.second)
     {}
@@ -27,19 +27,19 @@ class ClientInfo
 
 };
 
-class ClientPacket
+class Packet
 {
  private:
     sf::Packet _packet;
-    ClientInfo _info;
+    Info _info;
  public:
 
-    explicit ClientPacket(ClientInfo &info) :
+    explicit Packet(Info &info) :
         _packet(),
         _info(info)
     {}
 
-    explicit ClientPacket(const std::pair<uint32_t, uint32_t> &ip_port) :
+    explicit Packet(const std::pair<uint32_t, uint32_t> &ip_port) :
         _info(ip_port)
     {}
 
@@ -54,22 +54,22 @@ class ClientPacket
     }
 };
 
-class ClientHandler
+class Handler
 {
  private:
     sf::TcpSocket *_socket;
-    ClientInfo _info;
+    Info _info;
  public:
 
-    explicit ClientHandler(sf::TcpSocket *sock);
+    explicit Handler(sf::TcpSocket *sock);
 
-    ClientHandler();
+    Handler();
 
-    ClientHandler(ClientHandler &&other_client) noexcept;
+    Handler(Handler &&other_client) noexcept;
 
-    ClientHandler &operator=(ClientHandler &&other_client) noexcept;
+    Handler &operator=(Handler &&other_client) noexcept;
 
-    ~ClientHandler();
+    ~Handler();
 
     sf::TcpSocket *get_socket_ptr() const;
 

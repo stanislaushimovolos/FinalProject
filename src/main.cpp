@@ -2,7 +2,7 @@
 #include <SFML/Network.hpp>
 #include <SFML/Graphics.hpp>
 
-#include "server/server.h"
+#include "server/Network/server.h"
 
 
 int main()
@@ -13,7 +13,7 @@ int main()
 
     if (type == "s")
     {
-        Server server(DEFAULT_PORT);
+        Server server(config::DEFAULT_PORT);
         server.connect_clients();
         server.start_session();
     } else
@@ -30,10 +30,11 @@ int main()
         sf::Uint16 direction = 320;
         bool focused = true;
 
-        socket.connect(ip, DEFAULT_PORT);
+        socket.connect(ip, config::DEFAULT_PORT);
+        sf::Event event;
+
         while (Window.isOpen())
         {
-            sf::Event event;
             while (Window.pollEvent(event))
             {
                 switch (event.type)
@@ -68,16 +69,16 @@ int main()
             {
                 if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
                 {
-                    direction = Right;
+                    direction = config::Right;
                 } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
                 {
-                    direction = Left;
+                    direction = config::Left;
                 } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
                 {
-                    direction = Up;
+                    direction = config::Up;
                 } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
                 {
-                    direction = Down;
+                    direction = config::Down;
                 }
             } else
                 direction = 320;
