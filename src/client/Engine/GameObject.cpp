@@ -8,7 +8,8 @@ namespace cli
 {
 
 GameObject::GameObject() :
-    _position(0, 0)
+    _position(0, 0),
+    _type(config::Empty)
 {}
 
 

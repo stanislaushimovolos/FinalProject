@@ -2,6 +2,8 @@
 
 #include <SFML/Graphics.hpp>
 #include "../../configuration/config.h"
+#include "../Engine/GameObject.h"
+#include "../Entittes/Player.h"
 
 namespace cli
 {
@@ -49,15 +51,20 @@ class Manager
 
     int process_packet(sf::Packet &packet);
 
+    void draw();
+
  private:
+
+    // Window parameters
     sf::RenderWindow _window;
     sf::Vector2u _resolution;
     std::string _window_name;
-
-    bool _focused;
+    bool _is_window_focused;
 
     uint32_t _current_num_of_clients;
     KeyboardInterface keyboard;
+
+    std::vector<Player> _objects;
 };
 
 }

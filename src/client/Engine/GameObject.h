@@ -1,6 +1,7 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
+#include "../../configuration/config.h"
 
 namespace cli
 {
@@ -10,6 +11,8 @@ class GameObject
     GameObject();
 
     GameObject(sf::Vector2f pos, uint32_t type);
+
+    virtual void draw(sf::RenderWindow &window) = 0;
 
     void set_position(sf::Vector2f pos);
 

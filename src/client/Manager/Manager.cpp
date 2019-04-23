@@ -25,62 +25,60 @@ sf::Packet Manager::make_step(sf::Packet &packet)
             }
             case sf::Event::GainedFocus:
             {
-                _focused = true;
+                _is_window_focused = true;
                 break;
             }
             case sf::Event::LostFocus:
             {
-                _focused = false;
+                _is_window_focused = false;
                 break;
             }
             default:break;
         }
     }
-    uint32_t cur_dir = 0;
-    std::cout << _focused << std::endl;
-    if (_focused)
-        cur_dir = keyboard.get_direction();
+
+    uint32_t current_direction = 0;
+    if (_is_window_focused)
+        current_direction = keyboard.get_direction();
     else
-        cur_dir = 320;
+        current_direction = 320;
 
     process_packet(packet);
 
     sf::Packet send_packet;
-    send_packet << cur_dir;
-
-
+    send_packet << current_direction;
     return send_packet;
-
 }
 
 
 int Manager::process_packet(sf::Packet &packet)
 {
     packet >> _current_num_of_clients;
-    std::vector<sf::RectangleShape> players(_current_num_of_clients);
-    for (auto &X:players)
-    {
-        X.setSize(sf::Vector2f(40, 40));
-        X.setFillColor(sf::Color::Red);
-    }
+    _objects.clear();
+    _objects.reserve(_current_num_of_clients);
 
-    std::vector<sf::Vector2f> positions(config::REQUIRED_NUM_OF_CLIENTS);
+    uint32_t current_ip_, current_port_ = 0;
+    sf::Vector2f current_obj_position;
 
-    uint32_t ip_, port_ = 0;
     for (int i = 0; i < _current_num_of_clients; i++)
     {
-        packet >> ip_ >> port_;
-        packet >> positions[i].x >> positions[i].y;
-        players[i].setPosition(positions[i]);
+        packet >> current_ip_ >> current_port_;
+        packet >> current_obj_position.x >> current_obj_position.y;
+        _objects.emplace_back(current_obj_position);
     }
 
-    for (auto &X:players)
-        _window.draw(X);
+    draw();
+    return 0;
+}
+
+
+void Manager::draw()
+{
+    for (auto &obj:_objects)
+        obj.draw(_window);
 
     _window.display();
     _window.clear();
-
-    return 0;
 }
 
 }
