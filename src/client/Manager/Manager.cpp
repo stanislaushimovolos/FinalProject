@@ -39,7 +39,7 @@ sf::Packet Manager::make_step(sf::Packet &packet)
     uint32_t cur_dir = 0;
     std::cout << _focused << std::endl;
     if (_focused)
-        cur_dir = player.get_direction();
+        cur_dir = keyboard.get_direction();
     else
         cur_dir = 320;
 
@@ -61,7 +61,7 @@ int Manager::process_packet(sf::Packet &packet)
     for (auto &X:players)
     {
         X.setSize(sf::Vector2f(40, 40));
-        X.setFillColor(sf::Color::Cyan);
+        X.setFillColor(sf::Color::Red);
     }
 
     std::vector<sf::Vector2f> positions(config::REQUIRED_NUM_OF_CLIENTS);

@@ -6,7 +6,7 @@
 namespace cli
 {
 
-class Player
+class KeyboardInterface
 {
  private:
     sf::Vector2f _current_position;
@@ -34,7 +34,7 @@ class Player
 
 
  public:
-    Player() :
+    KeyboardInterface() :
         _direction(320),
         _current_position(0, 0)
     {}
@@ -57,7 +57,7 @@ class Manager
     bool _focused;
 
     uint32_t _current_num_of_clients;
-    Player player;
+    KeyboardInterface keyboard;
 };
 
 }
