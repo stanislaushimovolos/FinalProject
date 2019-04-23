@@ -3,12 +3,13 @@
 #include "../../configuration/config.h"
 #include "../Network/client_handler.h"
 #include "Utils.h"
-
-
 #include "../GameEntities/Player.h"
 
 #include <unordered_map>
 #include <list>
+
+namespace ser
+{
 
 class BaseManager
 {
@@ -28,3 +29,5 @@ class BaseManager
 
     BaseManager() = default;
 };
+
+}

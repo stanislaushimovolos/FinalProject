@@ -6,8 +6,7 @@ namespace cli
 
 Client::Client(const sf::IpAddress &remote_ip, uint16_t remote_port) :
     _remote_port(remote_port),
-    _remote_ip(remote_ip),
-    _manager(800, 600, std::string("sadasd"))
+    _remote_ip(remote_ip)
 {
     _local_ip = sf::IpAddress(sf::IpAddress::getLocalAddress()).toInteger();
     _local_port = _socket.getLocalPort();
@@ -44,15 +43,15 @@ sf::Packet Client::receive_packet()
 }
 
 
-int Client::start_session()
+int Client::start_session(Manager &manager)
 {
-    while (true)
+    while (manager.is_active())
     {
         auto received = receive_packet();
-        auto pack = _manager.make_step(received);
+        auto pack = manager.make_step(received);
         send_packet(pack);
     }
-
+    return 1;
 }
 
 }

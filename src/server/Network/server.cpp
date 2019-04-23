@@ -88,7 +88,7 @@ std::vector<Packet> Server::receive_packets()
 }
 
 
-int Server::start_session()
+int Server::start_session(BaseManager &manager)
 {
     sf::Clock clock;
 

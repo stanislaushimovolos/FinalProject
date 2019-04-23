@@ -14,7 +14,7 @@ class Client
 
     int send_packet(sf::Packet &pack);
 
-    int start_session();
+    int start_session(Manager &manager);
 
     sf::Packet receive_packet();
 
@@ -27,8 +27,6 @@ class Client
 
     uint16_t _local_port;
     uint32_t _local_ip;
-
-    Manager _manager;
 };
 
 }

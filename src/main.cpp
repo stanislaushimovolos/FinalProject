@@ -14,13 +14,15 @@ int main()
 
     if (type == "s")
     {
+        ser::BaseManager server_manager;
         ser::Server server(config::DEFAULT_PORT);
         server.connect_clients();
-        server.start_session();
+        server.start_session(server_manager);
     } else
     {
+        cli::Manager server_manager(800, 600, "adad");
         cli::Client client(config::remote_ip_address, config::DEFAULT_PORT);
-        client.start_session();
+        client.start_session(server_manager);
     }
     return 0;
 }

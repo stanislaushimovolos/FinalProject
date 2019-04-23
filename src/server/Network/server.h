@@ -23,7 +23,7 @@ class Server
 
     int connect_clients();
 
-    int start_session();
+    int start_session(BaseManager &manager);
 
     ~Server();
 
@@ -37,8 +37,6 @@ class Server
     uint32_t _max_num_of_players;
     uint32_t _current_num_of_players;
     uint32_t _connection_delay;
-
-    BaseManager manager;
 
     std::vector<Packet> receive_packets();
 

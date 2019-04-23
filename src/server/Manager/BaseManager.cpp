@@ -1,5 +1,7 @@
 #include "BaseManager.h"
 
+namespace ser
+{
 
 std::vector<std::pair<sf::Uint16, ser::Info >> BaseManager::
 process_packets(std::vector<ser::Packet> &received_data) const
@@ -80,4 +82,6 @@ sf::Packet BaseManager::create_current_state_packet()
         packet << ip << port << pos.x << pos.y;
     }
     return packet;
+}
+
 }

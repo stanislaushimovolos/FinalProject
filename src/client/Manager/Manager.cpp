@@ -2,9 +2,12 @@
 
 namespace cli
 {
+
 Manager::Manager(uint32_t x_resolution, uint32_t y_resolution, std::string &&window_name) :
     _resolution(x_resolution, y_resolution),
-    _window_name(window_name)
+    _window_name(window_name),
+    _is_window_opened(true),
+    _is_window_focused(true)
 {
     _window.create(sf::VideoMode(_resolution.x, _resolution.y), _window_name);
 }
@@ -20,6 +23,7 @@ sf::Packet Manager::make_step(sf::Packet &packet)
         {
             case sf::Event::Closed:
             {
+                _is_window_opened = false;
                 _window.close();
                 break;
             }
@@ -79,6 +83,12 @@ void Manager::draw()
 
     _window.display();
     _window.clear();
+}
+
+
+bool Manager::is_active()
+{
+    return _is_window_opened;
 }
 
 }

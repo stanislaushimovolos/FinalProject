@@ -51,6 +51,8 @@ class Manager
 
     int process_packet(sf::Packet &packet);
 
+    bool is_active();
+
     void draw();
 
  private:
@@ -60,6 +62,7 @@ class Manager
     sf::Vector2u _resolution;
     std::string _window_name;
     bool _is_window_focused;
+    bool _is_window_opened;
 
     uint32_t _current_num_of_clients;
     KeyboardInterface keyboard;
