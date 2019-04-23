@@ -18,7 +18,7 @@ class Server
 
  public:
     explicit Server(uint16_t port = config::DEFAULT_PORT,
-                    uint32_t max_num_of_players = config::REQUIRED_NUM_OF_PLAYERS,
+                    uint32_t max_num_of_players = config::REQUIRED_NUM_OF_CLIENTS,
                     uint32_t connection_delay = config::CONNECTION_DELAY);
 
     int connect_clients();
