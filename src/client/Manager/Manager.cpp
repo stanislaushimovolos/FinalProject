@@ -12,10 +12,7 @@ Manager::Manager(uint32_t x_resolution, uint32_t y_resolution, std::string &&win
 
 sf::Packet Manager::make_step(sf::Packet &packet)
 {
-    process_packet(packet);
-
     sf::Event event;
-    bool focused = true;
 
     while (_window.pollEvent(event))
     {
@@ -28,25 +25,29 @@ sf::Packet Manager::make_step(sf::Packet &packet)
             }
             case sf::Event::GainedFocus:
             {
-                focused = true;
+                _focused = true;
                 break;
             }
             case sf::Event::LostFocus:
             {
-                focused = false;
+                _focused = false;
                 break;
             }
             default:break;
         }
     }
     uint32_t cur_dir = 0;
-    if (focused)
+    std::cout << _focused << std::endl;
+    if (_focused)
         cur_dir = player.get_direction();
     else
         cur_dir = 320;
 
+    process_packet(packet);
+
     sf::Packet send_packet;
     send_packet << cur_dir;
+
 
     return send_packet;
 

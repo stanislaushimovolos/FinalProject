@@ -29,7 +29,6 @@ class Player
         {
             direction = config::Down;
         }
-        std::cout << direction << std::endl;
         return direction;
     }
 
@@ -54,6 +53,8 @@ class Manager
     sf::RenderWindow _window;
     sf::Vector2u _resolution;
     std::string _window_name;
+
+    bool _focused;
 
     uint32_t _current_num_of_clients;
     Player player;
