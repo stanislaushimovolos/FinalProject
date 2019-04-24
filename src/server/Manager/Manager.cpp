@@ -71,4 +71,11 @@ sf::Packet Manager::create_current_state_packet()
     return packet;
 }
 
+
+Manager::~Manager()
+{
+    for (auto obj:_objects)
+        delete obj;
+}
+
 }

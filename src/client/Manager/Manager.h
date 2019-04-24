@@ -55,6 +55,8 @@ class Manager
 
     sf::Packet get_current_state();
 
+    ~Manager();
+
  private:
 
     // Window parameters

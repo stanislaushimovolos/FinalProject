@@ -35,7 +35,7 @@ class Manager
 
     Manager() = default;
 
-    // Add Destructor for objects!!!!!!!!!!!!!!!!!!!!!!!!!
+    ~Manager();
 };
 
 }

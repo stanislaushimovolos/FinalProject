@@ -18,6 +18,8 @@ class Player : public ser::GameObject
 
     void update() override;
 
+    ~Player() override = default;
+
 
  private:
     uint32_t _direction;

@@ -20,6 +20,8 @@ class GameObject
 
     virtual void update() = 0;
 
+    virtual ~GameObject() = default;
+
  protected:
     sf::Vector2f _position;
     sf::Vector2f _velocity;

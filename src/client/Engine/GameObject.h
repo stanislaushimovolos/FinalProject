@@ -14,7 +14,9 @@ class GameObject
 
     virtual void draw(sf::RenderWindow &window) = 0;
 
-    void set_position(sf::Vector2f& pos);
+    void set_position(sf::Vector2f &pos);
+
+    virtual ~GameObject() = default;
 
     sf::Vector2f get_position() const;
 

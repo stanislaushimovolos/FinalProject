@@ -96,4 +96,11 @@ bool Manager::is_active()
     return _is_window_opened;
 }
 
+
+Manager::~Manager()
+{
+    for (auto obj:_objects)
+        delete obj;
+}
+
 }
