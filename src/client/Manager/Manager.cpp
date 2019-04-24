@@ -57,6 +57,9 @@ sf::Packet Manager::get_current_state()
 int Manager::process_scene(sf::Packet &packet)
 {
     packet >> _current_num_of_clients;
+    for (auto obj: _objects)
+        delete obj;
+
     _objects.clear();
     _objects.reserve(_current_num_of_clients);
 
