@@ -56,9 +56,11 @@ int Manager::process_scene(sf::Packet &packet)
     _objects.reserve(_current_num_of_clients);
 
     sf::Vector2f current_obj_position;
+    uint32_t obj_type;
+
     for (int i = 0; i < _current_num_of_clients; i++)
     {
-        packet >> current_obj_position.x >> current_obj_position.y;
+        packet >> obj_type >> current_obj_position.x >> current_obj_position.y;
         _objects.push_back(new Player(current_obj_position));
     }
     return 0;

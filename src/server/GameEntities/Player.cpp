@@ -5,13 +5,13 @@ namespace ser
 {
 
 Player::Player(sf::Vector2f start_position, sf::Vector2f start_velocity, float speed) :
-    ser::GameObject(start_position, start_velocity, speed),
+    ser::GameObject(start_position, start_velocity, speed, conf::game::Player),
     _direction(conf::game::Rest)
 {}
 
 
 Player::Player() :
-    ser::GameObject({0, 0}, {0, 0}, 30),
+    ser::GameObject({0, 0}, {0, 0}, 30, conf::game::Player),
     _direction(conf::game::Rest)
 {}
 

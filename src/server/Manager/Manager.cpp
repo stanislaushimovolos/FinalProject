@@ -63,7 +63,10 @@ sf::Packet Manager::create_current_state_packet()
     packet << num_of_players;
 
     for (auto obj : _objects)
+    {
+        packet << obj->get_type();
         obj->to_packet(packet);
+    }
     return packet;
 }
 

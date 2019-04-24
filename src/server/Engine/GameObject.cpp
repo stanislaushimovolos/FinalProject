@@ -8,16 +8,23 @@ namespace ser
 {
 GameObject::GameObject(sf::Vector2f pos,
                        sf::Vector2f velocity,
-                       float speed) :
+                       float speed, uint32_t type) :
     _position(pos),
     _velocity(velocity),
-    _speed(speed)
+    _speed(speed),
+    _type(type)
 {}
 
 
 void GameObject::move(sf::Vector2f &&shift)
 {
     _position += shift;
+}
+
+
+uint32_t GameObject::get_type() const
+{
+    return _type;
 }
 
 
