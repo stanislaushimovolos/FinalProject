@@ -34,7 +34,7 @@ int Manager::update_player_states(std::vector<ser::Packet> &received_data)
         player->set_direction(cur_dir);
 
         if (is_shoot)
-            _objects.push_back(new Bullet(player->get_position(), cur_dir));
+            _objects.push_back(new Bullet(player->get_position(), player->get_rotation()));
     }
     return 1;
 }

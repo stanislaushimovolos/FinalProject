@@ -3,8 +3,8 @@
 #include <SFML/Graphics.hpp>
 #include "../../configuration/config.h"
 #include "../Engine/GameObject.h"
-#include "../Entittes/Player.h"
-#include "../Entittes/Bullet.h"
+#include "../GameEntities/Player.h"
+#include "../GameEntities/Bullet.h"
 
 namespace cli
 {

@@ -3,27 +3,57 @@
 namespace ser
 {
 
-Player::Player(sf::Vector2f start_position, sf::Vector2f start_velocity, float speed) :
-    ser::GameObject(start_position, start_velocity, speed, conf::game::Player),
-    _direction(conf::game::Rest)
+Player::Player(sf::Vector2f start_position, float speed) :
+    ser::GameObject(start_position,
+                    {0, 0},
+                    conf::game::Up,
+                    conf::game::Rest,
+                    speed,
+                    conf::game::Player)
 {}
 
 
 Player::Player() :
-    ser::GameObject({0, 0}, {0, 0}, 30, conf::game::Player),
-    _direction(conf::game::Rest)
+    ser::GameObject({0, 0}, {0, 0}, conf::game::Up, conf::game::Rest, 30, conf::game::Player)
 {}
-
-
-uint32_t Player::get_direction() const
-{
-    return _direction;
-}
 
 
 void Player::set_direction(uint32_t new_direction)
 {
     _direction = new_direction;
+    switch (new_direction)
+    {
+        case (conf::game::Left):
+        {
+            _velocity = sf::Vector2f(-_speed, 0);
+            break;
+        }
+        case (conf::game::Right):
+        {
+            _velocity = sf::Vector2f(_speed, 0);
+            break;
+        }
+        case (conf::game::Up):
+        {
+            _velocity = sf::Vector2f(0, -_speed);
+            break;
+        }
+        case (conf::game::Down):
+        {
+            _velocity = sf::Vector2f(0, _speed);
+            break;
+        }
+        case (conf::game::Rest):
+        {
+            _velocity = sf::Vector2f(0, 0);
+            break;
+        }
+        default:break;
+    }
+
+    if (new_direction != conf::game::Rest)
+        _rotation = new_direction;
+
 }
 
 
@@ -35,30 +65,7 @@ void Player::to_packet(sf::Packet &pack) const
 
 void Player::update()
 {
-    switch (_direction)
-    {
-        case (conf::game::Left):
-        {
-            move(sf::Vector2f(-_speed, 0));
-            break;
-        }
-        case (conf::game::Right):
-        {
-            move(sf::Vector2f(_speed, 0));
-            break;
-        }
-        case (conf::game::Up):
-        {
-            move(sf::Vector2f(0, -_speed));
-            break;
-        }
-        case (conf::game::Down):
-        {
-            move(sf::Vector2f(0, _speed));
-            break;
-        }
-        default:break;
-    }
+    move(_velocity);
 }
 
 }
