@@ -3,7 +3,8 @@
 #include <SFML/Network.hpp>
 #include <iostream>
 
-namespace ser{
+namespace ser
+{
 
 class Info
 {

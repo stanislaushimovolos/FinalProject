@@ -8,9 +8,7 @@ Manager::Manager(uint32_t x_resolution, uint32_t y_resolution, std::string &&win
     _window_name(window_name),
     _is_window_opened(true),
     _is_window_focused(true)
-{
-    _window.create(sf::VideoMode(_resolution.x, _resolution.y), _window_name);
-}
+{}
 
 
 sf::Packet Manager::get_current_state()
@@ -74,6 +72,12 @@ void Manager::update(sf::Packet &packet)
 {
     process_scene(packet);
     draw();
+}
+
+
+void Manager::activate_window()
+{
+    _window.create(sf::VideoMode(_resolution.x, _resolution.y), _window_name);
 }
 
 

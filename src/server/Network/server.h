@@ -35,7 +35,7 @@ class Server
     std::list<Handler> _clients;
 
     uint32_t _max_num_of_players;
-    uint32_t _current_num_of_players;
+    uint32_t _current_num_of_clients;
     uint32_t _connection_delay;
 
     std::vector<Packet> receive_packets();

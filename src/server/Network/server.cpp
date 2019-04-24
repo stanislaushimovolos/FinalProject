@@ -6,7 +6,7 @@ namespace ser
 Server::Server(uint16_t port, uint32_t max_num_of_players, uint32_t connection_delay) :
     _port(port),
     _ip_address(sf::IpAddress::getLocalAddress()),
-    _current_num_of_players(0),
+    _current_num_of_clients(0),
     _connection_delay(connection_delay),
     _max_num_of_players(max_num_of_players)
 {
@@ -26,7 +26,7 @@ int Server::connect_clients()
             // Test the listener
             if (_selector.isReady(_listener))
                 add_new_client();
-            if (_current_num_of_players == _max_num_of_players)
+            if (_current_num_of_clients == _max_num_of_players)
                 return 1;
         }
     }
@@ -45,9 +45,9 @@ int Server::add_new_client()
         // Add the new client to the clients list
         _clients.emplace_back(new_client_socket);
 
-        _current_num_of_players++;
+        _current_num_of_clients++;
         std::cout << "new client connected" << std::endl;
-        std::cout << "current number of players - " << _current_num_of_players << std::endl;
+        std::cout << "current number of players - " << _current_num_of_clients << std::endl;
         return 1;
     }
 
@@ -80,7 +80,7 @@ std::vector<Packet> Server::receive_packets()
                 it = _clients.erase(it);
 
                 std::cout << "client was disconnected" << std::endl;
-                _current_num_of_players--;
+                _current_num_of_clients--;
             }
         }
     }
@@ -91,9 +91,9 @@ std::vector<Packet> Server::receive_packets()
 int Server::start_session(BaseManager &manager)
 {
     sf::Clock clock;
-
+    sf::Packet current_state;
     manager.add_players(_clients);
-    auto current_state = manager.create_current_state_packet();
+
     while (true)
     {
         auto time = clock.getElapsedTime().asMilliseconds();
@@ -102,8 +102,8 @@ int Server::start_session(BaseManager &manager)
             send_state_to_ready_sockets(current_state);
             if (_selector.wait())
             {
-                auto ready_packets = receive_packets();
-                manager.update_state(ready_packets);
+                auto received_packets = receive_packets();
+                manager.update_state(received_packets);
                 current_state = manager.create_current_state_packet();
             }
             clock.restart();

@@ -45,12 +45,18 @@ sf::Packet Client::receive_packet()
 
 int Client::start_session(Manager &manager)
 {
+    // Initialize connection
+    auto received_pack = receive_packet();
+    auto send_pack = manager.get_current_state();
+    send_packet(send_pack);
+    manager.activate_window();
+
     while (manager.is_active())
     {
-        auto received_pack = receive_packet();
+        received_pack = receive_packet();
         manager.update(received_pack);
 
-        auto send_pack = manager.get_current_state();
+        send_pack = manager.get_current_state();
         send_packet(send_pack);
     }
     return 1;

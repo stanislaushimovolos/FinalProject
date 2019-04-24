@@ -45,18 +45,21 @@ class Manager
  public:
     Manager(uint32_t x_resolution, uint32_t y_resolution, std::string &&window_name);
 
-    void draw();
-
     bool is_active();
 
-    sf::Packet get_current_state();
+    void draw();
+
+    void activate_window();
 
     void update(sf::Packet &packet);
+
+    sf::Packet get_current_state();
 
  private:
 
     // Window parameters
     sf::RenderWindow _window;
+
     sf::Vector2u _resolution;
     std::string _window_name;
     bool _is_window_focused;
