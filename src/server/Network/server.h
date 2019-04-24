@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../Manager/BaseManager.h"
+#include "../Manager/Manager.h"
 #include "client_handler.h"
 #include "../../configuration/config.h"
 
@@ -23,7 +23,7 @@ class Server
 
     int connect_clients();
 
-    int start_session(BaseManager &manager);
+    int start_session(Manager &manager);
 
     ~Server();
 

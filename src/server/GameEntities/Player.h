@@ -7,14 +7,20 @@ namespace ser
 class Player : public ser::GameObject
 {
  public:
+
     Player(sf::Vector2f start_position, sf::Vector2f start_velocity, float speed);
 
     Player();
 
-    sf::Vector2f get_position()
-    {
-        return _position;
-    }
+    uint32_t get_direction() const;
+
+    void set_direction(uint32_t new_direction);
+
+    void update() override;
+
+
+ private:
+    uint32_t _direction;
 };
 
 }

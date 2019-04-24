@@ -88,7 +88,7 @@ std::vector<Packet> Server::receive_packets()
 }
 
 
-int Server::start_session(BaseManager &manager)
+int Server::start_session(Manager &manager)
 {
     sf::Clock clock;
     sf::Packet current_state;
@@ -103,7 +103,10 @@ int Server::start_session(BaseManager &manager)
             if (_selector.wait())
             {
                 auto received_packets = receive_packets();
-                manager.update_state(received_packets);
+
+                manager.update_player_states(received_packets);
+                manager.update_environment();
+
                 current_state = manager.create_current_state_packet();
             }
             clock.restart();
