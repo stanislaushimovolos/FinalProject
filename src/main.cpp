@@ -21,7 +21,7 @@ int main()
     } else
     {
         auto remote_ip = sf::IpAddress::getLocalAddress();
-        cli::Manager server_manager(1920, 1080, "Synchronized!!!!");
+        cli::Manager server_manager(800, 600, "Synchronized!!!!");
         cli::Client client(remote_ip, conf::net::DEFAULT_PORT);
         client.start_session(server_manager);
     }

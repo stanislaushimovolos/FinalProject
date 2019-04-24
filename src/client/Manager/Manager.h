@@ -68,7 +68,7 @@ class Manager
     uint32_t _current_num_of_clients;
     KeyboardInterface keyboard;
 
-    std::vector<Player> _objects;
+    std::vector<GameObject *> _objects;
 
     int process_scene(sf::Packet &packet);
 };

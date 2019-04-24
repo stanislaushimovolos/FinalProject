@@ -62,7 +62,7 @@ int Manager::process_scene(sf::Packet &packet)
     {
         packet >> current_ip_ >> current_port_;
         packet >> current_obj_position.x >> current_obj_position.y;
-        _objects.emplace_back(current_obj_position);
+        _objects.push_back(new Player(current_obj_position));
     }
     return 0;
 }
@@ -84,7 +84,7 @@ void Manager::activate_window()
 void Manager::draw()
 {
     for (auto &obj:_objects)
-        obj.draw(_window);
+        obj->draw(_window);
 
     _window.display();
     _window.clear();
