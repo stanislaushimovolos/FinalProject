@@ -26,7 +26,8 @@ enum Directions
 enum ObjectTypes
 {
     Empty,
-    Player
+    Player,
+    Bullet,
 };
 
 }

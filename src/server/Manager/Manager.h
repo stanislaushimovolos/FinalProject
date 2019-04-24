@@ -3,6 +3,7 @@
 #include "../../configuration/config.h"
 #include "../Network/client_handler.h"
 #include "../GameEntities/Player.h"
+#include "../GameEntities/Bullet.h"
 #include "../Engine/GameObject.h"
 
 #include "Utils.h"
@@ -22,8 +23,8 @@ class Manager
 
 
  public:
-    std::vector<std::pair<sf::Uint16,
-                          ser::Info >> process_packets(std::vector<ser::Packet> &received_data) const;
+    std::vector<std::pair<ClientState,
+                          Info >> process_packets(std::vector<Packet> &received_data) const;
 
     sf::Packet create_current_state_packet();
 

@@ -1,5 +1,4 @@
 #include "Player.h"
-#include "../../configuration/config.h"
 
 namespace ser
 {

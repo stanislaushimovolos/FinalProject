@@ -5,27 +5,26 @@
 namespace ser
 {
 
-class Player : public GameObject
+class Bullet : public GameObject
 {
  public:
 
-    Player(sf::Vector2f start_position, sf::Vector2f start_velocity, float speed);
-
-    Player();
+    explicit Bullet(sf::Vector2f position, uint32_t direction);
 
     void to_packet(sf::Packet &pack) const override;
+
+    void update() override;
 
     uint32_t get_direction() const;
 
     void set_direction(uint32_t new_direction);
 
-    void update() override;
-
-    ~Player() override = default;
-
+    ~Bullet() override = default;
 
  private:
+
     uint32_t _direction;
+
 };
 
 }

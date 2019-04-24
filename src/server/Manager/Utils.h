@@ -2,6 +2,9 @@
 #include <iostream>
 #include "../Network/client_handler.h"
 
+namespace ser
+{
+
 class EqualClients
 {
  public:
@@ -19,3 +22,19 @@ class ClientHasher
         return cli.get_info().second;
     }
 };
+
+class ClientState
+{
+ public:
+    uint32_t is_shoot;
+    uint32_t direction;
+
+    ClientState(uint32_t dir, uint32_t is_shoott) :
+        direction(dir),
+        is_shoot(is_shoott)
+    {
+
+    }
+};
+
+}

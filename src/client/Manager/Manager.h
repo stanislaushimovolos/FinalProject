@@ -4,6 +4,7 @@
 #include "../../configuration/config.h"
 #include "../Engine/GameObject.h"
 #include "../Entittes/Player.h"
+#include "../Entittes/Bullet.h"
 
 namespace cli
 {
@@ -14,7 +15,7 @@ class KeyboardInterface
     uint32_t _direction;
 
  public:
-    uint32_t get_direction() const
+    std::pair<uint32_t, uint32_t> get_direction() const
     {
         uint32_t direction = conf::game::Rest;
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
@@ -30,11 +31,14 @@ class KeyboardInterface
         {
             direction = conf::game::Down;
         }
-        return direction;
+
+        uint32_t is_shoot = 0;
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+            is_shoot = 1;
+
+        return std::make_pair(direction, is_shoot);
     }
 
-
- public:
     KeyboardInterface() :
         _direction(conf::game::Rest)
     {}

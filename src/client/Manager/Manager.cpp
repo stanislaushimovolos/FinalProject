@@ -14,7 +14,6 @@ Manager::Manager(uint32_t x_resolution, uint32_t y_resolution, std::string &&win
 sf::Packet Manager::get_current_state()
 {
     sf::Event event;
-
     while (_window.pollEvent(event))
     {
         switch (event.type)
@@ -40,11 +39,17 @@ sf::Packet Manager::get_current_state()
     }
 
     uint32_t current_direction = conf::game::Rest;
+    uint32_t is_shoot = 0;
+
     if (_is_window_focused)
-        current_direction = keyboard.get_direction();
+    {
+        auto state = keyboard.get_direction();
+        current_direction = state.first;
+        is_shoot = state.second;
+    }
 
     sf::Packet send_packet;
-    send_packet << current_direction;
+    send_packet << current_direction << is_shoot;
     return send_packet;
 }
 
@@ -61,7 +66,20 @@ int Manager::process_scene(sf::Packet &packet)
     for (int i = 0; i < _current_num_of_clients; i++)
     {
         packet >> obj_type >> current_obj_position.x >> current_obj_position.y;
-        _objects.push_back(new Player(current_obj_position));
+        switch (obj_type)
+        {
+            case conf::game::Player:
+            {
+                _objects.push_back(new Player(current_obj_position));
+                break;
+            }
+            case conf::game::Bullet:
+            {
+                _objects.push_back(new Bullet(current_obj_position));
+                break;
+            }
+            default:throw std::runtime_error("unknown type of objects");
+        }
     }
     return 0;
 }
