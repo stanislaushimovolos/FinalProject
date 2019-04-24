@@ -11,13 +11,12 @@ namespace cli
 class KeyboardInterface
 {
  private:
-    sf::Vector2f _current_position;
     uint32_t _direction;
 
  public:
     uint32_t get_direction() const
     {
-        uint32_t direction = 320;
+        uint32_t direction = config::Rest;
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
         {
             direction = config::Right;
@@ -37,8 +36,7 @@ class KeyboardInterface
 
  public:
     KeyboardInterface() :
-        _direction(320),
-        _current_position(0, 0)
+        _direction(config::Rest)
     {}
 };
 
@@ -47,13 +45,13 @@ class Manager
  public:
     Manager(uint32_t x_resolution, uint32_t y_resolution, std::string &&window_name);
 
-    sf::Packet make_step(sf::Packet &packet);
-
-    int process_packet(sf::Packet &packet);
+    void draw();
 
     bool is_active();
 
-    void draw();
+    sf::Packet get_current_state();
+
+    void update(sf::Packet &packet);
 
  private:
 
@@ -68,6 +66,8 @@ class Manager
     KeyboardInterface keyboard;
 
     std::vector<Player> _objects;
+
+    int process_scene(sf::Packet &packet);
 };
 
 }

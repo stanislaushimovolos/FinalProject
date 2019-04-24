@@ -47,9 +47,11 @@ int Client::start_session(Manager &manager)
 {
     while (manager.is_active())
     {
-        auto received = receive_packet();
-        auto pack = manager.make_step(received);
-        send_packet(pack);
+        auto received_pack = receive_packet();
+        manager.update(received_pack);
+
+        auto send_pack = manager.get_current_state();
+        send_packet(send_pack);
     }
     return 1;
 }

@@ -20,7 +20,7 @@ int main()
         server.start_session(server_manager);
     } else
     {
-        cli::Manager server_manager(800, 600, "adad");
+        cli::Manager server_manager(800, 600, "Synchronized!!!!");
         cli::Client client(config::remote_ip_address, config::DEFAULT_PORT);
         client.start_session(server_manager);
     }

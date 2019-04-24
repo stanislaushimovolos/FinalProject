@@ -14,7 +14,7 @@ void Player::draw(sf::RenderWindow &window)
 }
 
 
-Player::Player(sf::Vector2f position) :
+Player::Player(sf::Vector2f& position) :
     GameObject(position, config::Player)
 {
     _texture.setSize(sf::Vector2f(40, 40));

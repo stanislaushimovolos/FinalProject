@@ -13,7 +13,7 @@ Manager::Manager(uint32_t x_resolution, uint32_t y_resolution, std::string &&win
 }
 
 
-sf::Packet Manager::make_step(sf::Packet &packet)
+sf::Packet Manager::get_current_state()
 {
     sf::Event event;
 
@@ -41,13 +41,9 @@ sf::Packet Manager::make_step(sf::Packet &packet)
         }
     }
 
-    uint32_t current_direction = 0;
+    uint32_t current_direction = config::Rest;
     if (_is_window_focused)
         current_direction = keyboard.get_direction();
-    else
-        current_direction = 320;
-
-    process_packet(packet);
 
     sf::Packet send_packet;
     send_packet << current_direction;
@@ -55,7 +51,7 @@ sf::Packet Manager::make_step(sf::Packet &packet)
 }
 
 
-int Manager::process_packet(sf::Packet &packet)
+int Manager::process_scene(sf::Packet &packet)
 {
     packet >> _current_num_of_clients;
     _objects.clear();
@@ -70,9 +66,14 @@ int Manager::process_packet(sf::Packet &packet)
         packet >> current_obj_position.x >> current_obj_position.y;
         _objects.emplace_back(current_obj_position);
     }
-
-    draw();
     return 0;
+}
+
+
+void Manager::update(sf::Packet &packet)
+{
+    process_scene(packet);
+    draw();
 }
 
 

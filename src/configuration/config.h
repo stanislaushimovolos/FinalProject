@@ -12,6 +12,7 @@ static const uint16_t DEFAULT_PORT = 8080;
 
 enum Directions
 {
+    Rest,
     Left,
     Right,
     Down,

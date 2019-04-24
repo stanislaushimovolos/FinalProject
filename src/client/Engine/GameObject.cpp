@@ -13,13 +13,13 @@ GameObject::GameObject() :
 {}
 
 
-GameObject::GameObject(sf::Vector2f pos, uint32_t type) :
+GameObject::GameObject(sf::Vector2f &pos, uint32_t type) :
     _position(pos),
     _type(type)
 {}
 
 
-void GameObject::set_position(sf::Vector2f pos)
+void GameObject::set_position(sf::Vector2f &pos)
 {
     _position = pos;
 }
