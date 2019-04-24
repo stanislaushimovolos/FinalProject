@@ -62,12 +62,8 @@ sf::Packet Manager::create_current_state_packet()
     sf::Packet packet;
     packet << num_of_players;
 
-    for (auto[player_info, player] : _players)
-    {
-        auto[ip, port] = player_info.get_info();
-        auto pos = player->get_position();
-        packet << ip << port << pos.x << pos.y;
-    }
+    for (auto obj : _objects)
+        obj->to_packet(packet);
     return packet;
 }
 

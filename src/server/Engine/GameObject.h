@@ -1,6 +1,7 @@
 #pragma once
 
 #include <SFML/System.hpp>
+#include <SFML/Network/Packet.hpp>
 namespace ser
 {
 
@@ -16,9 +17,11 @@ class GameObject
 
     sf::Vector2f get_position() const;
 
-    void move(sf::Vector2f &&shift);
+    virtual void to_packet(sf::Packet &pack) const = 0;
 
     virtual void update() = 0;
+
+    void move(sf::Vector2f &&shift);
 
     virtual ~GameObject() = default;
 

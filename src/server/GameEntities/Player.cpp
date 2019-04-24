@@ -28,6 +28,12 @@ void Player::set_direction(uint32_t new_direction)
 }
 
 
+void Player::to_packet(sf::Packet &pack) const
+{
+    pack << _position.x << _position.y;
+}
+
+
 void Player::update()
 {
     switch (_direction)

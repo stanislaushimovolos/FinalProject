@@ -12,6 +12,8 @@ class Player : public ser::GameObject
 
     Player();
 
+    void to_packet(sf::Packet &pack) const override;
+
     uint32_t get_direction() const;
 
     void set_direction(uint32_t new_direction);
