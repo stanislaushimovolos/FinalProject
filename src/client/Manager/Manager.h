@@ -16,19 +16,19 @@ class KeyboardInterface
  public:
     uint32_t get_direction() const
     {
-        uint32_t direction = config::Rest;
+        uint32_t direction = conf::game::Rest;
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
         {
-            direction = config::Right;
+            direction = conf::game::Right;
         } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
         {
-            direction = config::Left;
+            direction = conf::game::Left;
         } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
         {
-            direction = config::Up;
+            direction = conf::game::Up;
         } else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
         {
-            direction = config::Down;
+            direction = conf::game::Down;
         }
         return direction;
     }
@@ -36,7 +36,7 @@ class KeyboardInterface
 
  public:
     KeyboardInterface() :
-        _direction(config::Rest)
+        _direction(conf::game::Rest)
     {}
 };
 

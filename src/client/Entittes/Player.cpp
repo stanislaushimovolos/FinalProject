@@ -15,7 +15,7 @@ void Player::draw(sf::RenderWindow &window)
 
 
 Player::Player(sf::Vector2f& position) :
-    GameObject(position, config::Player)
+    GameObject(position, conf::game::Player)
 {
     _texture.setSize(sf::Vector2f(40, 40));
     _texture.setFillColor(sf::Color::Red);

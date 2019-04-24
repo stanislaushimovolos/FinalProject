@@ -15,13 +15,14 @@ int main()
     if (type == "s")
     {
         ser::BaseManager server_manager;
-        ser::Server server(config::DEFAULT_PORT);
+        ser::Server server(conf::net::DEFAULT_PORT);
         server.connect_clients();
         server.start_session(server_manager);
     } else
     {
+        auto remote_ip = sf::IpAddress::getLocalAddress();
         cli::Manager server_manager(800, 600, "Synchronized!!!!");
-        cli::Client client(config::remote_ip_address, config::DEFAULT_PORT);
+        cli::Client client(remote_ip, conf::net::DEFAULT_PORT);
         client.start_session(server_manager);
     }
     return 0;

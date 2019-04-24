@@ -9,7 +9,7 @@ namespace cli
 
 GameObject::GameObject() :
     _position(0, 0),
-    _type(config::Empty)
+    _type(conf::game::Empty)
 {}
 
 

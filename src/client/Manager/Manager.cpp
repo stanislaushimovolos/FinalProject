@@ -39,7 +39,7 @@ sf::Packet Manager::get_current_state()
         }
     }
 
-    uint32_t current_direction = config::Rest;
+    uint32_t current_direction = conf::game::Rest;
     if (_is_window_focused)
         current_direction = keyboard.get_direction();
 

@@ -29,22 +29,22 @@ int BaseManager::update_state(std::vector<ser::Packet> &received_data)
         auto &player = players[info];
         switch (dir)
         {
-            case (config::Left):
+            case (conf::game::Left):
             {
                 player.move(sf::Vector2f(-20, 0));
                 break;
             }
-            case (config::Right):
+            case (conf::game::Right):
             {
                 player.move(sf::Vector2f(20, 0));
                 break;
             }
-            case (config::Up):
+            case (conf::game::Up):
             {
                 player.move(sf::Vector2f(0, -20));
                 break;
             }
-            case (config::Down):
+            case (conf::game::Down):
             {
                 player.move(sf::Vector2f(0, 20));
                 break;
