@@ -8,7 +8,7 @@ Server::Server(uint16_t port, uint32_t max_num_of_players, uint32_t connection_d
     _ip_address(sf::IpAddress::getLocalAddress()),
     _current_num_of_clients(0),
     _connection_delay(connection_delay),
-    _max_num_of_players(max_num_of_players)
+    _required_num_of_clients(max_num_of_players)
 {
     std::cout << "Server ip is: " << _ip_address << std::endl;
     _listener.listen(_port);
@@ -26,7 +26,7 @@ int Server::connect_clients()
             // Test the listener
             if (_selector.isReady(_listener))
                 add_new_client();
-            if (_current_num_of_clients == _max_num_of_players)
+            if (_current_num_of_clients == _required_num_of_clients)
                 return 1;
         }
     }
@@ -61,14 +61,26 @@ std::vector<Packet> Server::receive_packets()
     std::vector<Packet> received_data;
     received_data.reserve(_clients.size());
 
+    // Check that all clients send data
     int client_counter = 0;
+    while (true)
+    {
+        for (auto &cli:_clients)
+        {
+            auto client_socket_ptr = cli.get_socket_ptr();
+            if (_selector.isReady(*client_socket_ptr))
+                client_counter++;
+        }
+        if (client_counter == _required_num_of_clients)
+            break;
+    }
+
     for (auto it = _clients.begin(); it != _clients.end(); ++it)
     {
         auto &client = *it;
         auto client_socket_ptr = client.get_socket_ptr();
         if (_selector.isReady(*client_socket_ptr))
         {
-            client_counter++;
             // The client has sent some data, we can receive it
             Packet pkg(client.info());
 
