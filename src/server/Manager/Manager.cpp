@@ -15,8 +15,8 @@ process_packets(std::vector<ser::Packet> &received_data) const
         uint32_t is_shooting = 0;
 
         msg.data() >> direction >> is_shooting;
-        ClientState KKLudge(direction, is_shooting);
-        processed_messages.emplace_back(KKLudge, msg.info());
+        ClientState cli_state(direction, is_shooting);
+        processed_messages.emplace_back(cli_state, msg.info());
     }
     return processed_messages;
 }

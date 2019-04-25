@@ -59,6 +59,9 @@ class Manager
 
     sf::Packet get_current_state();
 
+    /// LOOOOOLL!!!!!!!!!!!!
+    sf::View _view;
+
     ~Manager();
 
  private:

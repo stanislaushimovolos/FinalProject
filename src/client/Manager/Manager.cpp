@@ -7,8 +7,11 @@ Manager::Manager(uint32_t x_resolution, uint32_t y_resolution, std::string &&win
     _resolution(x_resolution, y_resolution),
     _window_name(window_name),
     _is_window_opened(true),
-    _is_window_focused(true)
-{}
+    _is_window_focused(true),
+    _view(sf::Vector2f(x_resolution / 2, y_resolution / 2),
+          sf::Vector2f(x_resolution, y_resolution))
+{
+}
 
 
 sf::Packet Manager::get_current_state()
@@ -106,6 +109,7 @@ void Manager::draw()
     for (auto &obj:_objects)
         obj->draw(_window);
 
+    _window.setView(_view);
     _window.display();
     _window.clear();
 }
