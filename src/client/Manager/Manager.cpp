@@ -63,26 +63,26 @@ int Manager::process_scene(sf::Packet &packet)
     _objects.clear();
     _objects.reserve(_current_num_of_clients);
 
-    sf::Vector2f current_obj_position;
     uint32_t obj_type;
 
     for (int i = 0; i < _current_num_of_clients; i++)
     {
-        packet >> obj_type >> current_obj_position.x >> current_obj_position.y;
+        packet >> obj_type;
         switch (obj_type)
         {
             case conf::game::Player:
             {
-                _objects.push_back(new Player(current_obj_position));
+                _objects.push_back(new Player);
                 break;
             }
             case conf::game::Bullet:
             {
-                _objects.push_back(new Bullet(current_obj_position));
+                _objects.push_back(new Bullet);
                 break;
             }
             default:throw std::runtime_error("unknown type of objects");
         }
+        _objects.back()->set_state_form_packet(packet);
     }
     return 0;
 }

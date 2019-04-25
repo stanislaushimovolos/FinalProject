@@ -21,7 +21,7 @@ class GameObject
 
     GameObject() = delete;
 
-    virtual void to_packet(sf::Packet &pack) const = 0;
+    virtual void compress_to_packet(sf::Packet &pack) const = 0;
 
     virtual void set_direction(uint32_t new_direction);
 

@@ -7,9 +7,12 @@ namespace cli
 class Bullet : public GameObject
 {
  public:
+
+    void set_state_form_packet(sf::Packet &pack) override;
+
     void draw(sf::RenderWindow &window) override;
 
-    explicit Bullet(sf::Vector2f &pos);
+    explicit Bullet();
 
  private:
     sf::RectangleShape _texture;

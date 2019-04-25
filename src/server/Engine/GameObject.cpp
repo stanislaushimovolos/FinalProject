@@ -1,7 +1,3 @@
-//
-// Created by superstraz on 4/22/19.
-//
-
 #include "GameObject.h"
 
 namespace ser

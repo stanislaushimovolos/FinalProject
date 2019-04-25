@@ -13,8 +13,10 @@ Player::Player(sf::Vector2f start_position, float speed) :
 {}
 
 
-Player::Player() :
-    ser::GameObject({0, 0}, {0, 0}, conf::game::Up, conf::game::Rest, 30, conf::game::Player)
+Player::Player(std::pair<uint32_t, uint32_t> ip_port) :
+    ser::GameObject({0, 0}, {0, 0}, conf::game::Up, conf::game::Rest, 30, conf::game::Player),
+    _ip(ip_port.first),
+    _port(ip_port.second)
 {}
 
 
@@ -57,9 +59,9 @@ void Player::set_direction(uint32_t new_direction)
 }
 
 
-void Player::to_packet(sf::Packet &pack) const
+void Player::compress_to_packet(sf::Packet &pack) const
 {
-    pack << _position.x << _position.y;
+    pack << _ip << _port << _position.x << _position.y;
 }
 
 

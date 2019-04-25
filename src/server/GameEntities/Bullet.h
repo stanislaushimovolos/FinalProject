@@ -13,7 +13,7 @@ class Bullet : public GameObject
 
     void set_direction(uint32_t new_direction) override;
 
-    void to_packet(sf::Packet &pack) const override;
+    void compress_to_packet(sf::Packet &pack) const override;
 
     void update() override;
 

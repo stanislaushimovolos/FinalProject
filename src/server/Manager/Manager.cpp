@@ -46,7 +46,7 @@ int Manager::add_players(const std::list<ser::Handler> &clients)
         for (auto &cli:clients)
         {
             auto id = ser::Info(cli.info());
-            _players[id] = new ser::Player;
+            _players[id] = new ser::Player(id.get_info());
             _objects.push_back(_players[id]);
         }
         return 1;
@@ -58,21 +58,20 @@ int Manager::update_environment()
 {
     for (auto &obj:_objects)
         obj->update();
-
     return 1;
 }
 
 
 sf::Packet Manager::create_current_state_packet()
 {
-    uint32_t num_of_objects = _objects.size();
+    auto num_of_objects = (uint32_t) _objects.size();
     sf::Packet packet;
     packet << num_of_objects;
 
     for (auto obj : _objects)
     {
         packet << obj->get_type();
-        obj->to_packet(packet);
+        obj->compress_to_packet(packet);
     }
     return packet;
 }

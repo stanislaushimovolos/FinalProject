@@ -20,7 +20,7 @@ int Server::connect_clients()
 {
     while (true)
     {
-        // Make the selector wait for data on any socket
+        // Make the selector wait for new connections
         if (_selector.wait())
         {
             // Test the listener
@@ -61,7 +61,7 @@ std::vector<Packet> Server::receive_packets()
     std::vector<Packet> received_data;
     received_data.reserve(_clients.size());
 
-    // Check that all clients send data
+    // Waiting for all clients to send data
     int client_counter = 0;
     while (true)
     {
@@ -111,7 +111,7 @@ int Server::start_session(Manager &manager)
         auto time = clock.getElapsedTime().asMilliseconds();
         if (time > _connection_delay)
         {
-            send_state_to_ready_sockets(current_state);
+            send_state_to_clients(current_state);
             if (_selector.wait())
             {
                 auto received_packets = receive_packets();
@@ -127,7 +127,7 @@ int Server::start_session(Manager &manager)
 }
 
 
-int Server::send_state_to_ready_sockets(sf::Packet &current_state)
+int Server::send_state_to_clients(sf::Packet &current_state)
 {
     for (auto &it:_clients)
     {

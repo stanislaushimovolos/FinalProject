@@ -8,12 +8,16 @@ namespace cli
 class Player : public GameObject
 {
  public:
+    void set_state_form_packet(sf::Packet &pack) override;
+
     void draw(sf::RenderWindow &window) override;
 
-    explicit Player(sf::Vector2f &pos);
+    explicit Player();
 
  private:
     sf::RectangleShape _texture;
+    uint32_t _ip;
+    uint32_t _port;
 };
 
 }

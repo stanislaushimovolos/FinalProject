@@ -42,7 +42,7 @@ class Server
 
     int add_new_client();
 
-    int send_state_to_ready_sockets(sf::Packet &current_state);
+    int send_state_to_clients(sf::Packet &current_state);
 };
 
 }

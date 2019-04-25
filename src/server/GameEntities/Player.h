@@ -11,9 +11,9 @@ class Player : public GameObject
 
     Player(sf::Vector2f start_position, float speed);
 
-    Player();
+    Player(std::pair<uint32_t, uint32_t> ip_port);
 
-    void to_packet(sf::Packet &pack) const override;
+    void compress_to_packet(sf::Packet &pack) const override;
 
     void set_direction(uint32_t new_direction) override;
 
@@ -21,6 +21,9 @@ class Player : public GameObject
 
     ~Player() override = default;
 
+ private:
+    uint32_t _ip;
+    uint32_t _port;
 };
 
 }

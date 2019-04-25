@@ -50,7 +50,7 @@ void Bullet::update()
 }
 
 
-void Bullet::to_packet(sf::Packet &pack) const
+void Bullet::compress_to_packet(sf::Packet &pack) const
 {
     pack << _position.x << _position.y;
 }
