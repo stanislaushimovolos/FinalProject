@@ -8,9 +8,10 @@ namespace cli
 class GameObject
 {
  public:
-    GameObject();
 
     GameObject(sf::Vector2f &&pos, uint32_t type);
+
+    GameObject();
 
     virtual void set_state_form_packet(sf::Packet &pack) = 0;
 

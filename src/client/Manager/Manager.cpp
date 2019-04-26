@@ -11,6 +11,14 @@ Manager::Manager(uint32_t x_resolution, uint32_t y_resolution, std::string &&win
     _view(sf::Vector2f(x_resolution / 2, y_resolution / 2),
           sf::Vector2f(x_resolution, y_resolution))
 {
+    _window.setView(_view);
+}
+
+
+void Manager::set_ip_port(std::pair<uint32_t, uint32_t> ip_port)
+{
+    this->ip = ip_port.first;
+    this->port = ip_port.second;
 }
 
 
@@ -59,33 +67,38 @@ sf::Packet Manager::get_current_state()
 
 int Manager::process_scene(sf::Packet &packet)
 {
-    packet >> _current_num_of_clients;
+    packet >> _current_num_of_objects;
     for (auto obj: _objects)
         delete obj;
 
     _objects.clear();
-    _objects.reserve(_current_num_of_clients);
+    _objects.reserve(_current_num_of_objects);
 
-    uint32_t obj_type;
-
-    for (int i = 0; i < _current_num_of_clients; i++)
+    uint32_t obj_type = 0;
+    for (int i = 0; i < _current_num_of_objects; i++)
     {
         packet >> obj_type;
         switch (obj_type)
         {
             case conf::game::Player:
             {
-                _objects.push_back(new Player);
+                auto new_player = new Player(packet);
+                auto player_id = new_player->get_id();
+
+                if (std::make_pair(ip, port) == player_id)
+                    _view.setCenter(new_player->get_position());
+
+                _objects.push_back(new_player);
                 break;
             }
             case conf::game::Bullet:
             {
-                _objects.push_back(new Bullet);
+                auto new_bullet = new Bullet(packet);
+                _objects.push_back(new_bullet);
                 break;
             }
-            default:throw std::runtime_error("unknown type of objects");
+            default:throw std::runtime_error("unknown type of object");
         }
-        _objects.back()->set_state_form_packet(packet);
     }
     return 0;
 }
@@ -94,6 +107,7 @@ int Manager::process_scene(sf::Packet &packet)
 void Manager::update(sf::Packet &packet)
 {
     process_scene(packet);
+    _window.setView(_view);
     draw();
 }
 
@@ -109,7 +123,6 @@ void Manager::draw()
     for (auto &obj:_objects)
         obj->draw(_window);
 
-    _window.setView(_view);
     _window.display();
     _window.clear();
 }

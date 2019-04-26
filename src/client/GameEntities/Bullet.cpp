@@ -13,8 +13,15 @@ Bullet::Bullet() :
     GameObject(sf::Vector2f(0, 0), conf::game::Bullet)
 {
     _texture.setSize(sf::Vector2f(10, 10));
-    _texture.setFillColor(sf::Color::Yellow);
+    _texture.setFillColor(sf::Color::Cyan);
     _texture.setPosition(_position);
+}
+
+
+Bullet::Bullet(sf::Packet &pack) :
+    Bullet()
+{
+    set_state_form_packet(pack);
 }
 
 

@@ -19,6 +19,13 @@ Player::Player() :
 }
 
 
+Player::Player(sf::Packet &pack) :
+    Player()
+{
+    set_state_form_packet(pack);
+}
+
+
 void Player::set_state_form_packet(sf::Packet &pack)
 {
     float x, y = 0;
@@ -30,6 +37,12 @@ void Player::set_state_form_packet(sf::Packet &pack)
 
     _port = port;
     _ip = ip;
+}
+
+
+std::pair<uint32_t, uint32_t> Player::get_id() const
+{
+    return std::make_pair(_ip, _port);
 }
 
 }

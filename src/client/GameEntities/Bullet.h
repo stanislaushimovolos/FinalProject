@@ -8,11 +8,13 @@ class Bullet : public GameObject
 {
  public:
 
+    explicit Bullet(sf::Packet &pack);
+
+    explicit Bullet();
+
     void set_state_form_packet(sf::Packet &pack) override;
 
     void draw(sf::RenderWindow &window) override;
-
-    explicit Bullet();
 
  private:
     sf::RectangleShape _texture;

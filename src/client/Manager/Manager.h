@@ -49,15 +49,17 @@ class Manager
  public:
     Manager(uint32_t x_resolution, uint32_t y_resolution, std::string &&window_name);
 
-    bool is_active();
-
-    void draw();
-
-    void activate_window();
+    void set_ip_port(std::pair<uint32_t , uint32_t > ip_port);
 
     void update(sf::Packet &packet);
 
+    void activate_window();
+
     sf::Packet get_current_state();
+
+    bool is_active();
+
+    void draw();
 
     /// LOOOOOLL!!!!!!!!!!!!
     sf::View _view;
@@ -74,7 +76,9 @@ class Manager
     bool _is_window_focused;
     bool _is_window_opened;
 
-    uint32_t _current_num_of_clients;
+    uint32_t port, ip;
+
+    uint32_t _current_num_of_objects;
     KeyboardInterface keyboard;
 
     std::vector<GameObject *> _objects;
