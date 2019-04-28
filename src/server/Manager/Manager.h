@@ -20,7 +20,7 @@ class Manager
  private:
 
     std::unordered_map<ClientId, Player *, ClientHasher, EqualClients> _players;
-    std::vector<std::pair<ClientState, ClientId >> _players_states;
+    std::vector<ClientState> _players_states;
     std::list<GameObject *> _objects;
 
  public:

@@ -46,9 +46,9 @@ sf::TcpSocket *Handler::get_socket_ptr() const
 }
 
 
-std::pair<uint32_t, uint32_t> Handler::info() const
+std::pair<uint32_t, uint32_t> Handler::get_id() const
 {
-    return _info.get_info();
+    return _info.get_id();
 }
 
 }

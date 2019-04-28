@@ -15,7 +15,6 @@ class ClientId
 
  public:
 
-
     explicit ClientId(sf::TcpSocket *sock) :
         _ip_address(sock->getRemoteAddress().toInteger()),
         _port(sock->getRemotePort())
@@ -26,7 +25,7 @@ class ClientId
         _port(ip_port.second)
     {}
 
-    std::pair<uint32_t, uint32_t> get_info() const
+    std::pair<uint32_t, uint32_t> get_id() const
     {
         return std::make_pair(_ip_address, _port);
     }
@@ -56,9 +55,9 @@ class Packet
         return _packet;
     }
 
-    std::pair<uint32_t, uint32_t> info()
+    std::pair<uint32_t, uint32_t> get_id()
     {
-        return _info.get_info();
+        return _info.get_id();
     }
 };
 
@@ -81,7 +80,7 @@ class Handler
 
     sf::TcpSocket *get_socket_ptr() const;
 
-    std::pair<uint32_t, uint32_t> info() const;
+    std::pair<uint32_t, uint32_t> get_id() const;
 };
 
 }

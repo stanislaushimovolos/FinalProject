@@ -83,7 +83,7 @@ void Server::receive_packets()
         if (_selector.isReady(*client_socket_ptr))
         {
             // The client has sent some data, we can receive it
-            Packet pkg(client.info());
+            Packet pkg(client.get_id());
 
             if (client_socket_ptr->receive(pkg.data()) == sf::Socket::Done)
                 _received_data.push_back(pkg);

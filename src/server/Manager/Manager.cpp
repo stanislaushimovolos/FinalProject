@@ -8,8 +8,8 @@ int Manager::add_players(const std::list<ser::Handler> &clients)
     _players_states.reserve(clients.size());
     for (auto &cli:clients)
     {
-        auto id = ser::ClientId(cli.info());
-        _players[id] = new ser::Player(id.get_info());
+        auto id = ser::ClientId(cli.get_id());
+        _players[id] = new ser::Player(id.get_id());
         _objects.push_back(_players[id]);
     }
     return 1;
@@ -24,9 +24,11 @@ void Manager::process_packets(std::vector<ser::Packet> &received_data)
         uint32_t direction = 0;
         uint32_t is_shooting = 0;
 
-        msg.data() >> direction >> is_shooting;
-        ClientState cli_state(direction, is_shooting);
-        _players_states.emplace_back(cli_state, msg.info());
+        auto data_ref = msg.data();
+        data_ref >> direction >> is_shooting;
+
+        ClientState current_client_state(direction, is_shooting, msg.get_id());
+        _players_states.emplace_back(current_client_state);
     }
 }
 
@@ -34,14 +36,14 @@ void Manager::process_packets(std::vector<ser::Packet> &received_data)
 int Manager::update_player_states(std::vector<ser::Packet> &received_data)
 {
     process_packets(received_data);
-    for (auto[cur_state, info]:_players_states)
+    for (auto player_state:_players_states)
     {
-        auto &player = _players[info];
-        auto cur_dir = cur_state.direction;
-        auto is_shoot = cur_state.is_shoot;
-        player->set_direction(cur_dir);
+        auto &player = _players[player_state._id];
+        auto current_player_direction = player_state.direction;
+        auto is_player_shoot = player_state.is_shoot;
 
-        if (is_shoot)
+        player->set_direction(current_player_direction);
+        if (is_player_shoot)
             _objects.push_back(new Bullet(player->get_position(), player->get_rotation()));
     }
     return 1;
