@@ -12,33 +12,22 @@ void SimpleRectangleDrawer::draw(sf::RenderWindow &window)
 SimpleRectangleDrawer::SimpleRectangleDrawer(uint32_t type, sf::Packet &pack) :
     _type(type)
 {
-    switch (type)
-    {
-        case conf::game::Player:
-        {
-            _texture.setSize(sf::Vector2f(40, 40));
-            _texture.setFillColor(sf::Color::Red);
-            break;
-        }
-        case conf::game::Bullet:
-        {
-            _texture.setSize(sf::Vector2f(4, 4));
-            _texture.setFillColor(sf::Color::Yellow);
-            break;
-        }
-        default:break;
-    }
     set_state_form_packet(pack);
 }
 
 
 void SimpleRectangleDrawer::set_state_form_packet(sf::Packet &pack)
 {
-    float x, y = 0;
-    pack >> x >> y;
+    float x = 0, y = 0, shape_x = 0, shape_y = 0;
+    uint32_t color = 0;
+
+    pack >> color >> x >> y >> shape_x >> shape_y;
+
+    _texture.setSize({shape_x, shape_y});
+    _texture.setPosition({x, y});
+    _texture.setFillColor(sf::Color(color));
 
     set_position({x, y});
-    _texture.setPosition({x, y});
 }
 
 

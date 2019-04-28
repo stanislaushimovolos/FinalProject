@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../Manager/Manager.h"
 #include "client_handler.h"
+#include "../Manager/Manager.h"
 #include "../../configuration/config.h"
 
 #include <list>

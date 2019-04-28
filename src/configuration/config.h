@@ -34,6 +34,11 @@ enum ObjectTypes
     Bullet,
 };
 
+enum Properties
+{
+    Rectangle = 6,
+};
+
 }
 
 }

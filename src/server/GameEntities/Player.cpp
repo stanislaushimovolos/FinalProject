@@ -17,7 +17,9 @@ Player::Player(std::pair<uint32_t, uint32_t> ip_port) :
     ser::GameObject({0, 0}, {0, 0}, conf::game::Up, conf::game::Rest, 2, conf::game::Player),
     _ip(ip_port.first),
     _port(ip_port.second)
-{}
+{
+    add_property(new SimpleRectangleTexture(this, sf::Color::Green, {50, 50}));
+}
 
 
 void Player::set_direction(uint32_t new_direction)
@@ -61,7 +63,12 @@ void Player::set_direction(uint32_t new_direction)
 
 void Player::compress_to_packet(sf::Packet &pack) const
 {
-    pack << _ip << _port << _position.x << _position.y;
+    pack << _ip << _port << _position.x << _position.y << (uint32_t) _properties.size();
+    for (auto &prop:_properties)
+    {
+        pack << prop->get_type();
+        prop->compress_to_packet(pack);
+    }
 }
 
 
@@ -69,6 +76,9 @@ void Player::update(int delta_t)
 {
     auto delta_r = sf::Vector2f(_velocity.x * delta_t, _velocity.y * delta_t);
     move(delta_r);
+
+    for (auto &prop:_properties)
+        prop->update(delta_t);
 }
 
 }

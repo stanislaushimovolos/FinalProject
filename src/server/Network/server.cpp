@@ -72,7 +72,6 @@ void Server::receive_packets()
             if (_selector.isReady(*client_socket_ptr))
                 client_counter++;
         }
-        std::cout << client_counter << std::endl;
         if (client_counter == _required_num_of_clients)
             break;
     }

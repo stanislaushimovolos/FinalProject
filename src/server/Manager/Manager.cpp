@@ -26,9 +26,7 @@ void Manager::process_packets(std::vector<ser::Packet> &received_data)
 
         auto data_ref = msg.data();
         data_ref >> direction >> is_shooting;
-
-        ClientState current_client_state(direction, is_shooting, msg.get_id());
-        _players_states.emplace_back(current_client_state);
+        _players_states.emplace_back(direction, is_shooting, msg.get_id());
     }
 }
 

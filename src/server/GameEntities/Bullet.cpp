@@ -7,6 +7,7 @@ Bullet::Bullet(sf::Vector2f position, uint32_t direction) :
     ser::GameObject(position, {0, 0}, direction, direction, 5, conf::game::Bullet)
 {
     set_direction(direction);
+    add_property(new SimpleRectangleTexture(this, sf::Color::Magenta, {7, 7}));
 }
 
 
@@ -48,13 +49,20 @@ void Bullet::update(int delta_t)
 {
     auto delta_r = sf::Vector2f(_velocity.x * delta_t, _velocity.y * delta_t);
     move(delta_r);
+
+    for (auto &prop:_properties)
+        prop->update(delta_t);
 }
 
 
 void Bullet::compress_to_packet(sf::Packet &pack) const
 {
-    pack << _position.x << _position.y;
+    pack << _position.x << _position.y << (uint32_t) _properties.size();
+    for (auto &prop:_properties)
+    {
+        pack << prop->get_type();
+        prop->compress_to_packet(pack);
+    }
 }
-
 
 }

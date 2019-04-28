@@ -26,6 +26,7 @@ class SimpleRectangleDrawer
 
     uint32_t _type;
     sf::Vector2f _position;
+    sf::Vector2f _shape;
     sf::RectangleShape _texture;
 
 };

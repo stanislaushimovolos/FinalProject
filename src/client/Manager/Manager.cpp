@@ -12,7 +12,7 @@ Manager::Manager(uint32_t x_resolution, uint32_t y_resolution, std::string &&win
           sf::Vector2f(x_resolution, y_resolution))
 {
     _window.setView(_view);
-    _objects.reserve(conf::game::START_NUM_OF_OBJECTS);
+    _graph_objects.reserve(conf::game::START_NUM_OF_OBJECTS);
 }
 
 
@@ -71,11 +71,14 @@ int Manager::process_scene(sf::Packet &packet)
     packet >> _current_num_of_objects;
     std::cout << _current_num_of_objects << std::endl;
 
-    _objects.clear();
-    if (_objects.capacity() < _current_num_of_objects)
-        _objects.reserve(_current_num_of_objects);
+    _graph_objects.clear();
+    if (_graph_objects.capacity() < _current_num_of_objects)
+        _graph_objects.reserve(_current_num_of_objects);
 
     uint32_t obj_type = 0;
+    uint32_t num_of_properties = 0;
+    float coord_x = 0, coord_y = 0;
+
     for (int i = 0; i < _current_num_of_objects; i++)
     {
         packet >> obj_type;
@@ -84,17 +87,32 @@ int Manager::process_scene(sf::Packet &packet)
             case conf::game::Player:
             {
                 uint32_t ip, port = 0;
-                packet >> ip >> port;
 
-                _objects.emplace_back(obj_type, packet);
+                packet >> ip >> port >> coord_x >> coord_y;
+                packet >> num_of_properties;
+
                 if (ip == _ip && port == _port)
-                    _view.setCenter(_objects.back().get_position());
+                    _view.setCenter(coord_x, coord_y);
 
+                for (int j = 0; j < num_of_properties; j++)
+                {
+                    uint32_t property_type = 0;
+                    packet >> property_type;
+                    _graph_objects.emplace_back(property_type, packet);
+                }
                 break;
             }
             case conf::game::Bullet:
             {
-                _objects.emplace_back(obj_type, packet);
+                packet >> coord_x >> coord_y;
+                packet >> num_of_properties;
+
+                for (int j = 0; j < num_of_properties; j++)
+                {
+                    uint32_t property_type = 0;
+                    packet >> property_type;
+                    _graph_objects.emplace_back(property_type, packet);
+                }
                 break;
             }
             default:throw std::runtime_error("unknown type of object");
@@ -115,7 +133,7 @@ void Manager::update(sf::Packet &packet)
 void Manager::draw()
 {
     sf::Vector2f view_coord = _view.getCenter();
-    for (auto &obj:_objects)
+    for (auto &obj:_graph_objects)
     {
         auto obj_pos = obj.get_position();
         if (abs(obj_pos.x - view_coord.x) < _resolution.x

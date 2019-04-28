@@ -2,10 +2,13 @@
 
 #include <SFML/System.hpp>
 #include <SFML/Network/Packet.hpp>
+#include "Property.h"
 #include "../../configuration/config.h"
 
 namespace ser
 {
+
+class Property;
 
 // abstract class for all game entities
 class GameObject
@@ -25,9 +28,11 @@ class GameObject
 
     virtual void set_direction(uint32_t new_direction);
 
+    void set_velocity(sf::Vector2f &new_velocity);
+
     virtual void update(int delta_t) = 0;
 
-    void set_velocity(sf::Vector2f &new_velocity);
+    void add_property(Property *prop);
 
     void move(sf::Vector2f &shift);
 
@@ -43,6 +48,8 @@ class GameObject
 
 
  protected:
+    std::vector<Property *> _properties;
+
     sf::Vector2f _position;
     sf::Vector2f _velocity;
     float _speed;

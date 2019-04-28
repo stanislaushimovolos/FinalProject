@@ -78,7 +78,7 @@ class Manager
     uint32_t _current_num_of_objects;
     KeyboardInterface keyboard;
 
-    std::vector<SimpleRectangleDrawer> _objects;
+    std::vector<SimpleRectangleDrawer> _graph_objects;
 
     int process_scene(sf::Packet &packet);
 };
