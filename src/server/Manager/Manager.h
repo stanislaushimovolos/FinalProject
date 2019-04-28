@@ -18,13 +18,14 @@ class Manager
 {
 
  private:
-    std::unordered_map<Info, Player *, ClientHasher, EqualClients> _players;
+
+    std::unordered_map<ClientId, Player *, ClientHasher, EqualClients> _players;
+    std::vector<std::pair<ClientState, ClientId >> _players_states;
     std::list<GameObject *> _objects;
 
-
  public:
-    std::vector<std::pair<ClientState,
-                          Info >> process_packets(std::vector<Packet> &received_data) const;
+
+    void process_packets(std::vector<Packet> &received_data);
 
     sf::Packet create_current_state_packet();
 

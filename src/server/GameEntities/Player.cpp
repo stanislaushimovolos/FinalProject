@@ -14,7 +14,7 @@ Player::Player(sf::Vector2f start_position, float speed) :
 
 
 Player::Player(std::pair<uint32_t, uint32_t> ip_port) :
-    ser::GameObject({0, 0}, {0, 0}, conf::game::Up, conf::game::Rest, 30, conf::game::Player),
+    ser::GameObject({0, 0}, {0, 0}, conf::game::Up, conf::game::Rest, 60, conf::game::Player),
     _ip(ip_port.first),
     _port(ip_port.second)
 {}

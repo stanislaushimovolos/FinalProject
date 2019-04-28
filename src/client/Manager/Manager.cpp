@@ -15,10 +15,10 @@ Manager::Manager(uint32_t x_resolution, uint32_t y_resolution, std::string &&win
 }
 
 
-void Manager::set_ip_port(std::pair<uint32_t, uint32_t> ip_port)
+void Manager::set_remote_ip_port(std::pair<uint32_t, uint32_t> ip_port)
 {
-    this->ip = ip_port.first;
-    this->port = ip_port.second;
+    this->_ip = ip_port.first;
+    this->_port = ip_port.second;
 }
 
 
@@ -83,9 +83,9 @@ int Manager::process_scene(sf::Packet &packet)
             case conf::game::Player:
             {
                 auto new_player = new Player(packet);
-                auto player_id = new_player->get_id();
+                auto[ip, port]= new_player->get_id();
 
-                if (std::make_pair(ip, port) == player_id)
+                if (ip == _ip && port == _port)
                     _view.setCenter(new_player->get_position());
 
                 _objects.push_back(new_player);
@@ -112,12 +112,6 @@ void Manager::update(sf::Packet &packet)
 }
 
 
-void Manager::activate_window()
-{
-    _window.create(sf::VideoMode(_resolution.x, _resolution.y), _window_name);
-}
-
-
 void Manager::draw()
 {
     for (auto &obj:_objects)
@@ -131,6 +125,12 @@ void Manager::draw()
 bool Manager::is_active()
 {
     return _is_window_opened;
+}
+
+
+void Manager::activate_window()
+{
+    _window.create(sf::VideoMode(_resolution.x, _resolution.y), _window_name);
 }
 
 

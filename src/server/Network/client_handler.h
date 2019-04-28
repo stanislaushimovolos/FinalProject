@@ -6,19 +6,22 @@
 namespace ser
 {
 
-class Info
+class ClientId
 {
  private:
+
     uint32_t _ip_address;;
     uint32_t _port;
+
  public:
 
-    explicit Info(sf::TcpSocket *sock) :
+
+    explicit ClientId(sf::TcpSocket *sock) :
         _ip_address(sock->getRemoteAddress().toInteger()),
         _port(sock->getRemotePort())
     {}
 
-    explicit Info(const std::pair<uint32_t, uint32_t> &ip_port) :
+    explicit ClientId(const std::pair<uint32_t, uint32_t> &ip_port) :
         _ip_address(ip_port.first),
         _port(ip_port.second)
     {}
@@ -33,11 +36,13 @@ class Info
 class Packet
 {
  private:
+
     sf::Packet _packet;
-    Info _info;
+    ClientId _info;
+
  public:
 
-    explicit Packet(Info &info) :
+    explicit Packet(ClientId &info) :
         _packet(),
         _info(info)
     {}
@@ -61,7 +66,7 @@ class Handler
 {
  private:
     sf::TcpSocket *_socket;
-    Info _info;
+    ClientId _info;
  public:
 
     explicit Handler(sf::TcpSocket *sock);

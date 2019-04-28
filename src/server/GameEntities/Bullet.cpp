@@ -4,7 +4,7 @@ namespace ser
 {
 
 Bullet::Bullet(sf::Vector2f position, uint32_t direction) :
-    ser::GameObject(position, {0, 0}, direction, direction, 20, conf::game::Bullet)
+    ser::GameObject(position, {0, 0}, direction, direction, 90, conf::game::Bullet)
 {
     set_direction(direction);
 }

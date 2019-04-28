@@ -38,7 +38,9 @@ class Server
     uint32_t _current_num_of_clients;
     uint32_t _connection_delay;
 
-    std::vector<Packet> receive_packets();
+    std::vector<Packet> _received_data;
+
+    void receive_packets();
 
     int add_new_client();
 

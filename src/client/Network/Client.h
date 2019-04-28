@@ -22,7 +22,6 @@ class Client
 
 
  private:
-
     sf::TcpSocket _socket;
     sf::IpAddress _remote_ip;
     uint32_t _remote_port;

@@ -47,7 +47,7 @@ sf::Packet Client::receive_packet()
 int Client::start_session(Manager &manager)
 {
     // Initialize connection
-    manager.set_ip_port(get_local_ip_port());
+    manager.set_remote_ip_port(get_local_ip_port());
     auto received_pack = receive_packet();
     auto send_pack = manager.get_current_state();
 

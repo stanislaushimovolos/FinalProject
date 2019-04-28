@@ -49,7 +49,7 @@ class Manager
  public:
     Manager(uint32_t x_resolution, uint32_t y_resolution, std::string &&window_name);
 
-    void set_ip_port(std::pair<uint32_t , uint32_t > ip_port);
+    void set_remote_ip_port(std::pair<uint32_t, uint32_t> ip_port);
 
     void update(sf::Packet &packet);
 
@@ -61,10 +61,9 @@ class Manager
 
     void draw();
 
-    /// LOOOOOLL!!!!!!!!!!!!
-    sf::View _view;
-
     ~Manager();
+
+    sf::View _view;
 
  private:
 
@@ -76,7 +75,7 @@ class Manager
     bool _is_window_focused;
     bool _is_window_opened;
 
-    uint32_t port, ip;
+    uint32_t _port, _ip;
 
     uint32_t _current_num_of_objects;
     KeyboardInterface keyboard;

@@ -8,7 +8,7 @@ namespace ser
 class EqualClients
 {
  public:
-    bool operator()(ser::Info const &first, ser::Info const &second) const
+    bool operator()(ser::ClientId const &first, ser::ClientId const &second) const
     {
         return first.get_info() == second.get_info();
     }
@@ -17,7 +17,7 @@ class EqualClients
 class ClientHasher
 {
  public:
-    size_t operator()(ser::Info const &cli) const
+    size_t operator()(ser::ClientId const &cli) const
     {
         return cli.get_info().second;
     }
@@ -29,12 +29,10 @@ class ClientState
     uint32_t is_shoot;
     uint32_t direction;
 
-    ClientState(uint32_t dir, uint32_t is_shoott) :
+    ClientState(uint32_t dir, uint32_t is_shoot) :
         direction(dir),
-        is_shoot(is_shoott)
-    {
-
-    }
+        is_shoot(is_shoot)
+    {}
 };
 
 }

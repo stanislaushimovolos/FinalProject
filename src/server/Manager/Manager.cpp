@@ -3,12 +3,22 @@
 namespace ser
 {
 
-std::vector<std::pair<ClientState, Info >> Manager::
-process_packets(std::vector<ser::Packet> &received_data) const
+int Manager::add_players(const std::list<ser::Handler> &clients)
 {
-    std::vector<std::pair<ClientState, Info >> processed_messages;
-    processed_messages.reserve(_players.size());
+    _players_states.reserve(clients.size());
+    for (auto &cli:clients)
+    {
+        auto id = ser::ClientId(cli.info());
+        _players[id] = new ser::Player(id.get_info());
+        _objects.push_back(_players[id]);
+    }
+    return 1;
+}
 
+
+void Manager::process_packets(std::vector<ser::Packet> &received_data)
+{
+    _players_states.clear();
     for (auto &msg: received_data)
     {
         uint32_t direction = 0;
@@ -16,17 +26,15 @@ process_packets(std::vector<ser::Packet> &received_data) const
 
         msg.data() >> direction >> is_shooting;
         ClientState cli_state(direction, is_shooting);
-        processed_messages.emplace_back(cli_state, msg.info());
+        _players_states.emplace_back(cli_state, msg.info());
     }
-    return processed_messages;
 }
 
 
 int Manager::update_player_states(std::vector<ser::Packet> &received_data)
 {
-    auto players_states = process_packets(received_data);
-
-    for (auto[cur_state, info]:players_states)
+    process_packets(received_data);
+    for (auto[cur_state, info]:_players_states)
     {
         auto &player = _players[info];
         auto cur_dir = cur_state.direction;
@@ -37,20 +45,6 @@ int Manager::update_player_states(std::vector<ser::Packet> &received_data)
             _objects.push_back(new Bullet(player->get_position(), player->get_rotation()));
     }
     return 1;
-}
-
-
-int Manager::add_players(const std::list<ser::Handler> &clients)
-{
-    {
-        for (auto &cli:clients)
-        {
-            auto id = ser::Info(cli.info());
-            _players[id] = new ser::Player(id.get_info());
-            _objects.push_back(_players[id]);
-        }
-        return 1;
-    }
 }
 
 

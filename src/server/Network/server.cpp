@@ -13,6 +13,8 @@ Server::Server(uint16_t port, uint32_t max_num_of_players, uint32_t connection_d
     std::cout << "Server ip is: " << _ip_address << std::endl;
     _listener.listen(_port);
     _selector.add(_listener);
+
+    _received_data.reserve(max_num_of_players);
 }
 
 
@@ -56,10 +58,9 @@ int Server::add_new_client()
 }
 
 
-std::vector<Packet> Server::receive_packets()
+void Server::receive_packets()
 {
-    std::vector<Packet> received_data;
-    received_data.reserve(_clients.size());
+    _received_data.clear();
 
     // Waiting for all clients to send data
     int client_counter = 0;
@@ -85,7 +86,7 @@ std::vector<Packet> Server::receive_packets()
             Packet pkg(client.info());
 
             if (client_socket_ptr->receive(pkg.data()) == sf::Socket::Done)
-                received_data.push_back(pkg);
+                _received_data.push_back(pkg);
             else
             {
                 _selector.remove(*client_socket_ptr);
@@ -96,7 +97,6 @@ std::vector<Packet> Server::receive_packets()
             }
         }
     }
-    return received_data;
 }
 
 
@@ -114,11 +114,9 @@ int Server::start_session(Manager &manager)
             send_state_to_clients(current_state);
             if (_selector.wait())
             {
-                auto received_packets = receive_packets();
-
-                manager.update_player_states(received_packets);
+                receive_packets();
+                manager.update_player_states(_received_data);
                 manager.update_environment();
-
                 current_state = manager.create_current_state_packet();
             }
             clock.restart();
