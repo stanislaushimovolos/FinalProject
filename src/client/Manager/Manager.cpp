@@ -9,10 +9,13 @@ Manager::Manager(uint32_t x_resolution, uint32_t y_resolution, std::string &&win
     _is_window_opened(true),
     _is_window_focused(true),
     _view(sf::Vector2f(x_resolution / 2, y_resolution / 2),
-          sf::Vector2f(x_resolution, y_resolution))
+          sf::Vector2f(x_resolution, y_resolution)),
+
+    _graph_objects(conf::game::START_NUM_OF_OBJECTS),
+    _textures(50)
 {
-    _window.setView(_view);
-    _graph_objects.reserve(conf::game::START_NUM_OF_OBJECTS);
+    _window.
+        setView(_view);
 }
 
 
@@ -25,7 +28,10 @@ void Manager::set_remote_ip_port(std::pair<uint32_t, uint32_t> ip_port)
 
 void Manager::load_textures()
 {
-    dude_texture.loadFromFile("../client/Textures/Dude.png");
+    _textures[0].loadFromFile("../client/Textures/Dude.png");
+    _textures[1].loadFromFile("../client/Textures/FireBall.png");
+    for (auto &obj: _graph_objects)
+        obj._textures = &_textures;
 }
 
 
@@ -75,10 +81,8 @@ sf::Packet Manager::get_current_state()
 int Manager::process_scene(sf::Packet &packet)
 {
     packet >> _current_num_of_objects;
-
-    _graph_objects.clear();
     if (_graph_objects.capacity() < _current_num_of_objects)
-        _graph_objects.reserve(_current_num_of_objects);
+        _graph_objects = std::vector<SpriteDrawer>(2 * _current_num_of_objects);
 
     uint32_t obj_type = 0;
     uint32_t num_of_properties = 0;
@@ -93,39 +97,25 @@ int Manager::process_scene(sf::Packet &packet)
             {
                 uint32_t ip, port = 0;
                 packet >> ip >> port >> coord_x >> coord_y;
-                packet >> num_of_properties;
 
                 if (ip == _ip && port == _port)
                     _view.setCenter(coord_x, coord_y);
-
-                for (int j = 0; j < num_of_properties; j++)
-                {
-                    uint32_t property_type = 0;
-                    packet >> property_type;
-                    _graph_objects.emplace_back(dude_texture,
-                                                conf::game::dude_width,
-                                                conf::game::dude_height,
-                                                packet);
-                }
                 break;
             }
             case conf::game::Bullet:
             {
                 packet >> coord_x >> coord_y;
-                packet >> num_of_properties;
-
-                for (int j = 0; j < num_of_properties; j++)
-                {
-                    uint32_t property_type = 0;
-                    packet >> property_type;
-                    _graph_objects.emplace_back(dude_texture,
-                                                conf::game::dude_width,
-                                                conf::game::dude_height,
-                                                packet);
-                }
                 break;
             }
             default:throw std::runtime_error("unknown type of object");
+        }
+
+        packet >> num_of_properties;
+        for (int j = 0; j < num_of_properties; j++)
+        {
+            uint32_t property_type = 0;
+            packet >> property_type;
+            _graph_objects[i].set_state_form_packet(packet);
         }
     }
     return 0;
@@ -143,18 +133,18 @@ void Manager::update(sf::Packet &packet)
 void Manager::draw()
 {
     sf::Vector2f view_coord = _view.getCenter();
-    for (auto &obj:_graph_objects)
+    for (int i = 0; i < _current_num_of_objects; i++)
     {
-        auto obj_pos = obj.get_position();
+        auto obj_pos = _graph_objects[i].get_position();
         if (abs(obj_pos.x - view_coord.x) < _resolution.x
             && abs(obj_pos.y - view_coord.y) < _resolution.y)
         {
-            obj.draw(_window);
+            _graph_objects[i].draw(_window);
         }
     }
 
     _window.display();
-    _window.clear(sf::Color::White);
+    _window.clear(sf::Color::Yellow);
 }
 
 

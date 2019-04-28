@@ -64,15 +64,11 @@ MatrixSprite::MatrixSprite(ser::GameObject *master,
 
 void MatrixSprite::update(int delta_t)
 {
-    auto master_position = _master->get_position();
-    auto master_rotation = _master->get_rotation();
-    auto master_direction = _master->get_direction();
+    _position = _master->get_position();
+    _rotation = _master->get_rotation();
+    _direction = _master->get_direction();
 
-    _position = master_position;
-    _rotation = master_rotation;
-    _direction = master_direction;
-
-    if (master_direction != conf::game::Rest)
+    if (_direction != conf::game::Rest)
         _animation_timer += _animation_speed * delta_t;
     _current_frame_number = ((uint32_t) _animation_timer) % _number_of_frames;
 }
@@ -80,7 +76,13 @@ void MatrixSprite::update(int delta_t)
 
 void MatrixSprite::compress_to_packet(sf::Packet &pack) const
 {
-    pack << _position.x << _position.y << _texture_id << _direction << _rotation
+    pack << _position.x - _width / 2
+         << _position.y - _height / 2
+         << _texture_id
+         << _direction
+         << _rotation
+         << _width
+         << _height
          << _current_frame_number;
 }
 

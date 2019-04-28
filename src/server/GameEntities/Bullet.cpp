@@ -4,10 +4,15 @@ namespace ser
 {
 
 Bullet::Bullet(sf::Vector2f position, uint32_t direction) :
-    ser::GameObject(position, {0, 0}, direction, direction, 5, conf::game::Bullet)
+    ser::GameObject(position, {0, 0}, direction, direction, 1, conf::game::Bullet)
 {
     set_direction(direction);
-    add_property(new SimpleRectangleTexture(this, sf::Color::Magenta, {7, 7}));
+    add_property(new MatrixSprite(this,
+                                  conf::game::BulletTexture,
+                                  conf::game::bullet_animation_speed,
+                                  conf::game::bullet_width,
+                                  conf::game::bullet_height,
+                                  conf::game::bullet_frame_amount));
 }
 
 

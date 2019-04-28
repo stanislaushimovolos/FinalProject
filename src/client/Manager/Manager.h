@@ -2,7 +2,6 @@
 
 #include <SFML/Graphics.hpp>
 #include "../../configuration/config.h"
-#include "../Render/SimpleRectangleDrawer.h"
 #include "../Render/SpriteDrawer.h"
 
 namespace cli
@@ -81,11 +80,11 @@ class Manager
     uint32_t _current_num_of_objects;
     KeyboardInterface keyboard;
 
+    std::vector<sf::Texture> _textures;
+
     std::vector<SpriteDrawer> _graph_objects;
 
     int process_scene(sf::Packet &packet);
-
-    sf::Texture dude_texture;
 };
 
 }

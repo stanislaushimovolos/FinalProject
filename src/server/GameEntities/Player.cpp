@@ -19,7 +19,7 @@ Player::Player(std::pair<uint32_t, uint32_t> ip_port) :
     _port(ip_port.second)
 {
     add_property(new MatrixSprite(this,
-                                  conf::game::Dude,
+                                  conf::game::DudeTexture,
                                   conf::game::dude_animation_speed,
                                   conf::game::dude_width,
                                   conf::game::dude_height,
