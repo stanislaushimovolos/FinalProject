@@ -14,7 +14,7 @@ Player::Player(sf::Vector2f start_position, float speed) :
 
 
 Player::Player(std::pair<uint32_t, uint32_t> ip_port) :
-    ser::GameObject({0, 0}, {0, 0}, conf::game::Up, conf::game::Rest, 60, conf::game::Player),
+    ser::GameObject({0, 0}, {0, 0}, conf::game::Up, conf::game::Rest, 2, conf::game::Player),
     _ip(ip_port.first),
     _port(ip_port.second)
 {}
@@ -65,9 +65,10 @@ void Player::compress_to_packet(sf::Packet &pack) const
 }
 
 
-void Player::update()
+void Player::update(int delta_t)
 {
-    move(_velocity);
+    auto delta_r = sf::Vector2f(_velocity.x * delta_t, _velocity.y * delta_t);
+    move(delta_r);
 }
 
 }

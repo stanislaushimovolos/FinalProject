@@ -3,8 +3,6 @@
 #include <SFML/Graphics.hpp>
 #include "../../configuration/config.h"
 #include "../Engine/GameObject.h"
-#include "../GameEntities/Player.h"
-#include "../GameEntities/Bullet.h"
 
 namespace cli
 {
@@ -61,7 +59,7 @@ class Manager
 
     void draw();
 
-    ~Manager();
+    ~Manager() = default;
 
     sf::View _view;
 
@@ -80,7 +78,7 @@ class Manager
     uint32_t _current_num_of_objects;
     KeyboardInterface keyboard;
 
-    std::vector<GameObject *> _objects;
+    std::vector<TextureDrawer> _objects;
 
     int process_scene(sf::Packet &packet);
 };

@@ -33,7 +33,7 @@ class Manager
 
     int add_players(const std::list<ser::Handler> &clients);
 
-    int update_environment();
+    int update_environment(sf::Time &&delta_t);
 
     Manager() = default;
 

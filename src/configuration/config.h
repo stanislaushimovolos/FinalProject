@@ -15,6 +15,9 @@ static const uint16_t DEFAULT_PORT = 8080;
 
 namespace game
 {
+
+static const uint64_t START_NUM_OF_OBJECTS = 1000000;
+
 enum Directions
 {
     Rest,

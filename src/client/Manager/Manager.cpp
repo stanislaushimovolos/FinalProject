@@ -12,6 +12,7 @@ Manager::Manager(uint32_t x_resolution, uint32_t y_resolution, std::string &&win
           sf::Vector2f(x_resolution, y_resolution))
 {
     _window.setView(_view);
+    _objects.reserve(conf::game::START_NUM_OF_OBJECTS);
 }
 
 
@@ -68,11 +69,10 @@ sf::Packet Manager::get_current_state()
 int Manager::process_scene(sf::Packet &packet)
 {
     packet >> _current_num_of_objects;
-    for (auto obj: _objects)
-        delete obj;
 
     _objects.clear();
-    _objects.reserve(_current_num_of_objects);
+    if (_objects.size() < _current_num_of_objects)
+        _objects.reserve(_current_num_of_objects);
 
     uint32_t obj_type = 0;
     for (int i = 0; i < _current_num_of_objects; i++)
@@ -82,19 +82,20 @@ int Manager::process_scene(sf::Packet &packet)
         {
             case conf::game::Player:
             {
-                auto new_player = new Player(packet);
-                auto[ip, port]= new_player->get_id();
+                uint32_t ip, port = 0;
+                packet >> ip >> port;
+
+                TextureDrawer sadad(obj_type, packet);
+                _objects.emplace_back(obj_type, packet);
 
                 if (ip == _ip && port == _port)
-                    _view.setCenter(new_player->get_position());
+                    _view.setCenter(_objects.back().get_position());
 
-                _objects.push_back(new_player);
                 break;
             }
             case conf::game::Bullet:
             {
-                auto new_bullet = new Bullet(packet);
-                _objects.push_back(new_bullet);
+                _objects.emplace_back(obj_type, packet);
                 break;
             }
             default:throw std::runtime_error("unknown type of object");
@@ -115,7 +116,7 @@ void Manager::update(sf::Packet &packet)
 void Manager::draw()
 {
     for (auto &obj:_objects)
-        obj->draw(_window);
+        obj.draw(_window);
 
     _window.display();
     _window.clear();
@@ -131,13 +132,6 @@ bool Manager::is_active()
 void Manager::activate_window()
 {
     _window.create(sf::VideoMode(_resolution.x, _resolution.y), _window_name);
-}
-
-
-Manager::~Manager()
-{
-    for (auto obj:_objects)
-        delete obj;
 }
 
 }

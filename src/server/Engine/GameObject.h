@@ -25,9 +25,9 @@ class GameObject
 
     virtual void set_direction(uint32_t new_direction);
 
-    void set_velocity(sf::Vector2f &new_velocity);
+    virtual void update(int delta_t) = 0;
 
-    virtual void update() = 0;
+    void set_velocity(sf::Vector2f &new_velocity);
 
     void move(sf::Vector2f &shift);
 

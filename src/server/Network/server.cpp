@@ -72,6 +72,7 @@ void Server::receive_packets()
             if (_selector.isReady(*client_socket_ptr))
                 client_counter++;
         }
+        std::cout << client_counter << std::endl;
         if (client_counter == _required_num_of_clients)
             break;
     }
@@ -102,24 +103,24 @@ void Server::receive_packets()
 
 int Server::start_session(Manager &manager)
 {
-    sf::Clock clock;
-    sf::Packet current_state;
     manager.add_players(_clients);
 
+    sf::Packet current_state;
+    sf::Clock connection_timer, env_update_clock;
     while (true)
     {
-        auto time = clock.getElapsedTime().asMilliseconds();
-        if (time > _connection_delay)
+        auto time_after_last_connection = connection_timer.getElapsedTime().asMilliseconds();
+        if (time_after_last_connection > _connection_delay)
         {
+            manager.update_environment(env_update_clock.restart());
             send_state_to_clients(current_state);
             if (_selector.wait())
             {
                 receive_packets();
                 manager.update_player_states(_received_data);
-                manager.update_environment();
                 current_state = manager.create_current_state_packet();
             }
-            clock.restart();
+            connection_timer.restart();
         }
     }
 }

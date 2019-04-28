@@ -1,33 +1,31 @@
-#pragma once
 
 #include <SFML/Graphics.hpp>
 #include "../../configuration/config.h"
 
 namespace cli
 {
-class GameObject
+
+class TextureDrawer
 {
  public:
 
-    GameObject(sf::Vector2f &&pos, uint32_t type);
+    TextureDrawer(uint32_t type, sf::Packet &pack);
 
-    GameObject();
+    void set_state_form_packet(sf::Packet &pack);
 
-    virtual void set_state_form_packet(sf::Packet &pack) = 0;
-
-    virtual void draw(sf::RenderWindow &window) = 0;
+    void draw(sf::RenderWindow &window);
 
     void set_position(sf::Vector2f &pos);
 
     void set_position(sf::Vector2f &&pos);
 
-    virtual ~GameObject() = default;
-
     sf::Vector2f get_position() const;
 
- protected:
+ private:
+
     uint32_t _type;
     sf::Vector2f _position;
+    sf::RectangleShape _texture;
 
 };
 

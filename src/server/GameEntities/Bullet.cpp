@@ -4,7 +4,7 @@ namespace ser
 {
 
 Bullet::Bullet(sf::Vector2f position, uint32_t direction) :
-    ser::GameObject(position, {0, 0}, direction, direction, 90, conf::game::Bullet)
+    ser::GameObject(position, {0, 0}, direction, direction, 5, conf::game::Bullet)
 {
     set_direction(direction);
 }
@@ -44,9 +44,10 @@ void Bullet::set_direction(uint32_t new_direction)
 }
 
 
-void Bullet::update()
+void Bullet::update(int delta_t)
 {
-    move(_velocity);
+    auto delta_r = sf::Vector2f(_velocity.x * delta_t, _velocity.y * delta_t);
+    move(delta_r);
 }
 
 

@@ -50,10 +50,10 @@ int Manager::update_player_states(std::vector<ser::Packet> &received_data)
 }
 
 
-int Manager::update_environment()
+int Manager::update_environment(sf::Time &&delta_t)
 {
     for (auto &obj:_objects)
-        obj->update();
+        obj->update(delta_t.asMilliseconds());
     return 1;
 }
 

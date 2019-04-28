@@ -15,7 +15,7 @@ class Bullet : public GameObject
 
     void compress_to_packet(sf::Packet &pack) const override;
 
-    void update() override;
+    void update(int delta_t) override;
 
     ~Bullet() override = default;
 };
