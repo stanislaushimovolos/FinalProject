@@ -69,9 +69,10 @@ sf::Packet Manager::get_current_state()
 int Manager::process_scene(sf::Packet &packet)
 {
     packet >> _current_num_of_objects;
+    std::cout << _current_num_of_objects << std::endl;
 
     _objects.clear();
-    if (_objects.size() < _current_num_of_objects)
+    if (_objects.capacity() < _current_num_of_objects)
         _objects.reserve(_current_num_of_objects);
 
     uint32_t obj_type = 0;
@@ -85,9 +86,7 @@ int Manager::process_scene(sf::Packet &packet)
                 uint32_t ip, port = 0;
                 packet >> ip >> port;
 
-                TextureDrawer sadad(obj_type, packet);
                 _objects.emplace_back(obj_type, packet);
-
                 if (ip == _ip && port == _port)
                     _view.setCenter(_objects.back().get_position());
 
@@ -115,8 +114,16 @@ void Manager::update(sf::Packet &packet)
 
 void Manager::draw()
 {
+    sf::Vector2f view_coord = _view.getCenter();
     for (auto &obj:_objects)
-        obj.draw(_window);
+    {
+        auto obj_pos = obj.get_position();
+        if (abs(obj_pos.x - view_coord.x) < _resolution.x
+            && abs(obj_pos.y - view_coord.y) < _resolution.y)
+        {
+            obj.draw(_window);
+        }
+    }
 
     _window.display();
     _window.clear();

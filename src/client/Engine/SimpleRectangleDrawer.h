@@ -1,3 +1,4 @@
+#pragma once
 
 #include <SFML/Graphics.hpp>
 #include "../../configuration/config.h"
@@ -5,11 +6,11 @@
 namespace cli
 {
 
-class TextureDrawer
+class SimpleRectangleDrawer
 {
  public:
 
-    TextureDrawer(uint32_t type, sf::Packet &pack);
+    SimpleRectangleDrawer(uint32_t type, sf::Packet &pack);
 
     void set_state_form_packet(sf::Packet &pack);
 

@@ -2,7 +2,7 @@
 
 #include <SFML/Graphics.hpp>
 #include "../../configuration/config.h"
-#include "../Engine/GameObject.h"
+#include "../Engine/SimpleRectangleDrawer.h"
 
 namespace cli
 {
@@ -78,7 +78,7 @@ class Manager
     uint32_t _current_num_of_objects;
     KeyboardInterface keyboard;
 
-    std::vector<TextureDrawer> _objects;
+    std::vector<SimpleRectangleDrawer> _objects;
 
     int process_scene(sf::Packet &packet);
 };
