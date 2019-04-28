@@ -52,7 +52,7 @@ int Client::start_session(Manager &manager)
     auto send_pack = manager.get_current_state();
 
     send_packet(send_pack);
-    manager.activate_window();
+    manager.activate();
 
     while (manager.is_active())
     {

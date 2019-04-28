@@ -45,4 +45,34 @@ class SimpleRectangleTexture : public Property
     sf::Vector2f _shape;
 };
 
+class MatrixSprite : public Property
+{
+ public:
+
+    MatrixSprite(GameObject *master,
+                 uint32_t texture_id,
+                 float animation_speed,
+                 uint32_t width,
+                 uint32_t height,
+                 uint32_t frame_amount);
+
+    void compress_to_packet(sf::Packet &pack) const override;
+
+    void update(int delta_t) override;
+
+ private:
+
+    float _animation_speed;
+    float _animation_timer;
+
+    uint32_t _width;
+    uint32_t _height;
+
+    uint32_t _current_frame_number;
+    uint32_t _number_of_frames;
+    uint32_t _texture_id;
+    uint32_t _rotation;
+    uint32_t _direction;
+};
+
 }

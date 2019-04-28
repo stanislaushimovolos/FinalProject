@@ -42,4 +42,47 @@ void SimpleRectangleTexture::compress_to_packet(sf::Packet &pack) const
     pack << _color << _position.x << _position.y << _shape.x << _shape.y;
 }
 
+
+MatrixSprite::MatrixSprite(ser::GameObject *master,
+                           uint32_t texture_id,
+                           float animation_speed,
+                           uint32_t width,
+                           uint32_t height,
+                           uint32_t frame_amount) :
+
+    Property(master, conf::game::MatrixSprite),
+    _width(width),
+    _height(height),
+    _number_of_frames(frame_amount),
+    _animation_speed(animation_speed),
+    _texture_id(texture_id),
+    _current_frame_number(0),
+    _animation_timer(0),
+    _rotation(conf::game::Rest)
+{}
+
+
+void MatrixSprite::update(int delta_t)
+{
+    auto master_position = _master->get_position();
+    auto master_rotation = _master->get_rotation();
+    auto master_direction = _master->get_direction();
+
+    _position = master_position;
+    _rotation = master_rotation;
+    _direction = master_direction;
+
+    if (master_direction != conf::game::Rest)
+        _animation_timer += _animation_speed * delta_t;
+    _current_frame_number = ((uint32_t) _animation_timer) % _number_of_frames;
+}
+
+
+void MatrixSprite::compress_to_packet(sf::Packet &pack) const
+{
+    pack << _position.x << _position.y << _texture_id << _direction << _rotation
+         << _current_frame_number;
+}
+
+
 }

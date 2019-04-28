@@ -23,6 +23,12 @@ void Manager::set_remote_ip_port(std::pair<uint32_t, uint32_t> ip_port)
 }
 
 
+void Manager::load_textures()
+{
+    dude_texture.loadFromFile("../client/Textures/Dude.png");
+}
+
+
 sf::Packet Manager::get_current_state()
 {
     sf::Event event;
@@ -69,7 +75,6 @@ sf::Packet Manager::get_current_state()
 int Manager::process_scene(sf::Packet &packet)
 {
     packet >> _current_num_of_objects;
-    std::cout << _current_num_of_objects << std::endl;
 
     _graph_objects.clear();
     if (_graph_objects.capacity() < _current_num_of_objects)
@@ -87,7 +92,6 @@ int Manager::process_scene(sf::Packet &packet)
             case conf::game::Player:
             {
                 uint32_t ip, port = 0;
-
                 packet >> ip >> port >> coord_x >> coord_y;
                 packet >> num_of_properties;
 
@@ -98,7 +102,10 @@ int Manager::process_scene(sf::Packet &packet)
                 {
                     uint32_t property_type = 0;
                     packet >> property_type;
-                    _graph_objects.emplace_back(property_type, packet);
+                    _graph_objects.emplace_back(dude_texture,
+                                                conf::game::dude_width,
+                                                conf::game::dude_height,
+                                                packet);
                 }
                 break;
             }
@@ -111,7 +118,10 @@ int Manager::process_scene(sf::Packet &packet)
                 {
                     uint32_t property_type = 0;
                     packet >> property_type;
-                    _graph_objects.emplace_back(property_type, packet);
+                    _graph_objects.emplace_back(dude_texture,
+                                                conf::game::dude_width,
+                                                conf::game::dude_height,
+                                                packet);
                 }
                 break;
             }
@@ -144,19 +154,20 @@ void Manager::draw()
     }
 
     _window.display();
-    _window.clear();
+    _window.clear(sf::Color::White);
+}
+
+
+void Manager::activate()
+{
+    _window.create(sf::VideoMode(_resolution.x, _resolution.y), _window_name);
+    load_textures();
 }
 
 
 bool Manager::is_active()
 {
     return _is_window_opened;
-}
-
-
-void Manager::activate_window()
-{
-    _window.create(sf::VideoMode(_resolution.x, _resolution.y), _window_name);
 }
 
 }

@@ -14,11 +14,16 @@ Player::Player(sf::Vector2f start_position, float speed) :
 
 
 Player::Player(std::pair<uint32_t, uint32_t> ip_port) :
-    ser::GameObject({0, 0}, {0, 0}, conf::game::Up, conf::game::Rest, 2, conf::game::Player),
+    ser::GameObject({0, 0}, {0, 0}, conf::game::Up, conf::game::Rest, 1, conf::game::Player),
     _ip(ip_port.first),
     _port(ip_port.second)
 {
-    add_property(new SimpleRectangleTexture(this, sf::Color::Green, {50, 50}));
+    add_property(new MatrixSprite(this,
+                                  conf::game::Dude,
+                                  conf::game::dude_animation_speed,
+                                  conf::game::dude_width,
+                                  conf::game::dude_height,
+                                  conf::game::dude_frame_amount));
 }
 
 
