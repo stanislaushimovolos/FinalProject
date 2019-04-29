@@ -16,19 +16,7 @@ static const uint16_t DEFAULT_PORT = 8080;
 namespace game
 {
 
-static const uint64_t START_NUM_OF_OBJECTS = 1000;
-
-static const float dude_animation_speed = 0.035;
-static const int dude_frame_amount = 8;
-static const int dude_width = 96;
-static const int dude_height = 96;
-
-static const float bullet_animation_speed = 0.035;
-static const int bullet_frame_amount = 8;
-static const int bullet_width = 64;
-static const int bullet_height = 64;
-
-enum Directions
+enum MoveDirections
 {
     Up,
     Right,
@@ -44,6 +32,7 @@ enum ObjectTypes
     Bullet,
 };
 
+// Type of textures (Rectangle is removed now)
 enum Properties
 {
     Rectangle,
@@ -52,9 +41,33 @@ enum Properties
 
 enum Textures
 {
-    DudeTexture,
+    DevilTexture,
     BulletTexture,
 };
+
+static const uint64_t START_NUM_OF_OBJECTS = 100;
+
+// Path to texture files
+static const char devil_texture_relative_path[] = "../client/Textures/Devil.png";
+static const char fire_ball_texture_relative_path[] = "../client/Textures/FireBall.png";
+
+
+/*
+ * Parameters of animation. Each texture is described by its width, height,
+ * animation speed and number of frames in one direction of movement.
+ */
+
+// Devil
+static const float devil_animation_speed = 0.035;
+static const int devil_frame_amount = 8;
+static const int devil_texture_width = 96;
+static const int dude_texture_height = 96;
+
+// Bullet
+static const float bullet_animation_speed = 0.035;
+static const int bullet_frame_amount = 8;
+static const int bullet_texture_width = 64;
+static const int bullet_texture_height = 64;
 
 }
 

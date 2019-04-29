@@ -12,7 +12,7 @@ Manager::Manager(uint32_t x_resolution, uint32_t y_resolution, std::string &&win
     _view(sf::Vector2f(x_resolution / 2, y_resolution / 2),
           sf::Vector2f(x_resolution, y_resolution)),
 
-    _graph_objects(15)
+    _graph_objects(conf::game::START_NUM_OF_OBJECTS)
 {
     _window.setView(_view);
 }
@@ -27,11 +27,11 @@ void Manager::set_remote_ip_port(std::pair<uint32_t, uint32_t> ip_port)
 
 void Manager::load_textures()
 {
-    _textures[0].loadFromFile("../client/Textures/Dude.png");
-    _textures[1].loadFromFile("../client/Textures/FireBall.png");
+    _textures[conf::game::DevilTexture].loadFromFile(conf::game::devil_texture_relative_path);
+    _textures[conf::game::BulletTexture].loadFromFile(conf::game::fire_ball_texture_relative_path);
 
     for (auto &obj: _graph_objects)
-        obj._textures = &_textures;
+        obj.set_texture_map(&_textures);
 }
 
 
@@ -42,7 +42,7 @@ int Manager::process_scene(sf::Packet &packet)
     {
         _graph_objects = std::vector<SpriteDrawer>(2 * _current_num_of_objects);
         for (auto &obj: _graph_objects)
-            obj._textures = &_textures;
+            obj.set_texture_map(&_textures);
     }
 
     uint32_t obj_type = 0;
@@ -149,6 +149,19 @@ void Manager::update(sf::Packet &packet)
     process_scene(packet);
     _window.setView(_view);
     draw();
+}
+
+
+void Manager::activate()
+{
+    _window.create(sf::VideoMode(_resolution.x, _resolution.y), _window_name);
+    load_textures();
+}
+
+
+bool Manager::is_active()
+{
+    return _is_window_opened;
 }
 
 }

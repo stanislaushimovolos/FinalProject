@@ -13,19 +13,19 @@ class SpriteDrawer
 
     explicit SpriteDrawer(std::map<unsigned int, sf::Texture> *textures);
 
+    void set_texture_map(std::map<unsigned int, sf::Texture> *textures);
+
     void set_state_form_packet(sf::Packet &pack);
 
     void draw(sf::RenderWindow &window) const;
 
-    void set_position(sf::Vector2f &pos);
-
     void set_position(sf::Vector2f &&pos);
+
+    void set_position(sf::Vector2f &pos);
 
     sf::Vector2f get_position() const;
 
-    std::map<unsigned int, sf::Texture> *_textures;
-
-    SpriteDrawer() = default;
+    SpriteDrawer();
 
  private:
 
@@ -38,6 +38,8 @@ class SpriteDrawer
 
     sf::Vector2f _position;
     sf::Sprite _sprite;
+
+    std::map<unsigned int, sf::Texture> *_textures;
 };
 
 }

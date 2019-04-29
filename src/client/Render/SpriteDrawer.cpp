@@ -4,7 +4,17 @@ namespace cli
 {
 
 SpriteDrawer::SpriteDrawer(std::map<unsigned int, sf::Texture> *textures) :
-    _textures(textures)
+    _textures(textures),
+    _rotation(conf::game::Empty),
+    _width(0),
+    _height(0),
+    _texture_id(0),
+    _current_frame_number(0)
+{}
+
+
+SpriteDrawer::SpriteDrawer() :
+    SpriteDrawer(nullptr)
 {}
 
 
@@ -29,12 +39,11 @@ void SpriteDrawer::set_state_form_packet(sf::Packet &pack)
                                        2 * rotation * _height,
                                        _width,
                                        _height));
-
     switch (texture_id)
     {
-        case (conf::game::DudeTexture):
+        case (conf::game::DevilTexture):
         {
-            _sprite.setTexture((*_textures)[conf::game::DudeTexture]);
+            _sprite.setTexture((*_textures)[conf::game::DevilTexture]);
             break;
         }
         case (conf::game::BulletTexture):
@@ -50,6 +59,12 @@ void SpriteDrawer::set_state_form_packet(sf::Packet &pack)
 void SpriteDrawer::draw(sf::RenderWindow &window) const
 {
     window.draw(_sprite);
+}
+
+
+void SpriteDrawer::set_texture_map(std::map<unsigned int, sf::Texture> *textures)
+{
+    _textures = textures;
 }
 
 

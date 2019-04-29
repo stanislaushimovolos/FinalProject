@@ -10,8 +10,8 @@ Bullet::Bullet(sf::Vector2f position, uint32_t direction) :
     add_property(new MatrixSprite(this,
                                   conf::game::BulletTexture,
                                   conf::game::bullet_animation_speed,
-                                  conf::game::bullet_width,
-                                  conf::game::bullet_height,
+                                  conf::game::bullet_texture_width,
+                                  conf::game::bullet_texture_height,
                                   conf::game::bullet_frame_amount));
 }
 
