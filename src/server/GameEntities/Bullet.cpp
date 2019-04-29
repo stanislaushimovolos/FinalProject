@@ -3,10 +3,15 @@
 namespace ser
 {
 
-Bullet::Bullet(sf::Vector2f position, uint32_t direction) :
-    ser::GameObject(position, {0, 0}, direction, direction, 0.1, conf::game::Bullet)
+Bullet::Bullet(sf::Vector2f position, uint32_t player_rotation) :
+    ser::GameObject(position,
+                    {0, 0},
+                    player_rotation,
+                    player_rotation,
+                    conf::game::bullet_speed,
+                    conf::game::Bullet)
 {
-    set_direction(direction);
+    set_direction(player_rotation);
     add_property(new MatrixSprite(this,
                                   conf::game::BulletTexture,
                                   conf::game::bullet_animation_speed,
@@ -41,12 +46,38 @@ void Bullet::set_direction(uint32_t new_direction)
             _velocity = sf::Vector2f(0, _speed);
             break;
         }
+        case (conf::game::DownRight):
+        {
+            // sqrt(2)
+            _velocity = sf::Vector2f(_speed / 1.4, _speed / 1.4);
+            break;
+        }
+        case (conf::game::UpRight):
+        {
+            // sqrt(2)
+            _velocity = sf::Vector2f(_speed / 1.4, -_speed / 1.4);
+            break;
+        }
+        case (conf::game::DownLeft):
+        {
+            // sqrt(2)
+            _velocity = sf::Vector2f(-_speed / 1.4, _speed / 1.4);
+            break;
+        }
+        case (conf::game::UpLeft):
+        {
+            // sqrt(2)
+            _velocity = sf::Vector2f(-_speed / 1.4, -_speed / 1.4);
+            break;
+        }
+        case (conf::game::Rest):
+        {
+            _velocity = sf::Vector2f(0, 0);
+            break;
+        }
         default:break;
     }
-
-    if (new_direction != conf::game::Rest)
-        _rotation = new_direction;
-
+    _rotation = new_direction;
 }
 
 

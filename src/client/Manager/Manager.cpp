@@ -30,6 +30,8 @@ void Manager::load_textures()
     // fill texture map
     _textures[conf::game::DevilTexture].loadFromFile(conf::game::devil_texture_relative_path);
     _textures[conf::game::BulletTexture].loadFromFile(conf::game::fire_ball_texture_relative_path);
+    _textures[conf::game::GirlTexture].loadFromFile(conf::game::girl_texture_relative_path);
+    _textures[conf::game::BoyTexture].loadFromFile(conf::game::boy_texture_relative_path);
 
     for (auto &obj: _graph_objects)
         obj.set_texture_map(&_textures);
@@ -140,6 +142,8 @@ void Manager::draw()
     sf::Vector2f view_coord = _view.getCenter();
     for (int i = 0; i < _current_num_of_objects; i++)
     {
+
+        // draw close objects
         auto obj_pos = _graph_objects[i].get_position();
         if (abs(obj_pos.x - view_coord.x) < _resolution.x
             && abs(obj_pos.y - view_coord.y) < _resolution.y)

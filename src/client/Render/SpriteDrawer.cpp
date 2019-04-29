@@ -36,23 +36,12 @@ void SpriteDrawer::set_state_form_packet(sf::Packet &pack)
     set_position({x, y});
     _sprite.setPosition(x, y);
     _sprite.setTextureRect(sf::IntRect(_width * current_frame,
-                                       2 * rotation * _height,
+                                       rotation * _height,
                                        _width,
                                        _height));
-    switch (texture_id)
-    {
-        case (conf::game::DevilTexture):
-        {
-            _sprite.setTexture((*_textures)[conf::game::DevilTexture]);
-            break;
-        }
-        case (conf::game::BulletTexture):
-        {
-            _sprite.setTexture((*_textures)[conf::game::BulletTexture]);
-            break;
-        }
-        default:break;
-    }
+
+    // Check if it exists
+    _sprite.setTexture((*_textures)[texture_id]);
 }
 
 

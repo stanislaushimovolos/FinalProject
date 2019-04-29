@@ -14,16 +14,21 @@ Player::Player(sf::Vector2f start_position, float speed) :
 
 
 Player::Player(std::pair<uint32_t, uint32_t> ip_port) :
-    ser::GameObject({0, 0}, {0, 0}, conf::game::Up, conf::game::Rest, 1, conf::game::Player),
+    ser::GameObject({0, 0},
+                    {0, 0},
+                    conf::game::Up,
+                    conf::game::Rest,
+                    conf::game::player_speed,
+                    conf::game::Player),
     _ip(ip_port.first),
     _port(ip_port.second)
 {
     add_property(new MatrixSprite(this,
-                                  conf::game::DevilTexture,
-                                  conf::game::devil_animation_speed,
-                                  conf::game::devil_texture_width,
-                                  conf::game::dude_texture_height,
-                                  conf::game::devil_frame_amount));
+                                  conf::game::BoyTexture,
+                                  conf::game::boy_animation_speed,
+                                  conf::game::boy_texture_width,
+                                  conf::game::boy_texture_height,
+                                  conf::game::boy_frame_amount));
 }
 
 
@@ -52,6 +57,30 @@ void Player::set_direction(uint32_t new_direction)
             _velocity = sf::Vector2f(0, _speed);
             break;
         }
+        case (conf::game::DownRight):
+        {
+            // sqrt(2)
+            _velocity = sf::Vector2f(_speed / 1.4, _speed / 1.4);
+            break;
+        }
+        case (conf::game::UpRight):
+        {
+            // sqrt(2)
+            _velocity = sf::Vector2f(_speed / 1.4, -_speed / 1.4);
+            break;
+        }
+        case (conf::game::DownLeft):
+        {
+            // sqrt(2)
+            _velocity = sf::Vector2f(-_speed / 1.4, _speed / 1.4);
+            break;
+        }
+        case (conf::game::UpLeft):
+        {
+            // sqrt(2)
+            _velocity = sf::Vector2f(-_speed / 1.4, -_speed / 1.4);
+            break;
+        }
         case (conf::game::Rest):
         {
             _velocity = sf::Vector2f(0, 0);
@@ -62,7 +91,6 @@ void Player::set_direction(uint32_t new_direction)
 
     if (new_direction != conf::game::Rest)
         _rotation = new_direction;
-
 }
 
 

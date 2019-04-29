@@ -52,8 +52,8 @@ class MatrixSprite : public Property
     MatrixSprite(GameObject *master,
                  uint32_t texture_id,
                  float animation_speed,
-                 uint32_t width,
-                 uint32_t height,
+                 float width,
+                 float height,
                  uint32_t frame_amount);
 
     void compress_to_packet(sf::Packet &pack) const override;
@@ -65,8 +65,8 @@ class MatrixSprite : public Property
     float _animation_speed;
     float _animation_timer;
 
-    uint32_t _width;
-    uint32_t _height;
+    float _width;
+    float _height;
 
     uint32_t _current_frame_number;
     uint32_t _number_of_frames;

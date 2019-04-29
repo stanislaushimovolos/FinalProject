@@ -9,7 +9,7 @@ class Bullet : public GameObject
 {
  public:
 
-    explicit Bullet(sf::Vector2f position, uint32_t direction);
+    explicit Bullet(sf::Vector2f position, uint32_t player_rotation);
 
     void set_direction(uint32_t new_direction) override;
 

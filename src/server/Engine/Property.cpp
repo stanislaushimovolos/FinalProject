@@ -46,8 +46,8 @@ void SimpleRectangleTexture::compress_to_packet(sf::Packet &pack) const
 MatrixSprite::MatrixSprite(ser::GameObject *master,
                            uint32_t texture_id,
                            float animation_speed,
-                           uint32_t width,
-                           uint32_t height,
+                           float width,
+                           float height,
                            uint32_t frame_amount) :
 
     Property(master, conf::game::MatrixSprite),
@@ -85,6 +85,5 @@ void MatrixSprite::compress_to_packet(sf::Packet &pack) const
          << _height
          << _current_frame_number;
 }
-
 
 }

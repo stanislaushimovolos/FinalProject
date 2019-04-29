@@ -29,8 +29,8 @@ class SpriteDrawer
 
  private:
 
-    uint32_t _width;
-    uint32_t _height;
+    float _width;
+    float _height;
 
     uint32_t _rotation;
     uint32_t _texture_id;
