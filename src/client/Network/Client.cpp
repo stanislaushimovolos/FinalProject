@@ -24,43 +24,59 @@ int Client::send_packet(sf::Packet &pack)
     auto status = _socket.send(pack);
     if (status != sf::Socket::Done)
     {
-        std::cout << "couldn't send packet" << std::endl;
-        return -1;
+        std::cout << "server doesn't response" << std::endl;
+        return 0;
     }
     return 1;
 }
 
 
-sf::Packet Client::receive_packet()
+int Client::receive_packet(sf::Packet &packet)
 {
-    sf::Packet received_pack;
-    auto status = _socket.receive(received_pack);
+    packet.clear();
+    auto status = _socket.receive(packet);
     if (status != sf::Socket::Done)
     {
-        std::cout << "couldn't send packet" << std::endl;
-        throw std::runtime_error("can't receive packet");
+        std::cout << "server doesn't response" << std::endl;
+        return 0;
     }
-    return received_pack;
+    return 1;
 }
 
 
 int Client::start_session(Manager &manager)
 {
+    sf::Packet received_packet;
+
     // Initialize connection
     manager.set_remote_ip_port(get_local_ip_port());
-    auto received_pack = receive_packet();
+
+    auto connection_status = receive_packet(received_packet);
     auto send_pack = manager.get_current_state();
 
-    send_packet(send_pack);
+    connection_status = send_packet(send_pack);
+    if (!connection_status)
+        return 0;
+
     manager.activate();
 
-    while (manager.is_active())
+    while (manager.is_window_active())
     {
-        received_pack = receive_packet();
-        manager.update(received_pack);
+        // receive data
+        connection_status = receive_packet(received_packet);
+        if (!connection_status)
+            return 0;
 
+        // update local environment
+        connection_status = manager.update(received_packet);
+        if (!connection_status)
+            return 0;
+
+        // send user input
         send_pack = manager.get_current_state();
-        send_packet(send_pack);
+        connection_status = send_packet(send_pack);
+        if (!connection_status)
+            return 0;
     }
     return 1;
 }

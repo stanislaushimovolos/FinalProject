@@ -20,13 +20,14 @@ Manager::Manager(uint32_t x_resolution, uint32_t y_resolution, std::string &&win
 
 void Manager::set_remote_ip_port(std::pair<uint32_t, uint32_t> ip_port)
 {
-    this->_ip = ip_port.first;
-    this->_port = ip_port.second;
+    _local_ip = ip_port.first;
+    _local_port = ip_port.second;
 }
 
 
 void Manager::load_textures()
 {
+    // fill texture map
     _textures[conf::game::DevilTexture].loadFromFile(conf::game::devil_texture_relative_path);
     _textures[conf::game::BulletTexture].loadFromFile(conf::game::fire_ball_texture_relative_path);
 
@@ -38,6 +39,8 @@ void Manager::load_textures()
 int Manager::process_scene(sf::Packet &packet)
 {
     packet >> _current_num_of_objects;
+
+    // Check if it is necessary to allocate more memory
     if (_graph_objects.capacity() < _current_num_of_objects)
     {
         _graph_objects = std::vector<SpriteDrawer>(2 * _current_num_of_objects);
@@ -47,7 +50,7 @@ int Manager::process_scene(sf::Packet &packet)
 
     uint32_t obj_type = 0;
     uint32_t num_of_properties = 0;
-    float coord_x = 0, coord_y = 0;
+    float cur_object_coord_x = 0, cur_object_coord_y = 0;
 
     for (int i = 0; i < _current_num_of_objects; i++)
     {
@@ -57,21 +60,27 @@ int Manager::process_scene(sf::Packet &packet)
             case conf::game::Player:
             {
                 uint32_t ip, port = 0;
-                packet >> ip >> port >> coord_x >> coord_y;
+                packet >> ip >> port >> cur_object_coord_x >> cur_object_coord_y;
 
-                if (ip == _ip && port == _port)
-                    _view.setCenter(coord_x, coord_y);
+                if (ip == _local_ip && port == _local_port)
+                    _view.setCenter(cur_object_coord_x, cur_object_coord_y);
                 break;
             }
             case conf::game::Bullet:
             {
-                packet >> coord_x >> coord_y;
+                packet >> cur_object_coord_x >> cur_object_coord_y;
                 break;
             }
-            default:throw std::runtime_error("unknown type of object");
+            default:
+            {
+                std::cout << "received unknown object" << std::endl;
+                return 0;
+            }
         }
 
+        // one object may have several graphical properties
         packet >> num_of_properties;
+
         for (int j = 0; j < num_of_properties; j++)
         {
             uint32_t property_type = 0;
@@ -79,7 +88,7 @@ int Manager::process_scene(sf::Packet &packet)
             _graph_objects[i].set_state_form_packet(packet);
         }
     }
-    return 0;
+    return 1;
 }
 
 
@@ -115,7 +124,7 @@ sf::Packet Manager::get_current_state()
 
     if (_is_window_focused)
     {
-        auto state = keyboard.get_direction();
+        auto state = _keyboard.get_direction();
         current_direction = state.first;
         is_shoot = state.second;
     }
@@ -138,17 +147,20 @@ void Manager::draw()
             _graph_objects[i].draw(_window);
         }
     }
-
     _window.display();
     _window.clear(sf::Color::Yellow);
 }
 
 
-void Manager::update(sf::Packet &packet)
+int Manager::update(sf::Packet &packet)
 {
-    process_scene(packet);
+    auto status = process_scene(packet);
+    if (!status)
+        return 0;
+
     _window.setView(_view);
-    draw();
+    this->draw();
+    return 1;
 }
 
 
@@ -159,7 +171,7 @@ void Manager::activate()
 }
 
 
-bool Manager::is_active()
+bool Manager::is_window_active()
 {
     return _is_window_opened;
 }

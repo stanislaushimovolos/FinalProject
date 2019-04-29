@@ -14,11 +14,11 @@ class Client
 
     std::pair<uint32_t, uint32_t> get_local_ip_port();
 
+    int receive_packet(sf::Packet &packet);
+
     int send_packet(sf::Packet &pack);
 
     int start_session(Manager &manager);
-
-    sf::Packet receive_packet();
 
 
  private:

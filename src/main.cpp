@@ -20,10 +20,18 @@ int main()
         server.start_session(server_manager);
     } else
     {
-        auto remote_ip_port = sf::IpAddress::getLocalAddress();
-        cli::Manager server_manager(800, 600, "Synchronized!!!!");
-        cli::Client client(remote_ip_port, conf::net::DEFAULT_PORT);
-        client.start_session(server_manager);
+        try
+        {
+            auto remote_ip_port = sf::IpAddress::getLocalAddress();
+            cli::Manager server_manager(800, 600, "Synchronized!!!!");
+            cli::Client client(remote_ip_port, conf::net::DEFAULT_PORT);
+            client.start_session(server_manager);
+
+        }
+        catch (std::exception &exception)
+        {
+            std::cout << exception.what() << std::endl;
+        }
     }
     return 0;
 }
