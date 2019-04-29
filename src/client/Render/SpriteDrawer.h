@@ -11,7 +11,7 @@ class SpriteDrawer
 {
  public:
 
-    explicit SpriteDrawer(const std::vector<sf::Texture> *textures);
+    explicit SpriteDrawer(std::map<unsigned int, sf::Texture> *textures);
 
     void set_state_form_packet(sf::Packet &pack);
 
@@ -23,7 +23,7 @@ class SpriteDrawer
 
     sf::Vector2f get_position() const;
 
-    const std::vector<sf::Texture> *_textures;
+    std::map<unsigned int, sf::Texture> *_textures;
 
     SpriteDrawer() = default;
 

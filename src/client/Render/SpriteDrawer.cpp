@@ -3,7 +3,7 @@
 namespace cli
 {
 
-SpriteDrawer::SpriteDrawer(const std::vector<sf::Texture> *textures) :
+SpriteDrawer::SpriteDrawer(std::map<unsigned int, sf::Texture> *textures) :
     _textures(textures)
 {}
 
@@ -42,6 +42,7 @@ void SpriteDrawer::set_state_form_packet(sf::Packet &pack)
             _sprite.setTexture((*_textures)[conf::game::BulletTexture]);
             break;
         }
+        default:break;
     }
 }
 

@@ -1,6 +1,8 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
+#include <unordered_set>
+
 #include "../../configuration/config.h"
 #include "../Render/SpriteDrawer.h"
 
@@ -80,7 +82,7 @@ class Manager
     uint32_t _current_num_of_objects;
     KeyboardInterface keyboard;
 
-    std::vector<sf::Texture> _textures;
+    std::map<unsigned int, sf::Texture> _textures;
 
     std::vector<SpriteDrawer> _graph_objects;
 
