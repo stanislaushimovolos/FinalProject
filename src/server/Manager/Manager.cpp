@@ -40,7 +40,7 @@ int Manager::update_player_states(std::vector<ser::Packet> &received_data)
         auto current_player_direction = player_state.direction;
         auto is_player_shoot = player_state.is_shoot;
 
-        player->set_direction(current_player_direction);
+        player->set_speed_from_direction(current_player_direction);
         if (is_player_shoot)
             _objects.push_back(new Bullet(player->get_position(), player->get_rotation()));
     }

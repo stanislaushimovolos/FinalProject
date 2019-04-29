@@ -26,6 +26,8 @@ class GameObject
 
     virtual void compress_to_packet(sf::Packet &pack) const = 0;
 
+    void set_speed_from_direction(uint32_t new_direction);
+
     virtual void set_direction(uint32_t new_direction);
 
     void set_velocity(sf::Vector2f &new_velocity);

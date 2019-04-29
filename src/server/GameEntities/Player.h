@@ -15,8 +15,6 @@ class Player : public GameObject
 
     void compress_to_packet(sf::Packet &pack) const override;
 
-    void set_direction(uint32_t new_direction) override;
-
     void update(int delta_t) override;
 
     ~Player() override = default;

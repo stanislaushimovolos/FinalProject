@@ -89,7 +89,7 @@ static const float girl_animation_speed = 0.017;
 static const int boy_frame_amount = 8;
 static const float boy_texture_width = 100;
 static const float boy_texture_height = 100;
-static const float boy_animation_speed = 0.014;
+static const float boy_animation_speed = 0.0165;
 
 }
 

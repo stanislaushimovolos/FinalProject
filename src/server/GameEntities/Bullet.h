@@ -11,8 +11,6 @@ class Bullet : public GameObject
 
     explicit Bullet(sf::Vector2f position, uint32_t player_rotation);
 
-    void set_direction(uint32_t new_direction) override;
-
     void compress_to_packet(sf::Packet &pack) const override;
 
     void update(int delta_t) override;
