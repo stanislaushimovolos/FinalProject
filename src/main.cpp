@@ -5,7 +5,6 @@
 #include "server/Network/server.h"
 #include "client/Network/Client.h"
 
-
 int main()
 {
     std::string type;

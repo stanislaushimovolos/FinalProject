@@ -39,7 +39,7 @@ class GameObject
 
     void add_property(GraphProperty *prop);
 
-    void move(sf::Vector2f &shift);
+    void move(sf::Vector2f &&shift);
 
     uint32_t get_direction() const;
 
@@ -50,6 +50,8 @@ class GameObject
     const RectCollider &get_collider() const;
 
     sf::Vector2f get_position() const;
+
+    sf::Vector2f get_velocity() const;
 
     virtual ~GameObject() = default;
 
@@ -67,5 +69,7 @@ class GameObject
 
     uint32_t _type;
 };
+
+float fast_square_root(float n);
 
 }

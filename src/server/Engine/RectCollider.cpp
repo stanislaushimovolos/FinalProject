@@ -20,15 +20,15 @@ bool RectCollider::detect_collision(const RectCollider &other_collider) const
     auto this_size = this->get_size();
     auto this_position = this->get_position();
 
-    auto other_bottom = other_position.y + other_size.y / 2;
-    auto other_right = other_position.x + other_size.x / 2;
+    auto other_bottom = other_position.y + other_size.y;
+    auto other_right = other_position.x + other_size.x;
     auto other_left = other_position.x;
-    auto other_top = other_position.y;
+    auto other_top = other_position.y + other_size.y / 2;
 
-    auto this_bottom = this_position.y + this_size.y / 2;
-    auto this_right = this_position.x + this_size.x / 2;
+    auto this_bottom = this_position.y + this_size.y;
+    auto this_right = this_position.x + this_size.x;
     auto this_left = this_position.x;
-    auto this_top = this_position.y;
+    auto this_top = this_position.y + this_size.y / 2;
 
     if (this_left > other_right ||
         this_right < other_left ||
@@ -36,6 +36,7 @@ bool RectCollider::detect_collision(const RectCollider &other_collider) const
         this_bottom < other_top)
         return false;
 
+    std::cout << "collide" << std::endl;
     return true;
 }
 

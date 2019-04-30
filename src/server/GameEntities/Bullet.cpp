@@ -21,7 +21,8 @@ Bullet::Bullet(sf::Vector2f position, uint32_t player_rotation) :
 
     _collider.set_size({conf::game::bullet_texture_width,
                         conf::game::bullet_texture_height});
-    _collider.set_position(_position);
+    _collider.set_position({_position.x - conf::game::bullet_texture_width / 2,
+                            _position.y - -conf::game::bullet_texture_height / 2});
 }
 
 
@@ -41,13 +42,11 @@ void Bullet::interact(ser::GameObject *object, int delta_t)
 
 void Bullet::update(int delta_t)
 {
-    auto delta_r = sf::Vector2f(_velocity.x * delta_t, _velocity.y * delta_t);
-    move(delta_r);
+    move({_velocity.x * delta_t, _velocity.y * delta_t});
+    _collider.set_position(_position);
 
     for (auto &prop:_properties)
         prop->update(delta_t);
-
-    _collider.set_position(_position);
 }
 
 

@@ -65,7 +65,8 @@ int Manager::update_environment(sf::Time &&delta_t)
         for (auto jt = std::next(it); jt != _objects.end(); ++jt)
         {
             auto second_obj = (*jt);
-            first_obj->interact(second_obj, delta_t_milliseconds);
+            if (it != jt)
+                first_obj->interact(second_obj, delta_t_milliseconds);
         }
     }
     for (auto &obj:_objects)

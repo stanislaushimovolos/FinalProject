@@ -93,7 +93,7 @@ void GameObject::set_direction(uint32_t new_direction)
 }
 
 
-void GameObject::move(sf::Vector2f &shift)
+void GameObject::move(sf::Vector2f &&shift)
 {
     _position += shift;
 }
@@ -135,9 +135,32 @@ sf::Vector2f GameObject::get_position() const
 }
 
 
+sf::Vector2f GameObject::get_velocity() const
+{
+    return _position;
+}
+
+
 const RectCollider &GameObject::get_collider() const
 {
     return _collider;
+}
+
+
+float fast_square_root(float n)
+{
+    n = 1.0f / n;
+    long i;
+    float x, y;
+
+    x = n * 0.5f;
+    y = n;
+    i = *(long *) &y;
+    i = 0x5f3759df - (i >> 1);
+    y = *(float *) &i;
+    y = y * (1.5f - (x * y * y));
+
+    return y;
 }
 
 }
