@@ -19,17 +19,17 @@ class Manager
 
     void set_remote_ip_port(std::pair<uint32_t, uint32_t> ip_port);
 
-    int update(sf::Packet &packet);
-
-    sf::Packet get_current_state();
-
-    bool is_window_active();
-
     void load_textures();
 
     void activate();
 
     void draw();
+
+    int update(sf::Packet &packet);
+
+    sf::Packet get_current_state();
+
+    bool is_window_active();
 
     ~Manager() = default;
 

@@ -27,13 +27,13 @@ class Manager
 
     void process_packets(std::vector<Packet> &received_data);
 
-    sf::Packet create_current_state_packet();
-
     int update_player_states(std::vector<ser::Packet> &received_data);
 
     int add_players(const std::list<ser::Handler> &clients);
 
     int update_environment(sf::Time &&delta_t);
+
+    sf::Packet create_current_state_packet();
 
     Manager() = default;
 

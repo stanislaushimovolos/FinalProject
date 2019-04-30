@@ -60,6 +60,18 @@ int Manager::update_environment(sf::Time &&delta_t)
 {
     for (auto &obj:_objects)
         obj->update(delta_t.asMilliseconds());
+
+    for (auto it = _objects.begin(); it != _objects.end(); ++it)
+        if ((*it)->get_type() == conf::game::Player)
+        {
+            auto first_player = dynamic_cast<Player *> (*it);
+            for (auto jt = ++it; jt != _objects.end(); ++jt)
+                if ((*jt)->get_type() == conf::game::Player)
+                {
+                    auto second_player = dynamic_cast<Player *> (*jt);
+                    first_player->collider.detect_collision(second_player->collider);
+                }
+        }
     return 1;
 }
 

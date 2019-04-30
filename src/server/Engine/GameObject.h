@@ -2,7 +2,7 @@
 
 #include <SFML/System.hpp>
 #include <SFML/Network/Packet.hpp>
-#include "Property.h"
+#include "Properties.h"
 #include "../../configuration/config.h"
 
 namespace ser
@@ -26,13 +26,13 @@ class GameObject
 
     virtual void compress_to_packet(sf::Packet &pack) const = 0;
 
-    void set_speed_from_direction(uint32_t new_direction);
-
     virtual void set_direction(uint32_t new_direction);
 
-    void set_velocity(sf::Vector2f &new_velocity);
-
     virtual void update(int delta_t) = 0;
+
+    void set_speed_from_direction(uint32_t new_direction);
+
+    void set_velocity(sf::Vector2f &new_velocity);
 
     void add_property(Property *prop);
 

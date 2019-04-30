@@ -30,6 +30,9 @@ Player::Player(std::pair<uint32_t, uint32_t> ip_port) :
                                   conf::game::boy_texture_width,
                                   conf::game::boy_texture_height,
                                   conf::game::boy_frame_amount));
+
+    collider.set_size({conf::game::boy_texture_width, conf::game::boy_texture_height});
+    collider.set_position(_position);
 }
 
 
@@ -51,6 +54,8 @@ void Player::update(int delta_t)
 
     for (auto &prop:_properties)
         prop->update(delta_t);
+
+    collider.set_position(_position);
 }
 
 }

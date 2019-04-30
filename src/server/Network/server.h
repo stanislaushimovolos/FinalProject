@@ -21,9 +21,9 @@ class Server
                     uint32_t max_num_of_players = conf::net::REQUIRED_NUM_OF_CLIENTS,
                     uint32_t connection_delay = conf::net::CONNECTION_DELAY);
 
-    int connect_clients();
-
     int start_session(Manager &manager);
+
+    int connect_clients();
 
     ~Server();
 

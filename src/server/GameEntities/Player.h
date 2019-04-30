@@ -21,6 +21,8 @@ class Player : public GameObject
 
     uint32_t _shoot_clicks;
 
+    RectCollider collider;
+
  private:
 
     uint32_t _ip;
