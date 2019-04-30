@@ -13,6 +13,8 @@ class Bullet : public GameObject
 
     void compress_to_packet(sf::Packet &pack) const override;
 
+    void interact(GameObject *object, int delta_t) override;
+
     void update(int delta_t) override;
 
     ~Bullet() override = default;

@@ -8,11 +8,11 @@ namespace ser
 
 class GameObject;
 
-class Property
+class GraphProperty
 {
  public:
 
-    explicit Property(GameObject *master, uint32_t type);
+    explicit GraphProperty(GameObject *master, uint32_t type);
 
     virtual void compress_to_packet(sf::Packet &pack) const = 0;
 
@@ -29,7 +29,7 @@ class Property
     uint32_t _type;
 };
 
-class SimpleRectangleTexture : public Property
+class SimpleRectangleTexture : public GraphProperty
 {
  public:
 
@@ -45,7 +45,7 @@ class SimpleRectangleTexture : public Property
     sf::Vector2f _shape;
 };
 
-class MatrixSprite : public Property
+class MatrixSprite : public GraphProperty
 {
  public:
 
@@ -73,29 +73,6 @@ class MatrixSprite : public Property
     uint32_t _texture_id;
     uint32_t _rotation;
     uint32_t _direction;
-};
-
-class RectCollider
-{
- public:
-
-    RectCollider(sf::Vector2f &position, sf::Vector2f &size);
-
-    RectCollider() = default;
-
-    bool detect_collision(const RectCollider &other_collider) const;
-
-    void set_position(const sf::Vector2f &new_position);
-
-    void set_size(const sf::Vector2f &new_size);
-
-    sf::Vector2f get_position() const;
-
-    sf::Vector2f get_size() const;
-
- private:
-
-    sf::RectangleShape _bounding_box;
 };
 
 }

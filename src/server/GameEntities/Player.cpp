@@ -31,8 +31,45 @@ Player::Player(std::pair<uint32_t, uint32_t> ip_port) :
                                   conf::game::boy_texture_height,
                                   conf::game::boy_frame_amount));
 
-    collider.set_size({conf::game::boy_texture_width, conf::game::boy_texture_height});
-    collider.set_position(_position);
+    _collider.set_size({float(conf::game::boy_texture_width),
+                        float(conf::game::boy_texture_height)});
+    _collider.set_position(_position);
+}
+
+
+void Player::interact(ser::GameObject *object, int delta_t)
+{
+    auto other_type = object->get_type();
+    switch (other_type)
+    {
+        case (conf::game::Player) :
+        {
+            const auto &other_collider = object->get_collider();
+            if (this->_collider.detect_collision(other_collider))
+            {
+                auto other_position = object->get_position();
+                sf::Vector2f
+                    radius_vector(_position.x - other_position.x, _position.y - other_position.y);
+
+                double vector_norm = sqrt(
+                    (_position.x - other_position.x) * (_position.x - other_position.x)
+                        + (_position.y - other_position.y) * (_position.y - other_position.y));
+
+                if (vector_norm != 0)
+                {
+                    radius_vector.x = radius_vector.x / vector_norm;
+                    radius_vector.y = radius_vector.y / vector_norm;
+
+                    sf::Vector2f shift
+                        (radius_vector.x * _speed * delta_t, radius_vector.y * _speed * delta_t);
+
+                    move(shift);
+                }
+            }
+            break;
+        }
+        default:break;
+    }
 }
 
 
@@ -55,7 +92,7 @@ void Player::update(int delta_t)
     for (auto &prop:_properties)
         prop->update(delta_t);
 
-    collider.set_position(_position);
+    _collider.set_position(_position);
 }
 
 }

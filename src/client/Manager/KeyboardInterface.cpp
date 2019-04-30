@@ -13,7 +13,8 @@ std::pair<uint32_t, uint32_t> KeyboardInterface::get_direction() const
 {
     uint32_t direction = conf::game::Rest;
     uint32_t is_shoot = 0;
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter))
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Enter)
+        || sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
         is_shoot = 1;
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))

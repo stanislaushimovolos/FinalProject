@@ -18,6 +18,24 @@ Bullet::Bullet(sf::Vector2f position, uint32_t player_rotation) :
                                   conf::game::bullet_texture_width,
                                   conf::game::bullet_texture_height,
                                   conf::game::bullet_frame_amount));
+
+    _collider.set_size({conf::game::bullet_texture_width,
+                        conf::game::bullet_texture_height});
+    _collider.set_position(_position);
+}
+
+
+void Bullet::interact(ser::GameObject *object, int delta_t)
+{
+    auto other_type = object->get_type();
+    switch (other_type)
+    {
+        case (conf::game::Bullet) :
+        {
+            break;
+        }
+        default:break;
+    }
 }
 
 
@@ -28,6 +46,8 @@ void Bullet::update(int delta_t)
 
     for (auto &prop:_properties)
         prop->update(delta_t);
+
+    _collider.set_position(_position);
 }
 
 

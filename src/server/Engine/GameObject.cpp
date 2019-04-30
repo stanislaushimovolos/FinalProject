@@ -14,7 +14,8 @@ GameObject::GameObject(sf::Vector2f pos,
     _speed(speed),
     _rotation(start_rotation),
     _direction(start_direction),
-    _type(type)
+    _type(type),
+    _collider()
 {}
 
 
@@ -104,7 +105,7 @@ void GameObject::set_velocity(sf::Vector2f &new_velocity)
 }
 
 
-void GameObject::add_property(ser::Property *prop)
+void GameObject::add_property(ser::GraphProperty *prop)
 {
     _properties.push_back(prop);
 }
@@ -131,6 +132,12 @@ uint32_t GameObject::get_type() const
 sf::Vector2f GameObject::get_position() const
 {
     return _position;
+}
+
+
+const RectCollider &GameObject::get_collider() const
+{
+    return _collider;
 }
 
 }

@@ -1,4 +1,7 @@
 #pragma once
+
+#include <cmath>
+
 #include "../Engine/GameObject.h"
 #include "../../configuration/config.h"
 
@@ -15,13 +18,13 @@ class Player : public GameObject
 
     void compress_to_packet(sf::Packet &pack) const override;
 
+    void interact(GameObject *object, int delta_t) override;
+
     void update(int delta_t) override;
 
     ~Player() override = default;
 
     uint32_t _shoot_clicks;
-
-    RectCollider collider;
 
  private:
 

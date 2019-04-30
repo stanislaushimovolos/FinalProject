@@ -9,7 +9,7 @@ int Manager::add_players(const std::list<ser::Handler> &clients)
     for (auto &cli:clients)
     {
         auto id = ser::ClientId(cli.get_id());
-        _players[id] = new ser::Player(id.get_id());
+        _players[id] = new Player(id.get_id());
         _objects.push_back(_players[id]);
     }
     return 1;
@@ -58,20 +58,18 @@ int Manager::update_player_states(std::vector<ser::Packet> &received_data)
 
 int Manager::update_environment(sf::Time &&delta_t)
 {
-    for (auto &obj:_objects)
-        obj->update(delta_t.asMilliseconds());
-
+    auto delta_t_milliseconds = delta_t.asMilliseconds();
     for (auto it = _objects.begin(); it != _objects.end(); ++it)
-        if ((*it)->get_type() == conf::game::Player)
+    {
+        auto first_obj = (*it);
+        for (auto jt = std::next(it); jt != _objects.end(); ++jt)
         {
-            auto first_player = dynamic_cast<Player *> (*it);
-            for (auto jt = ++it; jt != _objects.end(); ++jt)
-                if ((*jt)->get_type() == conf::game::Player)
-                {
-                    auto second_player = dynamic_cast<Player *> (*jt);
-                    first_player->collider.detect_collision(second_player->collider);
-                }
+            auto second_obj = (*jt);
+            first_obj->interact(second_obj, delta_t_milliseconds);
         }
+    }
+    for (auto &obj:_objects)
+        obj->update(delta_t_milliseconds);
     return 1;
 }
 

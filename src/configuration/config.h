@@ -60,8 +60,8 @@ static const char devil_texture_relative_path[] = "../client/Textures/Devil.png"
 static const char fire_ball_texture_relative_path[] = "../client/Textures/FireBall.png";
 
 static const float player_speed = 0.4;
-static const float bullet_speed = 1.3;
-static const uint32_t one_shoot_required_clicks = 15;
+static const float bullet_speed = 0.4;
+static const uint32_t one_shoot_required_clicks = 7;
 
 /*
  * Parameters of animation. Each texture is described by its width, height,

@@ -3,12 +3,13 @@
 #include <SFML/System.hpp>
 #include <SFML/Network/Packet.hpp>
 #include "Properties.h"
+#include "RectCollider.h"
 #include "../../configuration/config.h"
 
 namespace ser
 {
 
-class Property;
+class GraphProperty;
 
 // abstract class for all game entities
 class GameObject
@@ -28,13 +29,15 @@ class GameObject
 
     virtual void set_direction(uint32_t new_direction);
 
+    virtual void interact(GameObject *obj, int delta_t) = 0;
+
     virtual void update(int delta_t) = 0;
 
     void set_speed_from_direction(uint32_t new_direction);
 
     void set_velocity(sf::Vector2f &new_velocity);
 
-    void add_property(Property *prop);
+    void add_property(GraphProperty *prop);
 
     void move(sf::Vector2f &shift);
 
@@ -44,13 +47,16 @@ class GameObject
 
     uint32_t get_type() const;
 
+    const RectCollider &get_collider() const;
+
     sf::Vector2f get_position() const;
 
     virtual ~GameObject() = default;
 
 
  protected:
-    std::vector<Property *> _properties;
+    std::vector<GraphProperty *> _properties;
+    RectCollider _collider;
 
     sf::Vector2f _position;
     sf::Vector2f _velocity;
