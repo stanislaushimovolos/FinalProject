@@ -21,7 +21,8 @@ Player::Player(std::pair<uint32_t, uint32_t> ip_port) :
                     conf::game::player_speed,
                     conf::game::Player),
     _ip(ip_port.first),
-    _port(ip_port.second)
+    _port(ip_port.second),
+    _shoot_clicks(0)
 {
     add_property(new MatrixSprite(this,
                                   conf::game::BoyTexture,
@@ -30,6 +31,7 @@ Player::Player(std::pair<uint32_t, uint32_t> ip_port) :
                                   conf::game::boy_texture_height,
                                   conf::game::boy_frame_amount));
 }
+
 
 void Player::compress_to_packet(sf::Packet &pack) const
 {

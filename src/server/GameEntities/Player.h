@@ -19,7 +19,10 @@ class Player : public GameObject
 
     ~Player() override = default;
 
+    uint32_t _shoot_clicks;
+
  private:
+
     uint32_t _ip;
     uint32_t _port;
 };
