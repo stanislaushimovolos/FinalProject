@@ -8,9 +8,9 @@ namespace conf
 namespace net
 {
 
-static const uint32_t REQUIRED_NUM_OF_CLIENTS = 2;
-static const uint32_t CONNECTION_DELAY = 20;
-static const uint16_t DEFAULT_PORT = 8080;
+static const uint32_t REQUIRED_NUM_OF_CLIENTS = 3;
+static const uint32_t CONNECTION_DELAY = 10;
+static const uint16_t DEFAULT_PORT = 8081;
 }
 
 namespace game
@@ -90,7 +90,7 @@ static const float girl_animation_speed = 0.017;
 static const int boy_frame_amount = 8;
 static const float boy_texture_width = 100;
 static const float boy_texture_height = 100;
-static const float boy_animation_speed = 0.0165;
+static const float boy_animation_speed = 0.02;
 
 }
 

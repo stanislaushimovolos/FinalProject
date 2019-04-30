@@ -31,8 +31,8 @@ Player::Player(std::pair<uint32_t, uint32_t> ip_port) :
                                   conf::game::boy_texture_height,
                                   conf::game::boy_frame_amount));
 
-    _collider.set_size({float(conf::game::boy_texture_width),
-                        float(conf::game::boy_texture_height)});
+    _collider.set_size({conf::game::boy_texture_width,
+                        conf::game::boy_texture_height});
     _collider.set_position(_position);
 }
 
@@ -47,6 +47,7 @@ void Player::interact(ser::GameObject *object, int delta_t)
             const auto &other_collider = object->get_collider();
             if (this->_collider.detect_collision(other_collider))
             {
+
                 auto other_position = object->get_position();
                 sf::Vector2f
                     radius_vector(_position.x - other_position.x, _position.y - other_position.y);
