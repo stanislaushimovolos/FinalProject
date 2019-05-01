@@ -26,6 +26,8 @@ class Manager
 
     void process_packets(std::vector<Packet> &received_data);
 
+    void collect_garbage();
+
     int update_player_states(std::vector<ser::Packet> &received_data);
 
     int add_players(const std::list<ser::Handler> &clients);

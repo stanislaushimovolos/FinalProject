@@ -30,6 +30,21 @@ void Manager::process_packets(std::vector<ser::Packet> &received_data)
 }
 
 
+void Manager::collect_garbage()
+{
+    for (auto it = _objects.begin(); it != _objects.end();)
+    {
+        auto current_object = *it;
+        if (!current_object->is_active())
+        {
+            delete *it;
+            it = _objects.erase(it);
+        } else
+            ++it;
+    }
+}
+
+
 int Manager::update_player_states(std::vector<ser::Packet> &received_data)
 {
     process_packets(received_data);
@@ -64,13 +79,14 @@ int Manager::update_environment(sf::Time &&delta_t)
         for (auto jt = std::next(it); jt != _objects.end(); ++jt)
         {
             auto second_obj = (*jt);
-            if (it != jt)
-                first_obj->interact(second_obj, delta_t_milliseconds);
+            first_obj->interact(second_obj, delta_t_milliseconds);
         }
     }
 
     for (auto &obj:_objects)
         obj->update(delta_t_milliseconds);
+
+    collect_garbage();
     return 1;
 }
 

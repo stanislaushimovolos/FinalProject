@@ -25,11 +25,14 @@ class Player : public GameObject
 
     bool add_shoot_click(bool is_shoot);
 
+    bool is_live() const;
+
     uint64_t get_id() const;
 
     ~Player() override = default;
 
  private:
+
     uint32_t _ip;
     uint32_t _port;
     uintptr_t _ptr_id;
@@ -37,6 +40,8 @@ class Player : public GameObject
     bool _is_hit;
     uint32_t _shoot_clicks;
     float _health_points;
+
+    bool _is_live;
 };
 
 std::pair<uint32_t, uint32_t> split_long_long(uint64_t number);

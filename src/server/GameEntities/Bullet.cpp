@@ -43,9 +43,12 @@ void Bullet::interact(ser::GameObject *object, int delta_t)
             if (this->_collider.detect_collision(other_collider))
             {
                 auto player_ptr = dynamic_cast<Player *>(object);
-                if (player_ptr->is_live())
+                if (player_ptr->is_active())
                     player_ptr->cause_damage(conf::game::bullet_damage);
             }
+
+            set_status(false);
+            break;
         }
         default:break;
     }
@@ -69,5 +72,6 @@ float Bullet::get_damage() const
 {
     return _caused_damage;
 }
+
 
 }

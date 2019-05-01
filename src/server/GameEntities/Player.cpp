@@ -16,7 +16,8 @@ Player::Player(std::pair<uint32_t, uint32_t> ip_port) :
     _port(ip_port.second),
     _shoot_clicks(0),
     _is_hit(false),
-    _health_points(conf::game::player_health_points)
+    _health_points(conf::game::player_health_points),
+    _is_live(true)
 {
     using namespace conf::render;
 
@@ -39,9 +40,9 @@ void Player::update(int delta_t)
 {
     GameObject::update(delta_t);
 
-    if (!_is_active)
+    if (!_is_live)
         dynamic_cast< MatrixSprite *>
-        (_properties[conf::game::MainObjectSprite])->set_color(sf::Color::Blue);
+        (_properties[conf::game::MainObjectSprite])->set_color(sf::Color::Black);
     else if (_is_hit)
         dynamic_cast< MatrixSprite *>
         (_properties[conf::game::MainObjectSprite])->set_color(sf::Color::Red);
@@ -56,7 +57,7 @@ void Player::update(int delta_t)
 void Player::interact(ser::GameObject *object, int delta_t)
 {
     auto other_type = object->get_type();
-    if (!object->is_live() || !_is_active)
+    if (!object->is_active() || !_is_live)
         return;
 
     const auto &other_collider = object->get_collider();
@@ -66,6 +67,11 @@ void Player::interact(ser::GameObject *object, int delta_t)
     {
         case (conf::game::Player) :
         {
+            auto player_ptr = dynamic_cast<Player *>(object);
+            if (!player_ptr->is_live())
+                break;
+
+            std::cout << "Player-player collision!!!" << std::endl;
 
             auto other_position = object->get_position();
             sf::Vector2f
@@ -93,8 +99,13 @@ void Player::interact(ser::GameObject *object, int delta_t)
         case (conf::game::Bullet):
         {
             auto bullet_ptr = dynamic_cast<Bullet *>(object);
-            if (bullet_ptr->get_owner() != reinterpret_cast<std::uintptr_t>(this))
+            if (_is_live && bullet_ptr->get_owner() != reinterpret_cast<std::uintptr_t>(this))
+            {
+                std::cout << "Player-bullet collision!!!" << std::endl;
                 cause_damage(conf::game::bullet_damage);
+                bullet_ptr->set_status(false);
+            }
+
             break;
         }
         default:break;
@@ -114,7 +125,7 @@ void Player::cause_damage(float damage)
     _is_hit = true;
     _health_points -= damage;
     if (_health_points <= 0)
-        _is_active = false;
+        _is_live = false;
 }
 
 
@@ -140,6 +151,12 @@ bool Player::add_shoot_click(bool is_shoot)
 
     _shoot_clicks = 0;
     return false;
+}
+
+
+bool Player::is_live() const
+{
+    return _is_live;
 }
 
 
