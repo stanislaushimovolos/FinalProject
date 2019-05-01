@@ -5,7 +5,6 @@ namespace ser
 
 int Manager::add_players(const std::list<ser::Handler> &clients)
 {
-    _players_states.reserve(clients.size());
     for (auto &cli:clients)
     {
         auto id = ser::ClientId(cli.get_id());
@@ -34,13 +33,14 @@ void Manager::process_packets(std::vector<ser::Packet> &received_data)
 int Manager::update_player_states(std::vector<ser::Packet> &received_data)
 {
     process_packets(received_data);
+
     for (auto player_state:_players_states)
     {
         auto &player = _players[player_state._id];
         auto current_player_direction = player_state.direction;
         player->set_speed_from_direction(current_player_direction);
 
-        if (player->is_active())
+        if (player->is_live())
         {
             uint32_t player_is_shoot = player_state.is_shoot;
             bool add_new_bullet = player->add_shoot_click(player_is_shoot);
@@ -100,6 +100,25 @@ std::vector<uint64_t> Manager::get_players_ptr_id(const std::list<ser::Handler> 
         players_id.push_back(ptr_id);
     }
     return players_id;
+}
+
+
+int Manager::remove_disconnected_players(std::vector<ClientId> &dis_players)
+{
+    for (auto &id:dis_players)
+    {
+        for (auto it = _objects.begin(); it != _objects.end(); ++it)
+        {
+            if (*it == _players[id])
+            {
+                delete _players[id];
+                _players.erase(id);
+                _objects.erase(it);
+                break;
+            }
+        }
+    }
+    return 0;
 }
 
 

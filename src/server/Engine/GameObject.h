@@ -52,7 +52,7 @@ class GameObject
 
     uint32_t get_type() const;
 
-    bool is_active() const;
+    bool is_live() const;
 
     const RectCollider &get_collider() const;
 

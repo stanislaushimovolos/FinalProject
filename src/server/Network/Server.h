@@ -32,6 +32,8 @@ class Server
     sf::SocketSelector _selector;
     std::list<Handler> _clients;
 
+    std::vector<ClientId> _disconnected_clients;
+
     uint32_t _required_num_of_clients;
     uint32_t _current_num_of_clients;
     uint32_t _connection_delay;

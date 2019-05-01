@@ -56,7 +56,7 @@ void Player::update(int delta_t)
 void Player::interact(ser::GameObject *object, int delta_t)
 {
     auto other_type = object->get_type();
-    if (!object->is_active() || !_is_active)
+    if (!object->is_live() || !_is_active)
         return;
 
     const auto &other_collider = object->get_collider();

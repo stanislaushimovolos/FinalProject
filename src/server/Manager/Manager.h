@@ -19,7 +19,7 @@ class Manager
  private:
 
     std::unordered_map<ClientId, Player *, ClientHasher, EqualClients> _players;
-    std::vector<ClientState> _players_states;
+    std::list<ClientState> _players_states;
     std::list<GameObject *> _objects;
 
  public:
@@ -31,6 +31,8 @@ class Manager
     int add_players(const std::list<ser::Handler> &clients);
 
     int update_environment(sf::Time &&delta_t);
+
+    int remove_disconnected_players(std::vector<ClientId> &dis_players);
 
     std::vector<uint64_t> get_players_ptr_id(const std::list<ser::Handler> &clients);
 

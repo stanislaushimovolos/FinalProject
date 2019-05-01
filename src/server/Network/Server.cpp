@@ -68,7 +68,7 @@ void Server::receive_packets()
     {
         for (auto it = std::begin(_clients); it != std::end(_clients);)
         {
-            auto &client = *it;
+            ser::Handler &client = *it;
             auto client_socket_ptr = client.get_socket_ptr();
 
             // The client has sent some data, we can receive it
@@ -76,17 +76,19 @@ void Server::receive_packets()
 
             if (client_socket_ptr->receive(pkg.data()) == sf::Socket::Done)
             {
-                _received_data.push_back(pkg);
                 ++it;
+                _received_data.push_back(pkg);
             } else
             {
+                std::cout << "couldn't receive data" << std::endl;
                 _selector.remove(*client_socket_ptr);
                 it = _clients.erase(it);
 
                 std::cout << "client was disconnected" << std::endl;
+
+                _disconnected_clients.emplace_back(client.get_id());
                 _current_num_of_clients--;
             }
-            std::cout << "we are after" << std::endl;
         }
     }
 }
@@ -109,6 +111,12 @@ int Server::start_session(Manager &manager)
             send_state_to_clients(current_state);
 
             receive_packets();
+            if (!_disconnected_clients.empty())
+            {
+                manager.remove_disconnected_players(_disconnected_clients);
+                _disconnected_clients.clear();
+            }
+
             manager.update_player_states(_received_data);
             current_state = manager.create_current_state_packet();
 
@@ -143,15 +151,24 @@ int Server::send_id_to_clients(std::vector<uint64_t> ids)
 
 int Server::send_state_to_clients(sf::Packet &current_state)
 {
-    for (auto &it:_clients)
+    for (auto it = std::begin(_clients); it != std::end(_clients);)
     {
         auto &client = it;
-        auto client_socket_ptr = client.get_socket_ptr();
+        auto client_socket_ptr = client->get_socket_ptr();
 
         if (client_socket_ptr->send(current_state) != sf::Socket::Done)
         {
             std::cout << "couldn't send state" << std::endl;
-            return 0;
+            _selector.remove(*client_socket_ptr);
+            it = _clients.erase(it);
+
+            std::cout << "client was disconnected" << std::endl;
+
+            _disconnected_clients.emplace_back(client->get_id());
+            _current_num_of_clients--;
+        } else
+        {
+            ++it;
         }
     }
     return 1;

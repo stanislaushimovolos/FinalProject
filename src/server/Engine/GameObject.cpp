@@ -138,7 +138,7 @@ void GameObject::set_status(bool status)
 }
 
 
-bool GameObject::is_active() const
+bool GameObject::is_live() const
 {
     return _is_active;
 }
