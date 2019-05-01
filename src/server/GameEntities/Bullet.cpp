@@ -3,13 +3,15 @@
 namespace ser
 {
 
-Bullet::Bullet(sf::Vector2f position, uint32_t player_rotation) :
+Bullet::Bullet(uint64_t owner, sf::Vector2f position, uint32_t player_rotation) :
     ser::GameObject(position,
                     {0, 0},
                     player_rotation,
                     player_rotation,
                     conf::game::bullet_speed,
-                    conf::game::Bullet)
+                    conf::game::Bullet),
+
+    _owner(owner)
 {
     using namespace conf::render;
 
@@ -51,6 +53,12 @@ void Bullet::compress_to_packet(sf::Packet &pack) const
         pack << prop->get_type();
         prop->compress_to_packet(pack);
     }
+}
+
+
+uint64_t Bullet::get_owner()
+{
+    return _owner;
 }
 
 }

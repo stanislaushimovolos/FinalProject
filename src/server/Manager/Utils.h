@@ -19,7 +19,7 @@ class ClientHasher
  public:
     size_t operator()(ser::ClientId const &cli) const
     {
-        return cli.get_id().second;
+        return cli.get_id().first;
     }
 };
 

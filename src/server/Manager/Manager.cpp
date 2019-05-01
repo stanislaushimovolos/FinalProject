@@ -46,7 +46,9 @@ int Manager::update_player_states(std::vector<ser::Packet> &received_data)
             if (player->_shoot_clicks < conf::game::one_shoot_required_clicks)
             {
                 if (player->_shoot_clicks == 0)
-                    _objects.push_back(new Bullet(player->get_position(), player->get_rotation()));
+                    _objects.push_back(new Bullet(player->get_id(),
+                                                  player->get_position(),
+                                                  player->get_rotation()));
                 player->_shoot_clicks++;
             } else
                 player->_shoot_clicks = 0;

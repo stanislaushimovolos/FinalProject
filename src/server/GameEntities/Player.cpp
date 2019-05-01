@@ -3,16 +3,6 @@
 namespace ser
 {
 
-Player::Player(sf::Vector2f start_position, float speed) :
-    ser::GameObject(start_position,
-                    {0, 0},
-                    conf::game::Up,
-                    conf::game::Rest,
-                    speed,
-                    conf::game::Player)
-{}
-
-
 Player::Player(std::pair<uint32_t, uint32_t> ip_port) :
     ser::GameObject({0, 0},
                     {0, 0},
@@ -20,6 +10,8 @@ Player::Player(std::pair<uint32_t, uint32_t> ip_port) :
                     conf::game::Rest,
                     conf::game::player_speed,
                     conf::game::Player),
+
+    _ptr_id(reinterpret_cast<std::uintptr_t>(this)),
     _ip(ip_port.first),
     _port(ip_port.second),
     _shoot_clicks(0),
@@ -94,7 +86,11 @@ void Player::interact(ser::GameObject *object, int delta_t)
         {
             const auto &other_collider = object->get_collider();
             if (this->_collider.detect_collision(other_collider))
-                _is_hit = true;
+            {
+                auto bullet_ptr = dynamic_cast<Bullet *>(object);
+                if (bullet_ptr->get_owner() != reinterpret_cast<std::uintptr_t>(this))
+                    _is_hit = true;
+            }
             break;
         }
         default:break;
@@ -110,6 +106,18 @@ void Player::compress_to_packet(sf::Packet &pack) const
         pack << prop->get_type();
         prop->compress_to_packet(pack);
     }
+}
+
+
+void Player::set_id(uint64_t id)
+{
+    _ptr_id = id;
+}
+
+
+uint64_t Player::get_id() const
+{
+    return _ptr_id;
 }
 
 }
