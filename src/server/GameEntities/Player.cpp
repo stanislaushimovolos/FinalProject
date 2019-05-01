@@ -111,6 +111,25 @@ void Player::set_id(uint64_t id)
 }
 
 
+bool Player::add_shoot_click(bool is_shoot)
+{
+    if (is_shoot)
+    {
+        if (_shoot_clicks < conf::game::one_shoot_required_clicks)
+        {
+            _shoot_clicks++;
+            if (_shoot_clicks == 1)
+                return true;
+        } else
+            _shoot_clicks = 0;
+        return false;
+    }
+
+    _shoot_clicks = 0;
+    return false;
+}
+
+
 uint64_t Player::get_id() const
 {
     return _ptr_id;

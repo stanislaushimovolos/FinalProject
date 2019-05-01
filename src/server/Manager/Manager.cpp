@@ -40,19 +40,13 @@ int Manager::update_player_states(std::vector<ser::Packet> &received_data)
         auto current_player_direction = player_state.direction;
         player->set_speed_from_direction(current_player_direction);
 
-        auto is_player_shoot = player_state.is_shoot;
-        if (is_player_shoot)
-        {
-            if (player->_shoot_clicks < conf::game::one_shoot_required_clicks)
-            {
-                if (player->_shoot_clicks == 0)
-                    _objects.push_back(new Bullet(player->get_id(),
-                                                  player->get_position(),
-                                                  player->get_rotation()));
-                player->_shoot_clicks++;
-            } else
-                player->_shoot_clicks = 0;
-        }
+        uint32_t player_is_shoot = player_state.is_shoot;
+        bool add_new_bullet = player->add_shoot_click(player_is_shoot);
+
+        if (add_new_bullet)
+            _objects.push_back(new Bullet(player->get_id(),
+                                          player->get_position(),
+                                          player->get_rotation()));
     }
     return 1;
 }

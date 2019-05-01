@@ -21,20 +21,19 @@ class Player : public GameObject
 
     void set_id(uint64_t id);
 
+    bool add_shoot_click(bool is_shoot);
+
     uint64_t get_id() const;
 
     ~Player() override = default;
 
-    // improve
-    uint32_t _shoot_clicks;
-
  private:
-
-    bool _is_hit;
-
     uint32_t _ip;
     uint32_t _port;
     uintptr_t _ptr_id;
+
+    bool _is_hit;
+    uint32_t _shoot_clicks;
 };
 
 std::pair<uint32_t, uint32_t> split_long_long(uint64_t number);
