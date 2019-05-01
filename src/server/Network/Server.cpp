@@ -119,15 +119,23 @@ int Server::start_session(Manager &manager)
 
 int Server::send_id_to_clients(std::vector<uint64_t> ids)
 {
-    int id_number = 0;
+    int id_counter = 0;
     for (auto &it:_clients)
     {
+        sf::Packet id_packet;
+
         auto &client = it;
         auto client_socket_ptr = client.get_socket_ptr();
-        auto cur_id = ids[id_number];
+        auto cur_player_id = ids[id_counter];
 
-        client_socket_ptr->send(&cur_id, sizeof(cur_id));
-        id_number++;
+        id_packet << cur_player_id;
+        auto status = client_socket_ptr->send(id_packet);
+        if (status != sf::Socket::Done)
+        {
+            std::cout << "couldn't send id" << std::endl;
+            return 0;
+        }
+        id_counter++;
     }
     return 1;
 }

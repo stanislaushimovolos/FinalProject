@@ -21,7 +21,9 @@ class Client
 
     int start_session(Manager &manager);
 
-    uint64_t receive_id();
+    int receive_id();
+
+    ~Client();
 
 
  private:
@@ -31,6 +33,8 @@ class Client
 
     uint32_t _local_port;
     uint32_t _local_ip;
+
+    uint64_t _id;
 };
 
 }

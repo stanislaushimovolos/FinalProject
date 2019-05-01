@@ -5,6 +5,7 @@
 #include "server/Network/Server.h"
 #include "client/Network/Client.h"
 
+
 int main()
 {
     std::string type;
@@ -25,7 +26,6 @@ int main()
             cli::Manager server_manager(800, 600, "Synchronized!!!!");
             cli::Client client(remote_ip_port, conf::net::DEFAULT_PORT);
             client.start_session(server_manager);
-
         }
         catch (std::exception &exception)
         {

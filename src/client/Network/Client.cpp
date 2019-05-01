@@ -6,7 +6,8 @@ namespace cli
 
 Client::Client(const sf::IpAddress &remote_ip, uint32_t remote_port) :
     _remote_port(remote_port),
-    _remote_ip(remote_ip)
+    _remote_ip(remote_ip),
+    _id(0)
 {
     _local_ip = sf::IpAddress(sf::IpAddress::getLocalAddress()).toInteger();
 
@@ -44,23 +45,19 @@ int Client::receive_packet(sf::Packet &packet)
 }
 
 
-uint64_t Client::receive_id()
-{
-    uint64_t id = 0;
-    size_t received_bytes = 0;
-    auto status = _socket.receive(&id, sizeof(uint64_t), received_bytes);
-    return id;
-}
-
-
 int Client::start_session(Manager &manager)
 {
     sf::Packet received_packet;
 
     // Initialize connection
-    manager.set_id(receive_id());
+    auto connection_status = receive_id();
+    if (!connection_status)
+        return 0;
 
-    auto connection_status = receive_packet(received_packet);
+    // assign client id
+    manager.set_id(_id);
+
+    connection_status = receive_packet(received_packet);
     if (!connection_status)
         return 0;
 
@@ -94,9 +91,32 @@ int Client::start_session(Manager &manager)
 }
 
 
+int Client::receive_id()
+{
+    sf::Packet id_packet;
+    auto status = _socket.receive(id_packet);
+
+    if (status != sf::Socket::Done)
+    {
+        std::cout << "couldn't receive id" << std::endl;
+        return 0;
+    }
+
+    id_packet >> _id;
+    return 1;
+}
+
+
 std::pair<uint32_t, uint32_t> Client::get_local_ip_port()
 {
     return std::make_pair(_local_ip, _local_port);
+}
+
+
+Client::~Client()
+{
+    std::cout << "client was destroyed!!!" << std::endl;
+    _socket.disconnect();
 }
 
 }
