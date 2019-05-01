@@ -44,14 +44,26 @@ int Client::receive_packet(sf::Packet &packet)
 }
 
 
+uint64_t Client::receive_id()
+{
+    uint64_t id = 0;
+    size_t received_bytes = 0;
+    auto status = _socket.receive(&id, sizeof(uint64_t), received_bytes);
+    return id;
+}
+
+
 int Client::start_session(Manager &manager)
 {
     sf::Packet received_packet;
 
     // Initialize connection
-    manager.set_remote_ip_port(get_local_ip_port());
+    manager.set_id(receive_id());
 
     auto connection_status = receive_packet(received_packet);
+    if (!connection_status)
+        return 0;
+
     auto send_pack = manager.get_current_state();
 
     connection_status = send_packet(send_pack);

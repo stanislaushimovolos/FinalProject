@@ -48,11 +48,7 @@ void Bullet::interact(ser::GameObject *object, int delta_t)
 void Bullet::compress_to_packet(sf::Packet &pack) const
 {
     pack << _position.x << _position.y << (uint32_t) _properties.size();
-    for (auto &[_, prop]:_properties)
-    {
-        pack << prop->get_type();
-        prop->compress_to_packet(pack);
-    }
+    compress_properties_to_packet(pack);
 }
 
 

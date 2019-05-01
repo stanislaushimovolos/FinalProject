@@ -34,9 +34,11 @@ class GameObject
 
     virtual void update(int delta_t);
 
+    void compress_properties_to_packet(sf::Packet &pack) const;
+
     void set_speed_from_direction(uint32_t new_direction);
 
-    void add_property(uint32_t key,  GraphProperty *prop);
+    void add_property(uint32_t key, GraphProperty *prop);
 
     void set_velocity(sf::Vector2f &new_velocity);
 

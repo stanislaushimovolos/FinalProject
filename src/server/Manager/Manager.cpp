@@ -92,6 +92,19 @@ sf::Packet Manager::create_current_state_packet()
 }
 
 
+std::vector<uint64_t> Manager::get_players_ptr_id(const std::list<ser::Handler> &clients)
+{
+    std::vector<uint64_t> players_id;
+    for (auto &cli:clients)
+    {
+        auto id = ser::ClientId(cli.get_id());
+        auto ptr_id = _players[id]->get_id();
+        players_id.push_back(ptr_id);
+    }
+    return players_id;
+}
+
+
 Manager::~Manager()
 {
     for (auto obj:_objects)

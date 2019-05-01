@@ -17,7 +17,7 @@ class Manager
 
     Manager(uint32_t x_resolution, uint32_t y_resolution, std::string &&window_name);
 
-    void set_remote_ip_port(std::pair<uint32_t, uint32_t> ip_port);
+    void set_id(uint64_t id);
 
     void load_textures();
 
@@ -37,7 +37,7 @@ class Manager
 
  private:
 
-    uint32_t _local_port, _local_ip;
+    uint64_t _id;
 
     // Window parameters
     sf::RenderWindow _window;

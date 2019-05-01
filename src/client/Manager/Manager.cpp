@@ -18,10 +18,9 @@ Manager::Manager(uint32_t x_resolution, uint32_t y_resolution, std::string &&win
 }
 
 
-void Manager::set_remote_ip_port(std::pair<uint32_t, uint32_t> ip_port)
+void Manager::set_id(uint64_t id)
 {
-    _local_ip = ip_port.first;
-    _local_port = ip_port.second;
+    _id = id;
 }
 
 
@@ -63,10 +62,14 @@ int Manager::process_scene(sf::Packet &packet)
         {
             case conf::game::Player:
             {
-                uint32_t ip, port = 0;
-                packet >> ip >> port >> cur_object_coord_x >> cur_object_coord_y;
+                uint64_t id = 0;
+                uint32_t first_part, second_part;
+                packet >> first_part >> second_part;
+                id = first_part | ((uint64_t) second_part << 32);
 
-                if (ip == _local_ip && port == _local_port)
+                packet >> cur_object_coord_x >> cur_object_coord_y;
+
+                if (id == _id)
                     _view.setCenter(cur_object_coord_x, cur_object_coord_y);
                 break;
             }

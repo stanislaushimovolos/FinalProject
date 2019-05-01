@@ -86,7 +86,6 @@ void Server::receive_packets()
                 std::cout << "client was disconnected" << std::endl;
                 _current_num_of_clients--;
             }
-
         }
     }
 }
@@ -95,6 +94,8 @@ void Server::receive_packets()
 int Server::start_session(Manager &manager)
 {
     manager.add_players(_clients);
+    auto players_ptr_id = manager.get_players_ptr_id(_clients);
+    send_id_to_clients(players_ptr_id);
 
     sf::Packet current_state;
     sf::Clock connection_timer, env_update_clock;
@@ -113,6 +114,22 @@ int Server::start_session(Manager &manager)
             connection_timer.restart();
         }
     }
+}
+
+
+int Server::send_id_to_clients(std::vector<uint64_t> ids)
+{
+    int id_number = 0;
+    for (auto &it:_clients)
+    {
+        auto &client = it;
+        auto client_socket_ptr = client.get_socket_ptr();
+        auto cur_id = ids[id_number];
+
+        client_socket_ptr->send(&cur_id, sizeof(cur_id));
+        id_number++;
+    }
+    return 1;
 }
 
 

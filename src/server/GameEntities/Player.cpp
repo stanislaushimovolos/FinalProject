@@ -100,12 +100,10 @@ void Player::interact(ser::GameObject *object, int delta_t)
 
 void Player::compress_to_packet(sf::Packet &pack) const
 {
-    pack << _ip << _port << _position.x << _position.y << (uint32_t) _properties.size();
-    for (auto &[_, prop]:_properties)
-    {
-        pack << prop->get_type();
-        prop->compress_to_packet(pack);
-    }
+    auto id = _ptr_id;
+    pack << (uint32_t) (id & 0xFFFFFFFF) << (uint32_t) (id >> 32);
+    pack << _position.x << _position.y << (uint32_t) _properties.size();
+    compress_properties_to_packet(pack);
 }
 
 

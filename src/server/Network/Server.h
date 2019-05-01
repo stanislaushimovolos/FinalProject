@@ -42,6 +42,8 @@ class Server
 
     int add_new_client();
 
+    int send_id_to_clients(std::vector<uint64_t> ids);
+
     int send_state_to_clients(sf::Packet &current_state);
 };
 

@@ -21,6 +21,8 @@ class Client
 
     int start_session(Manager &manager);
 
+    uint64_t receive_id();
+
 
  private:
     sf::TcpSocket _socket;

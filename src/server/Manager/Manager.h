@@ -32,6 +32,8 @@ class Manager
 
     int update_environment(sf::Time &&delta_t);
 
+    std::vector<uint64_t> get_players_ptr_id(const std::list<ser::Handler> &clients);
+
     sf::Packet create_current_state_packet();
 
     Manager() = default;

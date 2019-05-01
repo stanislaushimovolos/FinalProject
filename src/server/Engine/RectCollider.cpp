@@ -36,7 +36,6 @@ bool RectCollider::detect_collision(const RectCollider &other_collider) const
         this_bottom < other_top)
         return false;
 
-    std::cout << "collide" << std::endl;
     return true;
 }
 

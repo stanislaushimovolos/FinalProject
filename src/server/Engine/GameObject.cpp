@@ -103,6 +103,16 @@ void GameObject::set_direction(uint32_t new_direction)
 }
 
 
+void GameObject::compress_properties_to_packet(sf::Packet &pack) const
+{
+    for (auto &[_, prop]:_properties)
+    {
+        pack << prop->get_type();
+        prop->compress_to_packet(pack);
+    }
+}
+
+
 void GameObject::move(sf::Vector2f &&shift)
 {
     _position += shift;
@@ -115,7 +125,7 @@ void GameObject::set_velocity(sf::Vector2f &new_velocity)
 }
 
 
-void GameObject::add_property(uint32_t key,  GraphProperty *prop)
+void GameObject::add_property(uint32_t key, GraphProperty *prop)
 {
     _properties[key] = prop;
 }
