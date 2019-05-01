@@ -80,6 +80,16 @@ void GameObject::set_speed_from_direction(uint32_t new_direction)
 }
 
 
+void GameObject::update(int delta_t)
+{
+    move({_velocity.x * delta_t, _velocity.y * delta_t});
+    _collider.set_position(_position);
+
+    for (auto &[key, prop]:_properties)
+        prop->update(delta_t);
+}
+
+
 void GameObject::set_direction(uint32_t new_direction)
 {
     _direction = new_direction;
@@ -105,9 +115,9 @@ void GameObject::set_velocity(sf::Vector2f &new_velocity)
 }
 
 
-void GameObject::add_property(ser::GraphProperty *prop)
+void GameObject::add_property(uint32_t key,  GraphProperty *prop)
 {
-    _properties.push_back(prop);
+    _properties[key] = prop;
 }
 
 

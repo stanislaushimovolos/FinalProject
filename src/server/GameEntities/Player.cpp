@@ -22,9 +22,11 @@ Player::Player(std::pair<uint32_t, uint32_t> ip_port) :
                     conf::game::Player),
     _ip(ip_port.first),
     _port(ip_port.second),
-    _shoot_clicks(0)
+    _shoot_clicks(0),
+    _is_hit(false)
 {
-    add_property(new MatrixSprite(this,
+    add_property(0,
+                 new MatrixSprite(this,
                                   conf::game::BoyTexture,
                                   conf::game::boy_animation_speed,
                                   conf::game::boy_texture_width,
@@ -38,9 +40,22 @@ Player::Player(std::pair<uint32_t, uint32_t> ip_port) :
 }
 
 
+void Player::update(int delta_t)
+{
+    GameObject::update(delta_t);
+    if (_is_hit)
+        dynamic_cast< MatrixSprite *>(_properties[0])->set_color(sf::Color::Red);
+    else
+        dynamic_cast< MatrixSprite *>(_properties[0])->set_color(sf::Color::White);
+
+    _is_hit = false;
+}
+
+
 void Player::interact(ser::GameObject *object, int delta_t)
 {
     auto other_type = object->get_type();
+
     switch (other_type)
     {
         case (conf::game::Player) :
@@ -71,6 +86,13 @@ void Player::interact(ser::GameObject *object, int delta_t)
             }
             break;
         }
+        case (conf::game::Bullet):
+        {
+            const auto &other_collider = object->get_collider();
+            if (this->_collider.detect_collision(other_collider))
+                _is_hit = true;
+            break;
+        }
         default:break;
     }
 }
@@ -79,21 +101,11 @@ void Player::interact(ser::GameObject *object, int delta_t)
 void Player::compress_to_packet(sf::Packet &pack) const
 {
     pack << _ip << _port << _position.x << _position.y << (uint32_t) _properties.size();
-    for (auto &prop:_properties)
+    for (auto &[_, prop]:_properties)
     {
         pack << prop->get_type();
         prop->compress_to_packet(pack);
     }
-}
-
-
-void Player::update(int delta_t)
-{
-    move({_velocity.x * delta_t, _velocity.y * delta_t});
-    _collider.set_position(_position);
-
-    for (auto &prop:_properties)
-        prop->update(delta_t);
 }
 
 }

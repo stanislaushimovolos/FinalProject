@@ -60,6 +60,8 @@ class MatrixSprite : public GraphProperty
 
     void update(int delta_t) override;
 
+    void set_color(sf::Color clr);
+
  private:
 
     float _animation_speed;
@@ -67,6 +69,8 @@ class MatrixSprite : public GraphProperty
 
     float _width;
     float _height;
+
+    sf::Color _fill_color;
 
     uint32_t _current_frame_number;
     uint32_t _number_of_frames;

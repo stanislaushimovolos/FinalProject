@@ -51,6 +51,7 @@ MatrixSprite::MatrixSprite(ser::GameObject *master,
                            uint32_t frame_amount) :
 
     GraphProperty(master, conf::game::MatrixSprite),
+    _fill_color(sf::Color::White),
     _width(width),
     _height(height),
     _number_of_frames(frame_amount),
@@ -79,11 +80,18 @@ void MatrixSprite::compress_to_packet(sf::Packet &pack) const
     pack << _position.x - _width / 2
          << _position.y - _height / 2
          << _texture_id
+         << _fill_color.toInteger()
          << _direction
          << _rotation
          << _width
          << _height
          << _current_frame_number;
+}
+
+
+void MatrixSprite::set_color(sf::Color clr)
+{
+    _fill_color = clr;
 }
 
 }

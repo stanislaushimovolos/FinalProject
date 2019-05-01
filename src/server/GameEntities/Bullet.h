@@ -15,8 +15,6 @@ class Bullet : public GameObject
 
     void interact(GameObject *object, int delta_t) override;
 
-    void update(int delta_t) override;
-
     ~Bullet() override = default;
 };
 

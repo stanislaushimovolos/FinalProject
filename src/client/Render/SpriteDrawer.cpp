@@ -9,7 +9,8 @@ SpriteDrawer::SpriteDrawer(std::map<unsigned int, sf::Texture> *textures) :
     _width(0),
     _height(0),
     _texture_id(0),
-    _current_frame_number(0)
+    _current_frame_number(0),
+    _fill_color(sf::Color::Transparent.toInteger())
 {}
 
 
@@ -26,6 +27,7 @@ void SpriteDrawer::set_state_form_packet(sf::Packet &pack)
 
     pack >> x >> y;
     pack >> texture_id;
+    pack >> _fill_color;
     pack >> direction >> rotation;
     pack >> _width >> _height;
     pack >> current_frame;
@@ -39,6 +41,8 @@ void SpriteDrawer::set_state_form_packet(sf::Packet &pack)
                                        rotation * _height,
                                        _width,
                                        _height));
+
+    _sprite.setColor(sf::Color(_fill_color));
 
     // Check if texture exists
     if ((*_textures).count(texture_id))

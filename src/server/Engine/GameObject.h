@@ -31,13 +31,13 @@ class GameObject
 
     virtual void interact(GameObject *obj, int delta_t) = 0;
 
-    virtual void update(int delta_t) = 0;
+    virtual void update(int delta_t);
 
     void set_speed_from_direction(uint32_t new_direction);
 
-    void set_velocity(sf::Vector2f &new_velocity);
+    void add_property(uint32_t key,  GraphProperty *prop);
 
-    void add_property(GraphProperty *prop);
+    void set_velocity(sf::Vector2f &new_velocity);
 
     void move(sf::Vector2f &&shift);
 
@@ -57,7 +57,7 @@ class GameObject
 
 
  protected:
-    std::vector<GraphProperty *> _properties;
+    std::map<uint32_t, GraphProperty *> _properties;
     RectCollider _collider;
 
     sf::Vector2f _position;

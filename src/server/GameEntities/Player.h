@@ -28,6 +28,8 @@ class Player : public GameObject
 
  private:
 
+    bool _is_hit;
+
     uint32_t _ip;
     uint32_t _port;
 };
