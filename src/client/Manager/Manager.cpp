@@ -118,6 +118,10 @@ sf::Packet Manager::get_current_state()
                 _is_window_focused = false;
                 break;
             }
+            case sf::Event::Resized:
+            {
+                _view.setSize(event.size.width, event.size.height);
+            }
             default:break;
         }
     }
