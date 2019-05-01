@@ -44,11 +44,15 @@ class GameObject
 
     void move(sf::Vector2f &&shift);
 
+    void set_status(bool status);
+
     uint32_t get_direction() const;
 
     uint32_t get_rotation() const;
 
     uint32_t get_type() const;
+
+    bool is_active() const;
 
     const RectCollider &get_collider() const;
 
@@ -71,6 +75,7 @@ class GameObject
     uint32_t _rotation;
 
     uint32_t _type;
+    bool _is_active;
 };
 
 float fast_square_root(float n);

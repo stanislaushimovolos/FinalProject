@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Player.h"
 #include "../Engine/GameObject.h"
 #include "../../configuration/render.h"
 
@@ -16,12 +17,15 @@ class Bullet : public GameObject
 
     void interact(GameObject *object, int delta_t) override;
 
+    float get_damage() const;
+
     uint64_t get_owner();
 
     ~Bullet() override = default;
 
  private:
 
+    float _caused_damage;
     uint64_t _owner;
 };
 

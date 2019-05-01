@@ -11,7 +11,8 @@ Bullet::Bullet(uint64_t owner, sf::Vector2f position, uint32_t player_rotation) 
                     conf::game::bullet_speed,
                     conf::game::Bullet),
 
-    _owner(owner)
+    _owner(owner),
+    _caused_damage(conf::game::bullet_damage)
 {
     using namespace conf::render;
 
@@ -36,9 +37,15 @@ void Bullet::interact(ser::GameObject *object, int delta_t)
     auto other_type = object->get_type();
     switch (other_type)
     {
-        case (conf::game::Bullet) :
+        case (conf::game::Player):
         {
-            break;
+            const auto &other_collider = object->get_collider();
+            if (this->_collider.detect_collision(other_collider))
+            {
+                auto player_ptr = dynamic_cast<Player *>(object);
+                if (player_ptr->is_active())
+                    player_ptr->cause_damage(conf::game::bullet_damage);
+            }
         }
         default:break;
     }
@@ -55,6 +62,12 @@ void Bullet::compress_to_packet(sf::Packet &pack) const
 uint64_t Bullet::get_owner()
 {
     return _owner;
+}
+
+
+float Bullet::get_damage() const
+{
+    return _caused_damage;
 }
 
 }

@@ -15,6 +15,7 @@ GameObject::GameObject(sf::Vector2f pos,
     _rotation(start_rotation),
     _direction(start_direction),
     _type(type),
+    _is_active(true),
     _collider()
 {}
 
@@ -128,6 +129,18 @@ void GameObject::set_velocity(sf::Vector2f &new_velocity)
 void GameObject::add_property(uint32_t key, GraphProperty *prop)
 {
     _properties[key] = prop;
+}
+
+
+void GameObject::set_status(bool status)
+{
+    _is_active = status;
+}
+
+
+bool GameObject::is_active() const
+{
+    return _is_active;
 }
 
 

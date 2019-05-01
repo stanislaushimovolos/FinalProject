@@ -21,6 +21,8 @@ class Player : public GameObject
 
     void set_id(uint64_t id);
 
+    void cause_damage(float damage);
+
     bool add_shoot_click(bool is_shoot);
 
     uint64_t get_id() const;
@@ -34,6 +36,7 @@ class Player : public GameObject
 
     bool _is_hit;
     uint32_t _shoot_clicks;
+    float _health_points;
 };
 
 std::pair<uint32_t, uint32_t> split_long_long(uint64_t number);

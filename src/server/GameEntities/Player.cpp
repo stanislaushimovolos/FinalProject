@@ -15,7 +15,8 @@ Player::Player(std::pair<uint32_t, uint32_t> ip_port) :
     _ip(ip_port.first),
     _port(ip_port.second),
     _shoot_clicks(0),
-    _is_hit(false)
+    _is_hit(false),
+    _health_points(conf::game::player_health_points)
 {
     using namespace conf::render;
 
@@ -37,7 +38,11 @@ Player::Player(std::pair<uint32_t, uint32_t> ip_port) :
 void Player::update(int delta_t)
 {
     GameObject::update(delta_t);
-    if (_is_hit)
+
+    if (!_is_active)
+        dynamic_cast< MatrixSprite *>
+        (_properties[conf::game::MainObjectSprite])->set_color(sf::Color::Blue);
+    else if (_is_hit)
         dynamic_cast< MatrixSprite *>
         (_properties[conf::game::MainObjectSprite])->set_color(sf::Color::Red);
     else
@@ -51,46 +56,45 @@ void Player::update(int delta_t)
 void Player::interact(ser::GameObject *object, int delta_t)
 {
     auto other_type = object->get_type();
+    if (!object->is_active() || !_is_active)
+        return;
 
+    const auto &other_collider = object->get_collider();
+    if (!this->_collider.detect_collision(other_collider))
+        return;
     switch (other_type)
     {
         case (conf::game::Player) :
         {
-            const auto &other_collider = object->get_collider();
-            if (this->_collider.detect_collision(other_collider))
-            {
-                auto other_position = object->get_position();
-                sf::Vector2f
-                    radius_vector
-                    (_position.x - other_position.x, _position.y - other_position.y);
 
-                float vector_norm = fast_square_root(
-                    (_position.x - other_position.x) * (_position.x - other_position.x)
-                        + (_position.y - other_position.y) * (_position.y - other_position.y));
+            auto other_position = object->get_position();
+            sf::Vector2f
+                radius_vector
+                (_position.x - other_position.x, _position.y - other_position.y);
 
-                // normalize
-                radius_vector.x = radius_vector.x / vector_norm;
-                radius_vector.y = radius_vector.y / vector_norm;
+            float vector_norm = fast_square_root(
+                (_position.x - other_position.x) * (_position.x - other_position.x)
+                    + (_position.y - other_position.y) * (_position.y - other_position.y));
 
-                if (_direction != conf::game::Rest)
-                    move({radius_vector.x * _speed * delta_t,
-                          radius_vector.y * _speed * delta_t});
+            // normalize
+            radius_vector.x = radius_vector.x / vector_norm;
+            radius_vector.y = radius_vector.y / vector_norm;
 
-                if (object->get_direction() != conf::game::Rest)
-                    object->move({-radius_vector.x * _speed * delta_t,
-                                  -radius_vector.y * _speed * delta_t});
-            }
+            if (_direction != conf::game::Rest)
+                move({radius_vector.x * _speed * delta_t,
+                      radius_vector.y * _speed * delta_t});
+
+            if (object->get_direction() != conf::game::Rest)
+                object->move({-radius_vector.x * _speed * delta_t,
+                              -radius_vector.y * _speed * delta_t});
+
             break;
         }
         case (conf::game::Bullet):
         {
-            const auto &other_collider = object->get_collider();
-            if (this->_collider.detect_collision(other_collider))
-            {
-                auto bullet_ptr = dynamic_cast<Bullet *>(object);
-                if (bullet_ptr->get_owner() != reinterpret_cast<std::uintptr_t>(this))
-                    _is_hit = true;
-            }
+            auto bullet_ptr = dynamic_cast<Bullet *>(object);
+            if (bullet_ptr->get_owner() != reinterpret_cast<std::uintptr_t>(this))
+                cause_damage(conf::game::bullet_damage);
             break;
         }
         default:break;
@@ -102,6 +106,15 @@ void Player::compress_to_packet(sf::Packet &pack) const
 {
     pack << _ptr_id << _position.x << _position.y << (uint32_t) _properties.size();
     compress_properties_to_packet(pack);
+}
+
+
+void Player::cause_damage(float damage)
+{
+    _is_hit = true;
+    _health_points -= damage;
+    if (_health_points <= 0)
+        _is_active = false;
 }
 
 

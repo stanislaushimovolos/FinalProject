@@ -40,13 +40,16 @@ int Manager::update_player_states(std::vector<ser::Packet> &received_data)
         auto current_player_direction = player_state.direction;
         player->set_speed_from_direction(current_player_direction);
 
-        uint32_t player_is_shoot = player_state.is_shoot;
-        bool add_new_bullet = player->add_shoot_click(player_is_shoot);
+        if (player->is_active())
+        {
+            uint32_t player_is_shoot = player_state.is_shoot;
+            bool add_new_bullet = player->add_shoot_click(player_is_shoot);
 
-        if (add_new_bullet)
-            _objects.push_back(new Bullet(player->get_id(),
-                                          player->get_position(),
-                                          player->get_rotation()));
+            if (add_new_bullet)
+                _objects.push_back(new Bullet(player->get_id(),
+                                              player->get_position(),
+                                              player->get_rotation()));
+        }
     }
     return 1;
 }
@@ -65,6 +68,7 @@ int Manager::update_environment(sf::Time &&delta_t)
                 first_obj->interact(second_obj, delta_t_milliseconds);
         }
     }
+
     for (auto &obj:_objects)
         obj->update(delta_t_milliseconds);
     return 1;
