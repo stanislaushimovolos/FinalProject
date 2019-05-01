@@ -27,11 +27,13 @@ void Manager::set_remote_ip_port(std::pair<uint32_t, uint32_t> ip_port)
 
 void Manager::load_textures()
 {
+    using namespace conf::render;
+
     // fill texture map
-    _textures[conf::game::DevilTexture].loadFromFile(conf::game::devil_texture_relative_path);
-    _textures[conf::game::BulletTexture].loadFromFile(conf::game::fire_ball_texture_relative_path);
-    _textures[conf::game::GirlTexture].loadFromFile(conf::game::girl_texture_relative_path);
-    _textures[conf::game::BoyTexture].loadFromFile(conf::game::boy_texture_relative_path);
+    _textures[DevilTexture].loadFromFile(devil_texture_relative_path);
+    _textures[BulletTexture].loadFromFile(fire_ball_texture_relative_path);
+    _textures[GirlTexture].loadFromFile(girl_texture_relative_path);
+    _textures[BoyTexture].loadFromFile(boy_texture_relative_path);
 
     for (auto &obj: _graph_objects)
         obj.set_texture_map(&_textures);

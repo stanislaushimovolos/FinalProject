@@ -3,8 +3,6 @@
 #include <list>
 #include <iostream>
 #include <SFML/Network.hpp>
-#include <iostream>
-#include <unistd.h>
 
 #include "ClientHandler.h"
 #include "../Manager/Manager.h"

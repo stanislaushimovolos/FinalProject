@@ -11,19 +11,21 @@ Bullet::Bullet(sf::Vector2f position, uint32_t player_rotation) :
                     conf::game::bullet_speed,
                     conf::game::Bullet)
 {
-    set_speed_from_direction(player_rotation);
-    add_property(0,
-                 new MatrixSprite(this,
-                                  conf::game::BulletTexture,
-                                  conf::game::bullet_animation_speed,
-                                  conf::game::bullet_texture_width,
-                                  conf::game::bullet_texture_height,
-                                  conf::game::bullet_frame_amount));
+    using namespace conf::render;
 
-    _collider.set_size({conf::game::bullet_texture_width,
-                        conf::game::bullet_texture_height});
-    _collider.set_position({_position.x - conf::game::bullet_texture_width / 2,
-                            _position.y - -conf::game::bullet_texture_height / 2});
+    set_speed_from_direction(player_rotation);
+    add_property(conf::game::MainObjectSprite,
+                 new MatrixSprite(this,
+                                  BulletTexture,
+                                  bullet_animation_speed,
+                                  bullet_texture_width,
+                                  bullet_texture_height,
+                                  bullet_frame_amount));
+
+    _collider.set_size({bullet_texture_width,
+                        bullet_texture_height});
+    _collider.set_position({_position.x - bullet_texture_width / 2,
+                            _position.y - bullet_texture_height / 2});
 }
 
 

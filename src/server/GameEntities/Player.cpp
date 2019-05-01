@@ -25,18 +25,20 @@ Player::Player(std::pair<uint32_t, uint32_t> ip_port) :
     _shoot_clicks(0),
     _is_hit(false)
 {
-    add_property(0,
-                 new MatrixSprite(this,
-                                  conf::game::BoyTexture,
-                                  conf::game::boy_animation_speed,
-                                  conf::game::boy_texture_width,
-                                  conf::game::boy_texture_height,
-                                  conf::game::boy_frame_amount));
+    using namespace conf::render;
 
-    _collider.set_size({conf::game::boy_texture_width / 2,
-                        conf::game::boy_texture_height});
-    _collider.set_position({_position.x - conf::game::boy_texture_width / 2,
-                            _position.y - -conf::game::boy_texture_height / 2});
+    add_property(conf::game::MainObjectSprite,
+                 new MatrixSprite(this,
+                                  BoyTexture,
+                                  boy_animation_speed,
+                                  boy_texture_width,
+                                  boy_texture_height,
+                                  boy_frame_amount));
+
+    _collider.set_size({boy_texture_width / 2,
+                        boy_texture_height});
+    _collider.set_position({_position.x - boy_texture_width / 2,
+                            _position.y - -boy_texture_height / 2});
 }
 
 
@@ -44,9 +46,11 @@ void Player::update(int delta_t)
 {
     GameObject::update(delta_t);
     if (_is_hit)
-        dynamic_cast< MatrixSprite *>(_properties[0])->set_color(sf::Color::Red);
+        dynamic_cast< MatrixSprite *>
+        (_properties[conf::game::MainObjectSprite])->set_color(sf::Color::Red);
     else
-        dynamic_cast< MatrixSprite *>(_properties[0])->set_color(sf::Color::White);
+        dynamic_cast< MatrixSprite *>
+        (_properties[conf::game::MainObjectSprite])->set_color(sf::Color::White);
 
     _is_hit = false;
 }
