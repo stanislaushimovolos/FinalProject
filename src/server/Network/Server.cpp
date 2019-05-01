@@ -66,19 +66,19 @@ void Server::receive_packets()
 
     if (_selector.wait())
     {
-        int client_counter = 0;
-        for (auto it = _clients.begin(); it != _clients.end(); ++it)
+        for (auto it = std::begin(_clients); it != std::end(_clients);)
         {
             auto &client = *it;
             auto client_socket_ptr = client.get_socket_ptr();
 
-            client_counter++;
             // The client has sent some data, we can receive it
             Packet pkg(client.get_id());
 
             if (client_socket_ptr->receive(pkg.data()) == sf::Socket::Done)
+            {
                 _received_data.push_back(pkg);
-            else
+                ++it;
+            } else
             {
                 _selector.remove(*client_socket_ptr);
                 it = _clients.erase(it);
@@ -86,6 +86,7 @@ void Server::receive_packets()
                 std::cout << "client was disconnected" << std::endl;
                 _current_num_of_clients--;
             }
+            std::cout << "we are after" << std::endl;
         }
     }
 }
@@ -129,8 +130,7 @@ int Server::send_id_to_clients(std::vector<uint64_t> ids)
         auto cur_player_id = ids[id_counter];
 
         id_packet << cur_player_id;
-        auto status = client_socket_ptr->send(id_packet);
-        if (status != sf::Socket::Done)
+        if (client_socket_ptr->send(id_packet) != sf::Socket::Done)
         {
             std::cout << "couldn't send id" << std::endl;
             return 0;
@@ -147,7 +147,12 @@ int Server::send_state_to_clients(sf::Packet &current_state)
     {
         auto &client = it;
         auto client_socket_ptr = client.get_socket_ptr();
-        client_socket_ptr->send(current_state);
+
+        if (client_socket_ptr->send(current_state) != sf::Socket::Done)
+        {
+            std::cout << "couldn't send state" << std::endl;
+            return 0;
+        }
     }
     return 1;
 }
