@@ -3,7 +3,7 @@
 #include <iostream>
 #include <SFML/Graphics.hpp>
 
-#include "../../configuration/config.h"
+#include "../../configuration/gameplay.h"
 
 namespace cli
 {

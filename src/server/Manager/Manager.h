@@ -1,15 +1,14 @@
 #pragma once
 
-#include "../../configuration/config.h"
-#include "../Network/client_handler.h"
+#include <list>
+#include <unordered_map>
+
+#include "../Engine/GameObject.h"
 #include "../GameEntities/Player.h"
 #include "../GameEntities/Bullet.h"
-#include "../Engine/GameObject.h"
-
+#include "../Network/ClientHandler.h"
+#include "../../configuration/render.h"
 #include "Utils.h"
-
-#include <unordered_map>
-#include <list>
 
 namespace ser
 {

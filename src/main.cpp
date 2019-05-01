@@ -2,7 +2,7 @@
 #include <SFML/Network.hpp>
 #include <SFML/Graphics.hpp>
 
-#include "server/Network/server.h"
+#include "server/Network/Server.h"
 #include "client/Network/Client.h"
 
 int main()

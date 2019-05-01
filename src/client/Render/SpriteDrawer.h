@@ -1,7 +1,9 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
-#include "../../configuration/config.h"
+#include <SFML/Network.hpp>
+
+#include "../../configuration/gameplay.h"
 
 namespace cli
 {

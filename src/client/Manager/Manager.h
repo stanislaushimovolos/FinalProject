@@ -5,7 +5,7 @@
 
 #include "KeyboardInterface.h"
 #include "../Render/SpriteDrawer.h"
-#include "../../configuration/config.h"
+#include "../../configuration/render.h"
 
 namespace cli
 {

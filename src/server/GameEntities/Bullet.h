@@ -1,6 +1,7 @@
 #pragma once
+
 #include "../Engine/GameObject.h"
-#include "../../configuration/config.h"
+#include "../../configuration/render.h"
 
 namespace ser
 {

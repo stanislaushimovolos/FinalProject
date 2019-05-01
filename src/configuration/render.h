@@ -1,47 +1,13 @@
 #pragma once
+
 #include <iostream>
-#include <SFML/Network.hpp>
+
 
 namespace conf
 {
 
-namespace net
-{
-
-static const uint32_t REQUIRED_NUM_OF_CLIENTS = 2;
-static const uint32_t CONNECTION_DELAY = 20;
-static const uint16_t DEFAULT_PORT = 8081;
-}
-
 namespace game
 {
-
-enum MoveDirections
-{
-    Down,
-    Left,
-    Right,
-    Up,
-    DownLeft,
-    UpLeft,
-    DownRight,
-    UpRight,
-    Rest = 228,
-};
-
-enum ObjectTypes
-{
-    Empty,
-    Player,
-    Bullet,
-};
-
-// Type of textures (Rectangle is removed now)
-enum Properties
-{
-    Rectangle,
-    MatrixSprite,
-};
 
 enum Textures
 {

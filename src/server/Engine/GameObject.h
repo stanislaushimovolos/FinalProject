@@ -2,9 +2,10 @@
 
 #include <SFML/System.hpp>
 #include <SFML/Network/Packet.hpp>
+
 #include "Properties.h"
 #include "RectCollider.h"
-#include "../../configuration/config.h"
+#include "../../configuration/gameplay.h"
 
 namespace ser
 {
