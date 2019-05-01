@@ -62,14 +62,10 @@ int Manager::process_scene(sf::Packet &packet)
         {
             case conf::game::Player:
             {
-                uint64_t id = 0;
-                uint32_t first_part, second_part;
-                packet >> first_part >> second_part;
-                id = first_part | ((uint64_t) second_part << 32);
+                uint64_t current_player_id = 0;
+                packet >> current_player_id >> cur_object_coord_x >> cur_object_coord_y;
 
-                packet >> cur_object_coord_x >> cur_object_coord_y;
-
-                if (id == _id)
+                if (current_player_id == _id)
                     _view.setCenter(cur_object_coord_x, cur_object_coord_y);
                 break;
             }
@@ -182,6 +178,22 @@ void Manager::activate()
 bool Manager::is_window_active()
 {
     return _is_window_opened;
+}
+
+
+uint64_t make_long_long(uint32_t first_bits, uint32_t last_bits)
+{
+    return first_bits | ((uint64_t) last_bits << 8 * sizeof(int));
+}
+
+
+sf::Packet &operator>>(sf::Packet &packet, uint64_t &number)
+{
+    uint32_t first_part, second_part;
+    packet >> first_part >> second_part;
+
+    number = make_long_long(first_part, second_part);
+    return packet;
 }
 
 }

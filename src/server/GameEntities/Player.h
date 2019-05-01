@@ -37,4 +37,8 @@ class Player : public GameObject
     uintptr_t _ptr_id;
 };
 
+std::pair<uint32_t, uint32_t> split_long_long(uint64_t number);
+
+sf::Packet &operator<<(sf::Packet &packet, uint64_t number);
+
 }

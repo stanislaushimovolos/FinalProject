@@ -56,4 +56,8 @@ class Manager
     int process_scene(sf::Packet &packet);
 };
 
+uint64_t make_long_long(uint32_t first_bits, uint32_t last_bits);
+
+sf::Packet &operator>>(sf::Packet &packet, uint64_t &number);
+
 }

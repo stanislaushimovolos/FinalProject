@@ -100,9 +100,7 @@ void Player::interact(ser::GameObject *object, int delta_t)
 
 void Player::compress_to_packet(sf::Packet &pack) const
 {
-    auto id = _ptr_id;
-    pack << (uint32_t) (id & 0xFFFFFFFF) << (uint32_t) (id >> 32);
-    pack << _position.x << _position.y << (uint32_t) _properties.size();
+    pack << _ptr_id << _position.x << _position.y << (uint32_t) _properties.size();
     compress_properties_to_packet(pack);
 }
 
@@ -116,6 +114,21 @@ void Player::set_id(uint64_t id)
 uint64_t Player::get_id() const
 {
     return _ptr_id;
+}
+
+
+std::pair<uint32_t, uint32_t> split_long_long(uint64_t number)
+{
+    auto first_part = (uint32_t) (number & 0xFFFFFFFF);
+    auto second_part = (uint32_t) (number >> 8 * sizeof(int));
+    return std::make_pair(first_part, second_part);
+}
+
+
+sf::Packet &operator<<(sf::Packet &packet, uint64_t number)
+{
+    auto[first_bits, last_bits] = split_long_long(number);
+    return packet << first_bits << last_bits;
 }
 
 }
