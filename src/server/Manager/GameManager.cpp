@@ -1,4 +1,4 @@
-#include "Manager.h"
+#include "GameManager.h"
 
 namespace ser
 {
@@ -11,6 +11,8 @@ int Manager::add_players(const std::list<ser::Handler> &clients)
         _players[id] = new Player(id.get_id());
         _objects.push_back(_players[id]);
     }
+    _objects.push_back(new MovingPlatform({200, 0}, {1, 1}, 300));
+    _objects.push_back(new MovingPlatform({0, 500}, {1, 0}, 300));
     return 1;
 }
 

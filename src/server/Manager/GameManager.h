@@ -7,6 +7,7 @@
 #include "../GameEntities/Blast.h"
 #include "../GameEntities/Player.h"
 #include "../GameEntities/Bullet.h"
+#include "../GameEntities/MovingPlatform.h"
 #include "../Network/ClientHandler.h"
 #include "../../configuration/render.h"
 #include "Utils.h"

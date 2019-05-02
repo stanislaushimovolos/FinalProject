@@ -3,7 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Network.hpp>
 
-#include "../Manager/Manager.h"
+#include "../Manager/DrawManager.h"
 
 namespace cli
 {

@@ -86,7 +86,7 @@ void GameObject::update(int delta_t)
     move({_velocity.x * delta_t, _velocity.y * delta_t});
     _collider.set_position(_position);
 
-    for (auto &[key, prop]:_properties)
+    for (auto &[_, prop]:_properties)
         prop->update(delta_t);
 }
 

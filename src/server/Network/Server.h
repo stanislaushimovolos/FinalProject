@@ -5,7 +5,7 @@
 #include <SFML/Network.hpp>
 
 #include "ClientHandler.h"
-#include "../Manager/Manager.h"
+#include "../Manager/GameManager.h"
 #include "../../configuration/network.h"
 
 namespace ser

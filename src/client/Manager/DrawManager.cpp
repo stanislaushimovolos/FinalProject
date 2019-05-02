@@ -1,4 +1,4 @@
-#include "Manager.h"
+#include "DrawManager.h"
 
 namespace cli
 {
@@ -35,6 +35,7 @@ void Manager::load_textures()
     _textures[GhostTexture].loadFromFile(ghost_texture_relative_path);
     _textures[DevilTexture].loadFromFile(devil_texture_relative_path);
     _textures[BulletTexture].loadFromFile(fire_ball_texture_relative_path);
+    _textures[BlackHoleTexture].loadFromFile(black_hole_relative_path);
 
     for (auto &obj: _graph_objects)
         obj.set_texture_map(&_textures);
@@ -77,6 +78,11 @@ int Manager::process_scene(sf::Packet &packet)
                 break;
             }
             case conf::game::Blast:
+            {
+                packet >> cur_object_coord_x >> cur_object_coord_y;
+                break;
+            }
+            case conf::game::MovingPlatform:
             {
                 packet >> cur_object_coord_x >> cur_object_coord_y;
                 break;
@@ -163,7 +169,7 @@ void Manager::draw()
         }
     }
     _window.display();
-    _window.clear(sf::Color::Yellow);
+    _window.clear(sf::Color::Blue);
 }
 
 
