@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Player.h"
 #include "../Engine/GameObject.h"
 #include "../../configuration/render.h"
 

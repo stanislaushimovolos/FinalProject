@@ -31,9 +31,9 @@ Player::Player(std::pair<uint32_t, uint32_t> ip_port) :
                                   boy_frame_amount));
 
     _collider.set_size({boy_texture_width / 2,
-                        boy_texture_height});
+                        boy_texture_height / 2});
     _collider.set_position({_position.x - boy_texture_width / 2,
-                            _position.y - -boy_texture_height / 4});
+                            _position.y - boy_texture_height / 4});
 }
 
 
@@ -64,13 +64,14 @@ void Player::interact(ser::GameObject *object, int delta_t)
     if (!object->is_active() || !_is_live)
         return;
 
-    const auto &other_collider = object->get_collider();
-    if (!this->_collider.detect_collision(other_collider))
-        return;
     switch (other_type)
     {
         case (conf::game::Player) :
         {
+            const auto &other_collider = object->get_collider();
+            if (!this->_collider.detect_collision(other_collider))
+                return;
+
             auto player_ptr = dynamic_cast<Player *>(object);
             if (!player_ptr->is_live())
                 break;
@@ -90,6 +91,10 @@ void Player::interact(ser::GameObject *object, int delta_t)
         }
         case (conf::game::Bullet):
         {
+            const auto &other_collider = object->get_collider();
+            if (!this->_collider.detect_collision(other_collider))
+                return;
+
             auto bullet_ptr = dynamic_cast<Bullet *>(object);
             if (_is_live && bullet_ptr->get_owner() != reinterpret_cast<std::uintptr_t>(this))
             {
@@ -101,6 +106,10 @@ void Player::interact(ser::GameObject *object, int delta_t)
         }
         case (conf::game::MovingPlatform):
         {
+            const auto &other_collider = object->get_collider();
+            if (!this->_collider.detect_collision(other_collider))
+                return;
+
             auto platform_ptr = dynamic_cast<MovingPlatform *>(object);
             if (_is_live)
             {
