@@ -33,6 +33,7 @@ void Manager::load_textures()
     _textures[BulletTexture].loadFromFile(fire_ball_texture_relative_path);
     _textures[GirlTexture].loadFromFile(girl_texture_relative_path);
     _textures[BoyTexture].loadFromFile(boy_texture_relative_path);
+    _textures[GhostTexture].loadFromFile(ghost_texture_relative_path);
 
     for (auto &obj: _graph_objects)
         obj.set_texture_map(&_textures);

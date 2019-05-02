@@ -75,6 +75,12 @@ void MatrixSprite::update(int delta_t)
 }
 
 
+void MatrixSprite::set_texture_id(uint32_t id)
+{
+    _texture_id = id;
+}
+
+
 void MatrixSprite::compress_to_packet(sf::Packet &pack) const
 {
     pack << _position.x - _width / 2

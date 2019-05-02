@@ -60,6 +60,8 @@ class MatrixSprite : public GraphProperty
 
     void update(int delta_t) override;
 
+    void set_texture_id(uint32_t);
+
     void set_color(sf::Color clr);
 
  private:

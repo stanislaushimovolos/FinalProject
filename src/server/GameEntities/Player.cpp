@@ -40,13 +40,16 @@ void Player::update(int delta_t)
 {
     GameObject::update(delta_t);
 
-    if (!_is_live)
-        dynamic_cast< MatrixSprite *>
-        (_properties[conf::game::MainObjectSprite])->set_color(sf::Color::Black);
-    else if (_is_hit)
-        dynamic_cast< MatrixSprite *>
-        (_properties[conf::game::MainObjectSprite])->set_color(sf::Color::Red);
-    else
+    if (_is_hit)
+    {
+        if (!_is_live)
+            dynamic_cast< MatrixSprite *>
+            (_properties[conf::game::MainObjectSprite])->set_texture_id(conf::render::GhostTexture);
+        else
+            dynamic_cast< MatrixSprite *>
+            (_properties[conf::game::MainObjectSprite])->set_color(sf::Color::Red);
+
+    } else
         dynamic_cast< MatrixSprite *>
         (_properties[conf::game::MainObjectSprite])->set_color(sf::Color::White);
 

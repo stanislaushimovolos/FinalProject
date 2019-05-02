@@ -12,7 +12,7 @@ static const float player_speed = 0.4;
 static const float player_health_points = 20;
 
 static const float bullet_speed = 1.6;
-static const float bullet_damage = 0.5;
+static const float bullet_damage = 1.5;
 
 static const uint32_t one_shoot_required_clicks = 7;
 
