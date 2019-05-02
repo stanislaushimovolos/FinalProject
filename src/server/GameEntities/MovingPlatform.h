@@ -9,13 +9,18 @@ class MovingPlatform : public GameObject
 {
  public:
 
-    MovingPlatform(sf::Vector2f position, sf::Vector2f velocity, int time_to_one_side);
+    MovingPlatform(sf::Vector2f position,
+                   sf::Vector2f velocity,
+                   int time_to_one_side,
+                   float damage);
 
     void compress_to_packet(sf::Packet &pack) const override;
 
     void interact(GameObject *object, int delta_t) override;
 
     void update(int delta_t) override;
+
+    float get_damage();
 
     ~MovingPlatform() override = default;
 

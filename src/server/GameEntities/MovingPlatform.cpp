@@ -2,7 +2,10 @@
 
 namespace ser
 {
-MovingPlatform::MovingPlatform(sf::Vector2f position, sf::Vector2f velocity, int time_to_one_side) :
+MovingPlatform::MovingPlatform(sf::Vector2f position,
+                               sf::Vector2f velocity,
+                               int time_to_one_side,
+                               float damage) :
     GameObject(position,
                velocity,
                conf::game::Down,
@@ -12,7 +15,7 @@ MovingPlatform::MovingPlatform(sf::Vector2f position, sf::Vector2f velocity, int
 
     _time_of_movement(0),
     _restart_movement_time(time_to_one_side),
-    _caused_damage(conf::game::hole_damage)
+    _caused_damage(damage)
 {
     using namespace conf::render;
 
@@ -56,6 +59,12 @@ void MovingPlatform::update(int delta_t)
         _velocity.y = -_velocity.y;
         _time_of_movement = 0;
     }
+}
+
+
+float MovingPlatform::get_damage()
+{
+    return _caused_damage;
 }
 
 }

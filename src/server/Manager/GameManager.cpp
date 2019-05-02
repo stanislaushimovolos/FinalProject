@@ -13,10 +13,16 @@ int Manager::add_players(const std::list<ser::Handler> &clients)
     }
     _objects.push_back(new MovingPlatform({200, 0},
                                           {conf::game::hole_speed, conf::game::hole_speed},
-                                          300));
+                                          300, conf::game::hole_damage));
 
-    _objects.push_back(new MovingPlatform({0, 500}, {conf::game::hole_speed, 0}, 300));
-    _objects.push_back(new MovingPlatform({-100, 100}, {0, -conf::game::hole_speed}, 300));
+    _objects.push_back(new MovingPlatform({0, 500},
+                                          {conf::game::hole_speed, 0},
+                                          300,
+                                          conf::game::hole_damage));
+    _objects.push_back(new MovingPlatform({-100, 100},
+                                          {0, -conf::game::hole_speed},
+                                          300,
+                                          conf::game::hole_damage));
     return 1;
 }
 

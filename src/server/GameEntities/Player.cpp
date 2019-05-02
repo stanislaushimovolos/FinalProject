@@ -1,4 +1,5 @@
 #include "Player.h"
+#include "MovingPlatform.h"
 
 namespace ser
 {
@@ -77,17 +78,7 @@ void Player::interact(ser::GameObject *object, int delta_t)
             std::cout << "Player-player collision!!!" << std::endl;
 
             auto other_position = object->get_position();
-            sf::Vector2f
-                radius_vector
-                (_position.x - other_position.x, _position.y - other_position.y);
-
-            float vector_norm = fast_square_root(
-                (_position.x - other_position.x) * (_position.x - other_position.x)
-                    + (_position.y - other_position.y) * (_position.y - other_position.y));
-
-            // normalize
-            radius_vector.x = radius_vector.x / vector_norm;
-            radius_vector.y = radius_vector.y / vector_norm;
+            sf::Vector2f radius_vector = compute_unit_vector(_position, other_position);
 
             if (_direction != conf::game::Rest)
                 move({radius_vector.x * _speed * delta_t,
@@ -113,10 +104,17 @@ void Player::interact(ser::GameObject *object, int delta_t)
         }
         case (conf::game::MovingPlatform):
         {
+            auto platform_ptr = dynamic_cast<MovingPlatform *>(object);
             if (_is_live)
             {
                 std::cout << "Player-hole collision!!!" << std::endl;
-                cause_damage(conf::game::hole_damage);
+                cause_damage(platform_ptr->get_damage());
+
+                auto other_position = object->get_position();
+                sf::Vector2f radius_vector = compute_unit_vector(_position, other_position);
+
+                move({radius_vector.x * _speed * delta_t,
+                      radius_vector.y * _speed * delta_t});
             }
 
             break;
