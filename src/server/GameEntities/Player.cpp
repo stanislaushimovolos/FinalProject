@@ -1,5 +1,4 @@
 #include "Player.h"
-#include "MovingPlatform.h"
 
 namespace ser
 {
@@ -77,7 +76,6 @@ void Player::interact(ser::GameObject *object, int delta_t)
                 break;
 
             std::cout << "Player-player collision!!!" << std::endl;
-
             auto other_position = object->get_position();
             sf::Vector2f radius_vector = compute_unit_vector(_position, other_position);
 
@@ -96,7 +94,7 @@ void Player::interact(ser::GameObject *object, int delta_t)
                 return;
 
             auto bullet_ptr = dynamic_cast<Bullet *>(object);
-            if (_is_live && bullet_ptr->get_owner() != reinterpret_cast<std::uintptr_t>(this))
+            if (bullet_ptr->get_owner() != reinterpret_cast<std::uintptr_t>(this))
             {
                 std::cout << "Player-bullet collision!!!" << std::endl;
                 cause_damage(conf::game::bullet_damage);
@@ -111,20 +109,26 @@ void Player::interact(ser::GameObject *object, int delta_t)
                 return;
 
             auto platform_ptr = dynamic_cast<MovingPlatform *>(object);
-            if (_is_live)
-            {
-                std::cout << "Player-hole collision!!!" << std::endl;
-                cause_damage(platform_ptr->get_damage());
+            std::cout << "Player-hole collision!!!" << std::endl;
+            cause_damage(platform_ptr->get_damage());
 
-                auto other_position = object->get_position();
-                sf::Vector2f radius_vector = compute_unit_vector(_position, other_position);
+            auto other_position = object->get_position();
+            sf::Vector2f radius_vector = compute_unit_vector(_position, other_position);
 
-                move(radius_vector * _speed * delta_t);
-            }
+            move(radius_vector * _speed * delta_t);
+
             break;
         }
         case (conf::game::Blast):
         {
+            const auto &other_collider = object->get_collider();
+            if (!this->_collider.detect_collision(other_collider))
+                return;
+
+            auto blast_ptr = dynamic_cast<Blast *>(object);
+            std::cout << "Player-blast collision!!!" << std::endl;
+            cause_damage(blast_ptr->get_damage());
+
             break;
         }
         default:break;

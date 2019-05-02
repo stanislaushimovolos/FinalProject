@@ -3,8 +3,9 @@
 namespace ser
 {
 
-Blast::Blast(uint64_t owner, sf::Vector2f position) :
+Blast::Blast(uint64_t owner, sf::Vector2f position, float damage) :
     GameObject(position, {0, 0}, conf::game::Down, conf::game::Down, 0, conf::game::Blast),
+    _caused_damage(damage),
     _owner(owner)
 {
     using namespace conf::render;
@@ -45,6 +46,12 @@ void Blast::update(int delta_t)
 void Blast::interact(ser::GameObject *object, int delta_t)
 {
 
+}
+
+
+float Blast::get_damage() const
+{
+    return _caused_damage;
 }
 
 }

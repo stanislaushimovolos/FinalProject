@@ -1,6 +1,8 @@
 #pragma once
 
+#include "Blast.h"
 #include "Bullet.h"
+#include "MovingPlatform.h"
 #include "../Engine/GameObject.h"
 #include "../../configuration/render.h"
 

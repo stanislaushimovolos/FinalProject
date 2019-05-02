@@ -52,7 +52,9 @@ void Manager::collect_garbage()
             if (current_object->get_type() == conf::game::Bullet)
             {
                 auto bullet_owner = dynamic_cast<Bullet *>(current_object)->get_owner();
-                _objects.push_back(new Blast(bullet_owner, current_object->get_position()));
+                _objects.push_back(new Blast(bullet_owner,
+                                             current_object->get_position(),
+                                             conf::game::blast_damage));
             }
 
             delete *it;
