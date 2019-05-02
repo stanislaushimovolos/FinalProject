@@ -32,7 +32,7 @@ Player::Player(std::pair<uint32_t, uint32_t> ip_port) :
     _collider.set_size({boy_texture_width / 2,
                         boy_texture_height});
     _collider.set_position({_position.x - boy_texture_width / 2,
-                            _position.y - -boy_texture_height / 2});
+                            _position.y - -boy_texture_height / 4});
 }
 
 

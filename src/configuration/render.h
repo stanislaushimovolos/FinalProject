@@ -64,9 +64,9 @@ static const float ghost_animation_speed = 0.02;
 
 // Blast
 static const int blast_frame_amount = 15;
-static const float blast_texture_width = 197;
+static const float blast_texture_width = 200;
 static const float blast_texture_height = 200;
-static const float blast_animation_speed = 0.07;
+static const float blast_animation_speed = 0.035;
 
 }
 
