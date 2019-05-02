@@ -111,6 +111,16 @@ void Player::interact(ser::GameObject *object, int delta_t)
 
             break;
         }
+        case (conf::game::MovingPlatform):
+        {
+            if (_is_live)
+            {
+                std::cout << "Player-hole collision!!!" << std::endl;
+                cause_damage(conf::game::hole_damage);
+            }
+
+            break;
+        }
         default:break;
     }
 }

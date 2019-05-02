@@ -14,6 +14,9 @@ static const float player_health_points = 50;
 static const float bullet_speed = 1.6;
 static const float bullet_damage = 1.5;
 
+static const float hole_damage = 0.1;
+static const float hole_speed = 1;
+
 static const uint32_t one_shoot_required_clicks = 7;
 
 enum MoveDirections

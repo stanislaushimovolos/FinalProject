@@ -11,7 +11,8 @@ MovingPlatform::MovingPlatform(sf::Vector2f position, sf::Vector2f velocity, int
                conf::game::MovingPlatform),
 
     _time_of_movement(0),
-    _restart_movement_time(time_to_one_side)
+    _restart_movement_time(time_to_one_side),
+    _caused_damage(conf::game::hole_damage)
 {
     using namespace conf::render;
 

@@ -23,6 +23,8 @@ class MovingPlatform : public GameObject
 
     int _time_of_movement;
     int _restart_movement_time;
+
+    float _caused_damage;
 };
 
 }
