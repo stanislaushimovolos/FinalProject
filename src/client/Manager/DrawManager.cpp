@@ -8,9 +8,11 @@ Manager::Manager(uint32_t x_resolution, uint32_t y_resolution, std::string &&win
     _window_name(window_name),
     _is_window_opened(true),
     _is_window_focused(true),
+    _tile_size(0, 0),
 
     _view(sf::Vector2f(x_resolution / 2, y_resolution / 2),
-          sf::Vector2f(x_resolution, y_resolution)),
+          sf::Vector2f(x_resolution, y_resolution)
+    ),
 
     _graph_objects(conf::game::START_NUM_OF_OBJECTS)
 {
@@ -24,7 +26,7 @@ void Manager::set_id(uint64_t id)
 }
 
 
-void Manager::load_textures()
+void Manager::load_textures_of_objects()
 {
     using namespace conf::render;
 
@@ -155,8 +157,10 @@ sf::Packet Manager::get_current_state()
 }
 
 
-void Manager::draw()
+void Manager::draw_scene()
 {
+    draw_map();
+
     sf::Vector2f view_coord = _view.getCenter();
     for (int i = 0; i < _current_num_of_objects; i++)
     {
@@ -168,8 +172,18 @@ void Manager::draw()
             _graph_objects[i].draw(_window);
         }
     }
+
     _window.display();
     _window.clear(sf::Color::Blue);
+}
+
+
+void Manager::draw_map()
+{
+    // improve : draw only necessary tiles
+    for (auto &layer:_map_tile_layers)
+        for (auto &tile:layer.tiles)
+            _window.draw(tile);
 }
 
 
@@ -180,7 +194,7 @@ int Manager::update(sf::Packet &packet)
         return 0;
 
     _window.setView(_view);
-    this->draw();
+    this->draw_scene();
     return 1;
 }
 
@@ -188,7 +202,14 @@ int Manager::update(sf::Packet &packet)
 void Manager::activate()
 {
     _window.create(sf::VideoMode(_resolution.x, _resolution.y), _window_name);
-    load_textures();
+    load_textures_of_objects();
+
+    // check
+
+    _level.LoadFromFile(conf::game::map_relative_path);
+
+    _tile_size = _level.GetTileSize();
+    _map_tile_layers = _level.GetLayers();
 }
 
 

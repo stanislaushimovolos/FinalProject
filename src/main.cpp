@@ -8,6 +8,7 @@
 
 int main()
 {
+
     std::string type;
     std::cout << "Enter type of connection" << std::endl;
     std::cin >> type;
@@ -32,5 +33,4 @@ int main()
             std::cout << exception.what() << std::endl;
         }
     }
-    return 0;
 }

@@ -6,6 +6,7 @@
 #include "KeyboardInterface.h"
 #include "../Render/SpriteDrawer.h"
 #include "../../configuration/render.h"
+#include "../../map/Level.h"
 
 namespace cli
 {
@@ -17,13 +18,17 @@ class Manager
 
     Manager(uint32_t x_resolution, uint32_t y_resolution, std::string &&window_name);
 
+    void load_textures_of_objects();
+
     void set_id(uint64_t id);
 
-    void load_textures();
+    void draw_scene();
 
     void activate();
 
-    void draw();
+    void draw_map();
+
+    int process_scene(sf::Packet &packet);
 
     int update(sf::Packet &packet);
 
@@ -53,7 +58,9 @@ class Manager
     std::vector<SpriteDrawer> _graph_objects;
     std::map<unsigned int, sf::Texture> _textures;
 
-    int process_scene(sf::Packet &packet);
+    Level _level;
+    std::vector<Layer> _map_tile_layers;
+    sf::Vector2i _tile_size;
 };
 
 uint64_t make_long_long(uint32_t first_bits, uint32_t last_bits);
