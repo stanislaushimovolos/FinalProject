@@ -81,12 +81,10 @@ void Player::interact(ser::GameObject *object, int delta_t)
             sf::Vector2f radius_vector = compute_unit_vector(_position, other_position);
 
             if (_direction != conf::game::Rest)
-                move({radius_vector.x * _speed * delta_t,
-                      radius_vector.y * _speed * delta_t});
+                move(radius_vector * _speed * delta_t);
 
             if (object->get_direction() != conf::game::Rest)
-                object->move({-radius_vector.x * _speed * delta_t,
-                              -radius_vector.y * _speed * delta_t});
+                object->move(-radius_vector * _speed * delta_t);
 
             break;
         }
@@ -99,7 +97,6 @@ void Player::interact(ser::GameObject *object, int delta_t)
                 cause_damage(conf::game::bullet_damage);
                 bullet_ptr->set_status(false);
             }
-
             break;
         }
         case (conf::game::MovingPlatform):
@@ -113,10 +110,12 @@ void Player::interact(ser::GameObject *object, int delta_t)
                 auto other_position = object->get_position();
                 sf::Vector2f radius_vector = compute_unit_vector(_position, other_position);
 
-                move({radius_vector.x * _speed * delta_t,
-                      radius_vector.y * _speed * delta_t});
+                move(radius_vector * _speed * delta_t);
             }
-
+            break;
+        }
+        case (conf::game::Blast):
+        {
             break;
         }
         default:break;

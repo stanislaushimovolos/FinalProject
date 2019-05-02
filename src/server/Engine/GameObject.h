@@ -82,4 +82,6 @@ float fast_square_root(float n);
 
 sf::Vector2f compute_unit_vector(const sf::Vector2f &first, const sf::Vector2f &second);
 
+sf::Vector2f operator*(const sf::Vector2f &first, float multiplier);
+
 }

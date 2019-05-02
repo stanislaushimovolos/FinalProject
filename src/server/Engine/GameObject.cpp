@@ -197,6 +197,12 @@ sf::Vector2f compute_unit_vector(const sf::Vector2f &first, const sf::Vector2f &
 }
 
 
+sf::Vector2f operator*(const sf::Vector2f &first, float multiplier)
+{
+    return {first.x * multiplier, first.y * multiplier};
+}
+
+
 float fast_square_root(float n)
 {
     n = 1.0f / n;
