@@ -4,6 +4,7 @@
 #include <unordered_map>
 
 #include "../Engine/GameObject.h"
+#include "../GameEntities/Blast.h"
 #include "../GameEntities/Player.h"
 #include "../GameEntities/Bullet.h"
 #include "../Network/ClientHandler.h"

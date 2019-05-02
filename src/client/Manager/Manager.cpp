@@ -29,11 +29,12 @@ void Manager::load_textures()
     using namespace conf::render;
 
     // fill texture map
+    _textures[BoyTexture].loadFromFile(boy_texture_relative_path);
+    _textures[GirlTexture].loadFromFile(girl_texture_relative_path);
+    _textures[BlastTexture].loadFromFile(blast_texture_relative_path);
+    _textures[GhostTexture].loadFromFile(ghost_texture_relative_path);
     _textures[DevilTexture].loadFromFile(devil_texture_relative_path);
     _textures[BulletTexture].loadFromFile(fire_ball_texture_relative_path);
-    _textures[GirlTexture].loadFromFile(girl_texture_relative_path);
-    _textures[BoyTexture].loadFromFile(boy_texture_relative_path);
-    _textures[GhostTexture].loadFromFile(ghost_texture_relative_path);
 
     for (auto &obj: _graph_objects)
         obj.set_texture_map(&_textures);
@@ -71,6 +72,11 @@ int Manager::process_scene(sf::Packet &packet)
                 break;
             }
             case conf::game::Bullet:
+            {
+                packet >> cur_object_coord_x >> cur_object_coord_y;
+                break;
+            }
+            case conf::game::Blast:
             {
                 packet >> cur_object_coord_x >> cur_object_coord_y;
                 break;

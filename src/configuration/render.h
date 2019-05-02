@@ -15,12 +15,14 @@ enum Textures
     BulletTexture,
     GirlTexture,
     BoyTexture,
-    GhostTexture
+    GhostTexture,
+    BlastTexture
 };
 
 // Path to texture files
 static const char boy_texture_relative_path[] = "../client/Textures/Boy.png";
 static const char girl_texture_relative_path[] = "../client/Textures/Girl.png";
+static const char blast_texture_relative_path[] = "../client/Textures/Blast.png";
 static const char devil_texture_relative_path[] = "../client/Textures/Devil.png";
 static const char ghost_texture_relative_path[] = "../client/Textures/Ghost.png";
 static const char fire_ball_texture_relative_path[] = "../client/Textures/FireBall.png";
@@ -59,6 +61,12 @@ static const int ghost_frame_amount = 8;
 static const float ghost_texture_width = 100;
 static const float ghost_texture_height = 100;
 static const float ghost_animation_speed = 0.02;
+
+// Blast
+static const int blast_frame_amount = 15;
+static const float blast_texture_width = 197;
+static const float blast_texture_height = 200;
+static const float blast_animation_speed = 0.07;
 
 }
 
