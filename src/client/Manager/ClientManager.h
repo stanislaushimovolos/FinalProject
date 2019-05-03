@@ -64,6 +64,7 @@ class Manager
     Level _level;
     std::vector<Layer> _map_tile_layers;
     sf::Vector2i _tile_size;
+    float _map_width, _map_height;
 
     int _current_graph_property;
 };

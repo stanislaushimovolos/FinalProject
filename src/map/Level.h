@@ -52,6 +52,8 @@ class Level//главный класс - уровень
 
     sf::Vector2i GetTileSize();//получаем размер тайла
 
+    sf::Vector2i GetMapSize();
+
  private:
 
     int width, height, tileWidth, tileHeight;//в tmx файле width height в начале,затем размер тайла

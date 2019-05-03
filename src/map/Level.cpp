@@ -298,6 +298,12 @@ sf::Vector2i Level::GetTileSize()
 }
 
 
+sf::Vector2i Level::GetMapSize()
+{
+    return sf::Vector2i(width, height);
+}
+
+
 void Level::Draw(sf::RenderWindow &window)
 {
     // рисуем все тайлы (объекты не рисуем!)

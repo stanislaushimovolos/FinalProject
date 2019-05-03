@@ -2,8 +2,10 @@
 #include <SFML/Network.hpp>
 #include <SFML/Graphics.hpp>
 
-#include "server/Network/Server.h"
-#include "client/Network/Client.h"
+#include "../server/Network/Server.h"
+#include "../server/Managers/LevelManager.h"
+
+#include "../client/Network/Client.h"
 
 
 int main()
@@ -15,10 +17,12 @@ int main()
 
     if (type == "s")
     {
-        ser::Manager server_manager;
-        ser::Server server(conf::net::DEFAULT_PORT);
+        ser::GameManager game_manager(conf::map::server_map_path);
+        ser::Server server
+            (conf::net::DEFAULT_PORT, conf::net::CONNECTION_DELAY, game_manager.count_players());
+
         server.connect_clients();
-        server.start_session(server_manager);
+        server.start_session(game_manager);
     } else
     {
         try
