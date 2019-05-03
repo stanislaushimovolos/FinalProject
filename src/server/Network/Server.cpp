@@ -96,7 +96,7 @@ void Server::receive_packets()
 
 int Server::start_session(GameManager &manager)
 {
-    manager.add_players(_clients);
+    manager.create_env(_clients);
     auto players_ptr_id = manager.get_players_ptr_id(_clients);
     send_id_to_clients(players_ptr_id);
 

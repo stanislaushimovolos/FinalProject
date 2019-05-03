@@ -6,6 +6,7 @@
 #include "Properties.h"
 #include "RectCollider.h"
 #include "../../configuration/gameplay.h"
+#include "../../map/Level.h"
 
 namespace ser
 {

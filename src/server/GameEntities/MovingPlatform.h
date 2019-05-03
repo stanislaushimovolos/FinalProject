@@ -10,9 +10,7 @@ class MovingPlatform : public GameObject
 {
  public:
 
-    MovingPlatform(sf::Vector2f position,
-                   sf::Vector2f velocity,
-                   int time_to_one_side,
+    MovingPlatform(Object &map_object,
                    float damage);
 
     void compress_to_packet(sf::Packet &pack) const override;
@@ -28,7 +26,7 @@ class MovingPlatform : public GameObject
  private:
 
     int _time_of_movement;
-    int _restart_movement_time;
+    float _restart_movement_time;
 
     float _caused_damage;
 };

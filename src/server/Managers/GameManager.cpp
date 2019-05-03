@@ -3,45 +3,10 @@
 namespace ser
 {
 
-GameManager::GameManager(LevelManager &level) :
-    _level(level)
+GameManager::GameManager(const std::string &file_name)
 {
-
-}
-
-
-int GameManager::add_players(const std::list<ser::Handler> &clients)
-{
-    auto player_objects = _level.get_objects_by_name(conf::map::player_object_name);
-    std::vector<sf::Vector2f> player_coords;
-    player_coords.reserve(player_objects.size());
-
-    for (auto &obj:player_objects)
-        player_coords.emplace_back(obj.rect.left, obj.rect.top);
-
-    int i = 0;
-    for (auto &cli:clients)
-    {
-        auto id = ser::ClientId(cli.get_id());
-
-        _players[id] = new Player(id.get_id(), player_coords[i]);
-        i++;
-        _objects.push_back(_players[id]);
-    }
-
-    /*_objects.push_back(new MovingPlatform({200, 0},
-                                          {conf::game::hole_speed, conf::game::hole_speed},
-                                          300, conf::game::hole_damage));
-
-    _objects.push_back(new MovingPlatform({0, 500},
-                                          {conf::game::hole_speed, 0},
-                                          300,
-                                          conf::game::hole_damage));
-    _objects.push_back(new MovingPlatform({-100, 100},
-                                          {0, -conf::game::hole_speed},
-                                          300,
-                                          conf::game::hole_damage));*/
-    return 1;
+    _level.load_level(file_name);
+    _level.get_all_objects();
 }
 
 
@@ -80,6 +45,35 @@ void GameManager::collect_garbage()
         } else
             ++it;
     }
+}
+
+
+void GameManager::load_init_objects()
+{
+    auto black_hole_objects = _level.get_objects_by_name("hole");
+    for (auto &obj :black_hole_objects)
+    {
+        _objects.push_back(new MovingPlatform(obj, conf::game::hole_speed));
+        std::cout << obj.GetPropertyString("direction") << std::endl;
+    }
+}
+
+
+int GameManager::create_env(const std::list<ser::Handler> &clients)
+{
+    auto player_objects = _level.get_objects_by_name(conf::map::player_object_name);
+    int player_counter = 0;
+
+    for (auto &cli:clients)
+    {
+        auto id = ser::ClientId(cli.get_id());
+        _players[id] = new Player(id.get_id(), player_objects[player_counter]);
+        _objects.push_back(_players[id]);
+        player_counter++;
+    }
+
+    load_init_objects();
+    return 1;
 }
 
 
@@ -173,6 +167,12 @@ int GameManager::remove_disconnected_players(std::vector<ClientId> &dis_players)
         }
     }
     return 0;
+}
+
+
+size_t GameManager::count_players()
+{
+    return _level.count_players();
 }
 
 

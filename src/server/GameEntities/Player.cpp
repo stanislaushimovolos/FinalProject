@@ -3,8 +3,8 @@
 namespace ser
 {
 
-Player::Player(std::pair<uint32_t, uint32_t> ip_port, sf::Vector2f position) :
-    ser::GameObject(position,
+Player::Player(std::pair<uint32_t, uint32_t> ip_port, Object &map_object) :
+    ser::GameObject({map_object.rect.left, map_object.rect.top},
                     {0, 0},
                     conf::game::Up,
                     conf::game::Rest,

@@ -2,21 +2,44 @@
 
 namespace ser
 {
-MovingPlatform::MovingPlatform(sf::Vector2f position,
-                               sf::Vector2f velocity,
-                               int time_to_one_side,
+MovingPlatform::MovingPlatform(Object &map_object,
                                float damage) :
-    GameObject(position,
-               velocity,
+
+    GameObject({map_object.rect.left, map_object.rect.top},
+               {0, 0},
                conf::game::Down,
                conf::game::Down,
                0,
                conf::game::MovingPlatform),
 
     _time_of_movement(0),
-    _restart_movement_time(time_to_one_side),
     _caused_damage(damage)
 {
+
+    _restart_movement_time = map_object.GetPropertyFloat("time_one_side");
+    std::string direction = map_object.GetPropertyString("direction");
+
+    // Do better
+    if (direction == "up")
+        _velocity = {0, -1};
+
+    else if (direction == "down")
+        _velocity = _velocity = {0, 1};
+
+    else if (direction == "left")
+        _velocity = _velocity = {-1, 0};
+
+    else if (direction == "right")
+        _velocity = {1, 0};
+
+    else if (direction == "rightdiag")
+        _velocity = {1, 1};
+
+    else if (direction == "leftdiag")
+        _velocity = {-1, 1};
+
+
+
     using namespace conf::render;
 
     add_property(conf::game::MainObjectSprite,

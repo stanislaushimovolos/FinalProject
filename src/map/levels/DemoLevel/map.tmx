@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.1" orientation="orthogonal" renderorder="right-down" width="50" height="27" tilewidth="32" tileheight="32" infinite="0" backgroundcolor="#4d538c" nextlayerid="4" nextobjectid="64">
+<map version="1.2" tiledversion="1.2.1" orientation="orthogonal" renderorder="right-down" width="50" height="27" tilewidth="32" tileheight="32" infinite="0" backgroundcolor="#4d538c" nextlayerid="4" nextobjectid="72">
  <tileset firstgid="1" name="Tiny_Chao_Garden_SonicAdv_3_Tile_Sheet" tilewidth="32" tileheight="32" tilecount="0" columns="64">
   <image source="../map/levels/DemoLevel/DemoTile.png" width="2048" height="1536"/>
  </tileset>
@@ -1363,15 +1363,27 @@
   <object id="51" name="solid" x="83.8604" y="846.876" width="584" height="16"/>
   <object id="52" name="solid" x="1279.86" y="673.542" width="125" height="93"/>
   <object id="53" name="easyEnemy" x="990.655" y="669.701" width="200" height="97"/>
-  <object id="54" name="player" type="Player" x="772.011" y="732.48" width="32" height="32">
-   <properties>
-    <property name="Value" value="Girl"/>
-   </properties>
-  </object>
   <object id="57" name="solid" x="863.86" y="675.542" width="31" height="89"/>
   <object id="58" name="solid" x="212" y="605.333" width="72" height="240"/>
   <object id="59" name="solid" x="1305.33" y="380" width="40" height="293.333"/>
   <object id="60" name="player" x="441" y="395" width="53" height="56"/>
-  <object id="61" x="668" y="418" width="92" height="84"/>
+  <object id="67" name="hole" x="735" y="282" width="83" height="79">
+   <properties>
+    <property name="direction" value="up"/>
+    <property name="time_one_side" value="500"/>
+   </properties>
+  </object>
+  <object id="70" name="hole" x="168.5" y="80.5" width="83" height="79">
+   <properties>
+    <property name="direction" value="right"/>
+    <property name="time_one_side" value="2000"/>
+   </properties>
+  </object>
+  <object id="71" name="hole" x="429.5" y="109.5" width="83" height="79">
+   <properties>
+    <property name="direction" value="rightdiag"/>
+    <property name="time_one_side" value="200"/>
+   </properties>
+  </object>
  </objectgroup>
 </map>

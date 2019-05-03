@@ -22,7 +22,7 @@ class GameManager
 
  private:
 
-    LevelManager &_level;
+    LevelManager _level;
 
     std::unordered_map<ClientId, Player *, ClientHasher, EqualClients> _players;
     std::list<ClientState> _players_states;
@@ -30,15 +30,17 @@ class GameManager
 
  public:
 
-    explicit GameManager(LevelManager &_level);
+    explicit GameManager(const std::string &file_name);
 
     void process_packets(std::vector<Packet> &received_data);
+
+    void load_init_objects();
 
     void collect_garbage();
 
     int update_player_states(std::vector<ser::Packet> &received_data);
 
-    int add_players(const std::list<ser::Handler> &clients);
+    int create_env(const std::list<ser::Handler> &clients);
 
     int update_environment(sf::Time &&delta_t);
 
@@ -47,6 +49,8 @@ class GameManager
     std::vector<uint64_t> get_players_ptr_id(const std::list<ser::Handler> &clients);
 
     sf::Packet create_current_state_packet();
+
+    size_t count_players();
 
     ~GameManager();
 };
