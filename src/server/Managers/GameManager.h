@@ -8,6 +8,8 @@
 #include "../GameEntities/Player.h"
 #include "../GameEntities/Bullet.h"
 #include "../GameEntities/MovingPlatform.h"
+#include "../GameEntities/SolidBlock.h"
+
 #include "../Network/ClientHandler.h"
 #include "../../configuration/render.h"
 

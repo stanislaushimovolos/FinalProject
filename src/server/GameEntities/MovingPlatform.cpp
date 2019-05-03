@@ -39,7 +39,6 @@ MovingPlatform::MovingPlatform(Object &map_object,
         _velocity = {-1, 1};
 
 
-
     using namespace conf::render;
 
     add_property(conf::game::MainObjectSprite,

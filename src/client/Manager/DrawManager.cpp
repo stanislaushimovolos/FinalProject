@@ -89,6 +89,12 @@ int Manager::process_scene(sf::Packet &packet)
                 packet >> cur_object_coord_x >> cur_object_coord_y;
                 break;
             }
+            case conf::game::SolidBlock:
+            {
+                packet >> cur_object_coord_x >> cur_object_coord_y;
+                break;
+
+            }
             default:
             {
                 std::cout << "received unknown object" << std::endl;

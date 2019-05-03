@@ -50,12 +50,16 @@ void GameManager::collect_garbage()
 
 void GameManager::load_init_objects()
 {
-    auto black_hole_objects = _level.get_objects_by_name("hole");
+
+    // Do better
+    auto black_hole_objects = _level.get_objects_by_name(conf::map::hole_object_name);
     for (auto &obj :black_hole_objects)
-    {
         _objects.push_back(new MovingPlatform(obj, conf::game::hole_speed));
-        std::cout << obj.GetPropertyString("direction") << std::endl;
-    }
+
+    auto solid_blocks_objects = _level.get_objects_by_name(conf::map::solid_block_object_name);
+    for (auto &obj :solid_blocks_objects)
+        _objects.push_back(new SolidBlock(obj));
+
 }
 
 

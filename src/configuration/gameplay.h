@@ -44,7 +44,8 @@ enum ObjectTypes
     Player,
     Bullet,
     Blast,
-    MovingPlatform
+    MovingPlatform,
+    SolidBlock
 };
 
 // Type of textures (Rectangle is removed now)
