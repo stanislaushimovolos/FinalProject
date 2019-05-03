@@ -64,6 +64,8 @@ class Manager
     Level _level;
     std::vector<Layer> _map_tile_layers;
     sf::Vector2i _tile_size;
+
+    int _current_graph_property;
 };
 
 uint64_t make_long_long(uint32_t first_bits, uint32_t last_bits);

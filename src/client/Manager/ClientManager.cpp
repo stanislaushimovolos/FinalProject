@@ -1,4 +1,4 @@
-#include "DrawManager.h"
+#include "ClientManager.h"
 
 namespace cli
 {
@@ -9,6 +9,7 @@ Manager::Manager(uint32_t x_resolution, uint32_t y_resolution, std::string &&win
     _is_window_opened(true),
     _is_window_focused(true),
     _tile_size(0, 0),
+    _current_graph_property(0),
 
     _view(sf::Vector2f(x_resolution / 2, y_resolution / 2),
           sf::Vector2f(x_resolution, y_resolution)
@@ -60,6 +61,7 @@ int Manager::process_scene(sf::Packet &packet)
     uint32_t num_of_properties = 0;
     float cur_object_coord_x = 0, cur_object_coord_y = 0;
 
+    _current_graph_property = 0;
     for (int i = 0; i < _current_num_of_objects; i++)
     {
         packet >> obj_type;
@@ -109,7 +111,8 @@ int Manager::process_scene(sf::Packet &packet)
         {
             uint32_t property_type = 0;
             packet >> property_type;
-            _graph_objects[i].set_state_form_packet(packet);
+            _graph_objects[_current_graph_property].set_state_form_packet(packet);
+            _current_graph_property++;
         }
     }
     return 1;
@@ -165,7 +168,6 @@ sf::Packet Manager::get_current_state()
 
 void Manager::draw_scene()
 {
-
     sf::Vector2f view_coord = _view.getCenter();
 
     draw_map(view_coord);
@@ -178,7 +180,7 @@ void Manager::draw_scene()
 
 void Manager::draw_objects(const sf::Vector2f &view_coord)
 {
-    for (int i = 0; i < _current_num_of_objects; i++)
+    for (int i = 0; i < _current_graph_property; i++)
     {
         // draw close objects
         auto obj_pos = _graph_objects[i].get_position();
@@ -188,7 +190,6 @@ void Manager::draw_objects(const sf::Vector2f &view_coord)
             _graph_objects[i].draw(_window);
         }
     }
-
 }
 
 

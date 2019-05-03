@@ -47,6 +47,7 @@ void SpriteDrawer::set_state_form_packet(sf::Packet &pack)
     // Check if texture exists
     if ((*_textures).count(texture_id))
         _sprite.setTexture((*_textures)[texture_id]);
+
 }
 
 
