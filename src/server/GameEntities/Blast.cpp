@@ -51,7 +51,7 @@ void Blast::interact(ser::GameObject *object, int delta_t)
 
     switch (other_type)
     {
-        case (conf::game::Blast):
+        case (conf::game::Player):
         {
             const auto &other_collider = object->get_collider();
             if (!this->_collider.detect_collision(other_collider))

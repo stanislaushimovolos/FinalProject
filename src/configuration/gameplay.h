@@ -10,7 +10,7 @@ static const uint64_t START_NUM_OF_OBJECTS = 100;
 
 // Player parameters
 static const float player_speed = 0.4;
-static const float player_health_points = 50;
+static const float player_health_points = 500;
 
 // Bullet parameters
 static const float bullet_speed = 1.6;

@@ -75,7 +75,6 @@ void Player::interact(ser::GameObject *object, int delta_t)
             if (!player_ptr->is_live())
                 break;
 
-            std::cout << "Player-player collision!!!" << std::endl;
             auto other_position = object->get_position();
             sf::Vector2f radius_vector = compute_unit_vector(_position, other_position);
 
@@ -96,7 +95,6 @@ void Player::interact(ser::GameObject *object, int delta_t)
             auto bullet_ptr = dynamic_cast<Bullet *>(object);
             if (bullet_ptr->get_owner() != reinterpret_cast<std::uintptr_t>(this))
             {
-                std::cout << "Player-bullet collision!!!" << std::endl;
                 cause_damage(conf::game::bullet_damage);
                 bullet_ptr->set_status(false);
             }
@@ -109,7 +107,6 @@ void Player::interact(ser::GameObject *object, int delta_t)
                 return;
 
             auto platform_ptr = dynamic_cast<MovingPlatform *>(object);
-            std::cout << "Player-hole collision!!!" << std::endl;
             cause_damage(platform_ptr->get_damage());
 
             auto other_position = object->get_position();
@@ -126,7 +123,6 @@ void Player::interact(ser::GameObject *object, int delta_t)
                 return;
 
             auto blast_ptr = dynamic_cast<Blast *>(object);
-            std::cout << "Player-blast collision!!!" << std::endl;
             cause_damage(blast_ptr->get_damage());
 
             break;
@@ -137,6 +133,7 @@ void Player::interact(ser::GameObject *object, int delta_t)
             if (!this->_collider.detect_collision(other_collider))
                 return;
 
+            break;
         }
         default:break;
     }

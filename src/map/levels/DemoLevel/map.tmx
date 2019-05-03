@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.1" orientation="orthogonal" renderorder="right-down" width="50" height="27" tilewidth="32" tileheight="32" infinite="0" backgroundcolor="#4d538c" nextlayerid="4" nextobjectid="81">
+<map version="1.2" tiledversion="1.2.1" orientation="orthogonal" renderorder="right-down" width="50" height="27" tilewidth="32" tileheight="32" infinite="0" backgroundcolor="#4d538c" nextlayerid="4" nextobjectid="82">
  <tileset firstgid="1" name="Tiny_Chao_Garden_SonicAdv_3_Tile_Sheet" tilewidth="32" tileheight="32" tilecount="3072" columns="64">
   <image source="../map/levels/DemoLevel/DemoTile.png" width="2048" height="1536"/>
  </tileset>
@@ -1365,26 +1365,13 @@
     <property name="time_one_side" value="500"/>
    </properties>
   </object>
-  <object id="70" name="hole" x="168.5" y="80.5" width="83" height="79">
-   <properties>
-    <property name="direction" value="right"/>
-    <property name="time_one_side" value="2000"/>
-   </properties>
-  </object>
-  <object id="71" name="hole" x="1248.17" y="158.833" width="83" height="79">
+  <object id="71" name="hole" x="1241.17" y="154.833" width="83" height="79">
    <properties>
     <property name="direction" value="rightdiag"/>
     <property name="time_one_side" value="200"/>
    </properties>
   </object>
-  <object id="72" name="solidblock" x="1.33333" y="8" width="1593.33" height="22.6667"/>
-  <object id="73" name="solidblock" x="2.33333" y="31" width="25.3333" height="825.333"/>
-  <object id="74" name="solidblock" x="30.6667" y="548" width="612" height="26.6667"/>
-  <object id="75" name="solidblock" x="1060" y="40" width="58.6667" height="468"/>
-  <object id="76" x="1104" y="48" width="2.66667" height="85.3333"/>
-  <object id="77" name="solidblock" x="37.3333" y="829.333" width="1561.33" height="36"/>
-  <object id="78" name="solidblock" x="1572" y="34.6667" width="28" height="785.333"/>
-  <object id="79" name="solidblock" x="1130.67" y="480" width="274.667" height="33.3333"/>
   <object id="80" name="player" x="1378.67" y="284" width="96" height="82.6667"/>
+  <object id="81" name="solidblock" x="1062" y="43" width="75" height="467"/>
  </objectgroup>
 </map>

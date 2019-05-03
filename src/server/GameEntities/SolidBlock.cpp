@@ -22,6 +22,7 @@ void SolidBlock::interact(ser::GameObject *object, int delta_t)
     auto other_type = object->get_type();
     if (!object->is_active())
         return;
+
     switch (other_type)
     {
         case (conf::game::Bullet):
@@ -42,7 +43,6 @@ void SolidBlock::interact(ser::GameObject *object, int delta_t)
 void SolidBlock::compress_to_packet(sf::Packet &pack) const
 {
     pack << _position.x << _position.y << (uint32_t) _properties.size();
-    compress_properties_to_packet(pack);
 }
 
 }

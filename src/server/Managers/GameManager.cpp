@@ -123,6 +123,7 @@ int GameManager::update_environment(sf::Time &&delta_t)
         obj->update(delta_t_milliseconds);
 
     collect_garbage();
+
     return 1;
 }
 
