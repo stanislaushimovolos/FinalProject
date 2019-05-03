@@ -10,21 +10,27 @@
 #include "../GameEntities/MovingPlatform.h"
 #include "../Network/ClientHandler.h"
 #include "../../configuration/render.h"
+
+#include "LevelManager.h"
 #include "Utils.h"
 
 namespace ser
 {
 
-class Manager
+class GameManager
 {
 
  private:
+
+    LevelManager &_level;
 
     std::unordered_map<ClientId, Player *, ClientHasher, EqualClients> _players;
     std::list<ClientState> _players_states;
     std::list<GameObject *> _objects;
 
  public:
+
+    explicit GameManager(LevelManager &_level);
 
     void process_packets(std::vector<Packet> &received_data);
 
@@ -42,9 +48,7 @@ class Manager
 
     sf::Packet create_current_state_packet();
 
-    Manager() = default;
-
-    ~Manager();
+    ~GameManager();
 };
 
 }

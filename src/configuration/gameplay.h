@@ -6,8 +6,6 @@ namespace conf
 namespace game
 {
 
-static const char client_map_path[] = "../map/levels/DemoLevel/map.tmx";
-
 static const uint64_t START_NUM_OF_OBJECTS = 100;
 
 // Player parameters

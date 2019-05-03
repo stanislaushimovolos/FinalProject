@@ -37,7 +37,6 @@ bool Level::LoadFromFile(std::string filename)//двоеточия-обраще�
     // пример карты: <map version="1.0" orientation="orthogonal"
     // width="10" height="10" tilewidth="34" tileheight="34">
     width = atoi(map->Attribute("width"));//извлекаем из нашей карты ее свойства
-    std::cout << "load tileset" << std::endl;
 
     height = atoi(map->Attribute("height"));//те свойства, которые задавали при работе в
     tileWidth = atoi(map->Attribute("tilewidth"));//тайлмап редакторе

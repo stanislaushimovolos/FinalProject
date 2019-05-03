@@ -220,7 +220,7 @@ void Manager::activate()
 
     // check
 
-    _level.LoadFromFile(conf::game::client_map_path);
+    _level.LoadFromFile(conf::map::client_map_path);
 
     _tile_size = _level.GetTileSize();
     _map_tile_layers = _level.GetLayers();

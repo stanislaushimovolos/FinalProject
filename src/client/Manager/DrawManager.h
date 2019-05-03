@@ -6,6 +6,7 @@
 #include "KeyboardInterface.h"
 #include "../Render/SpriteDrawer.h"
 #include "../../configuration/render.h"
+#include "../../configuration/map.h"
 #include "../../map/Level.h"
 
 namespace cli

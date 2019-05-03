@@ -3,7 +3,7 @@
 namespace ser
 {
 
-Server::Server(uint16_t port, uint32_t max_num_of_players, uint32_t connection_delay) :
+Server::Server(uint16_t port, uint32_t connection_delay, uint32_t max_num_of_players) :
     _port(port),
     _ip_address(sf::IpAddress::getLocalAddress()),
     _current_num_of_clients(0),
@@ -94,7 +94,7 @@ void Server::receive_packets()
 }
 
 
-int Server::start_session(Manager &manager)
+int Server::start_session(GameManager &manager)
 {
     manager.add_players(_clients);
     auto players_ptr_id = manager.get_players_ptr_id(_clients);

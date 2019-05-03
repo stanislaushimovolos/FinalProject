@@ -13,7 +13,7 @@ class Player : public GameObject
 {
  public:
 
-    explicit Player(std::pair<uint32_t, uint32_t> ip_port);
+    Player(std::pair<uint32_t, uint32_t> ip_port, sf::Vector2f position);
 
     void compress_to_packet(sf::Packet &pack) const override;
 

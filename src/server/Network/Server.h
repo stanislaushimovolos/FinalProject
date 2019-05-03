@@ -5,7 +5,7 @@
 #include <SFML/Network.hpp>
 
 #include "ClientHandler.h"
-#include "../Manager/GameManager.h"
+#include "../Managers/GameManager.h"
 #include "../../configuration/network.h"
 
 namespace ser
@@ -16,10 +16,10 @@ class Server
 
  public:
     explicit Server(uint16_t port = conf::net::DEFAULT_PORT,
-                    uint32_t max_num_of_players = conf::net::REQUIRED_NUM_OF_CLIENTS,
-                    uint32_t connection_delay = conf::net::CONNECTION_DELAY);
+                    uint32_t connection_delay = conf::net::CONNECTION_DELAY,
+                    uint32_t max_num_of_players = conf::net::REQUIRED_NUM_OF_CLIENTS);
 
-    int start_session(Manager &manager);
+    int start_session(GameManager &manager);
 
     int connect_clients();
 

@@ -3,15 +3,33 @@
 namespace ser
 {
 
-int Manager::add_players(const std::list<ser::Handler> &clients)
+GameManager::GameManager(LevelManager &level) :
+    _level(level)
 {
+
+}
+
+
+int GameManager::add_players(const std::list<ser::Handler> &clients)
+{
+    auto player_objects = _level.get_objects_by_name(conf::map::player_object_name);
+    std::vector<sf::Vector2f> player_coords;
+    player_coords.reserve(player_objects.size());
+
+    for (auto &obj:player_objects)
+        player_coords.emplace_back(obj.rect.left, obj.rect.top);
+
+    int i = 0;
     for (auto &cli:clients)
     {
         auto id = ser::ClientId(cli.get_id());
-        _players[id] = new Player(id.get_id());
+
+        _players[id] = new Player(id.get_id(), player_coords[i]);
+        i++;
         _objects.push_back(_players[id]);
     }
-    _objects.push_back(new MovingPlatform({200, 0},
+
+    /*_objects.push_back(new MovingPlatform({200, 0},
                                           {conf::game::hole_speed, conf::game::hole_speed},
                                           300, conf::game::hole_damage));
 
@@ -22,12 +40,12 @@ int Manager::add_players(const std::list<ser::Handler> &clients)
     _objects.push_back(new MovingPlatform({-100, 100},
                                           {0, -conf::game::hole_speed},
                                           300,
-                                          conf::game::hole_damage));
+                                          conf::game::hole_damage));*/
     return 1;
 }
 
 
-void Manager::process_packets(std::vector<ser::Packet> &received_data)
+void GameManager::process_packets(std::vector<ser::Packet> &received_data)
 {
     _players_states.clear();
     for (auto &msg: received_data)
@@ -42,7 +60,7 @@ void Manager::process_packets(std::vector<ser::Packet> &received_data)
 }
 
 
-void Manager::collect_garbage()
+void GameManager::collect_garbage()
 {
     for (auto it = _objects.begin(); it != _objects.end();)
     {
@@ -65,7 +83,7 @@ void Manager::collect_garbage()
 }
 
 
-int Manager::update_player_states(std::vector<ser::Packet> &received_data)
+int GameManager::update_player_states(std::vector<ser::Packet> &received_data)
 {
     process_packets(received_data);
 
@@ -90,7 +108,7 @@ int Manager::update_player_states(std::vector<ser::Packet> &received_data)
 }
 
 
-int Manager::update_environment(sf::Time &&delta_t)
+int GameManager::update_environment(sf::Time &&delta_t)
 {
     auto delta_t_milliseconds = delta_t.asMilliseconds();
     for (auto it = _objects.begin(); it != _objects.end(); ++it)
@@ -111,7 +129,7 @@ int Manager::update_environment(sf::Time &&delta_t)
 }
 
 
-sf::Packet Manager::create_current_state_packet()
+sf::Packet GameManager::create_current_state_packet()
 {
     auto num_of_objects = (uint32_t) _objects.size();
     sf::Packet packet;
@@ -126,7 +144,7 @@ sf::Packet Manager::create_current_state_packet()
 }
 
 
-std::vector<uint64_t> Manager::get_players_ptr_id(const std::list<ser::Handler> &clients)
+std::vector<uint64_t> GameManager::get_players_ptr_id(const std::list<ser::Handler> &clients)
 {
     std::vector<uint64_t> players_id;
     for (auto &cli:clients)
@@ -139,7 +157,7 @@ std::vector<uint64_t> Manager::get_players_ptr_id(const std::list<ser::Handler> 
 }
 
 
-int Manager::remove_disconnected_players(std::vector<ClientId> &dis_players)
+int GameManager::remove_disconnected_players(std::vector<ClientId> &dis_players)
 {
     for (auto &id:dis_players)
     {
@@ -158,7 +176,7 @@ int Manager::remove_disconnected_players(std::vector<ClientId> &dis_players)
 }
 
 
-Manager::~Manager()
+GameManager::~GameManager()
 {
     for (auto obj:_objects)
         delete obj;
