@@ -159,9 +159,19 @@ sf::Packet Manager::get_current_state()
 
 void Manager::draw_scene()
 {
-    draw_map();
 
     sf::Vector2f view_coord = _view.getCenter();
+
+    draw_map(view_coord);
+    draw_objects(view_coord);
+
+    _window.display();
+    _window.clear(sf::Color::Blue);
+}
+
+
+void Manager::draw_objects(const sf::Vector2f &view_coord)
+{
     for (int i = 0; i < _current_num_of_objects; i++)
     {
         // draw close objects
@@ -173,17 +183,21 @@ void Manager::draw_scene()
         }
     }
 
-    _window.display();
-    _window.clear(sf::Color::Blue);
 }
 
 
-void Manager::draw_map()
+void Manager::draw_map(const sf::Vector2f &view_coord)
 {
-    // improve : draw only necessary tiles
     for (auto &layer:_map_tile_layers)
         for (auto &tile:layer.tiles)
-            _window.draw(tile);
+        {
+            auto tile_pos = tile.getPosition();
+            if (abs(tile_pos.x - view_coord.x) < _resolution.x
+                && abs(tile_pos.y - view_coord.y) < _resolution.y)
+            {
+                _window.draw(tile);
+            }
+        }
 }
 
 
@@ -206,7 +220,7 @@ void Manager::activate()
 
     // check
 
-    _level.LoadFromFile(conf::game::map_relative_path);
+    _level.LoadFromFile(conf::game::client_map_path);
 
     _tile_size = _level.GetTileSize();
     _map_tile_layers = _level.GetLayers();

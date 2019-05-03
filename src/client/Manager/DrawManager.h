@@ -18,6 +18,10 @@ class Manager
 
     Manager(uint32_t x_resolution, uint32_t y_resolution, std::string &&window_name);
 
+    void draw_objects(const sf::Vector2f &view_coord);
+
+    void draw_map(const sf::Vector2f &view_coord);
+
     void load_textures_of_objects();
 
     void set_id(uint64_t id);
@@ -25,8 +29,6 @@ class Manager
     void draw_scene();
 
     void activate();
-
-    void draw_map();
 
     int process_scene(sf::Packet &packet);
 
