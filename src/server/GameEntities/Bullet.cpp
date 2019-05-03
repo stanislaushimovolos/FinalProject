@@ -54,6 +54,15 @@ void Bullet::interact(ser::GameObject *object, int delta_t)
             set_status(false);
             break;
         }
+        case (conf::game::SolidBlock):
+        {
+            const auto &other_collider = object->get_collider();
+            if (!this->_collider.detect_collision(other_collider))
+                return;
+
+            set_status(false);
+            break;
+        }
         default:break;
     }
 }

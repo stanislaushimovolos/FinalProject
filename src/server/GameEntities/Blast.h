@@ -3,6 +3,8 @@
 #include "../Engine/GameObject.h"
 #include "../../configuration/render.h"
 
+#include "Player.h"
+
 namespace ser
 {
 

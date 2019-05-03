@@ -45,7 +45,24 @@ void Blast::update(int delta_t)
 
 void Blast::interact(ser::GameObject *object, int delta_t)
 {
+    auto other_type = object->get_type();
+    if (!object->is_active())
+        return;
 
+    switch (other_type)
+    {
+        case (conf::game::Blast):
+        {
+            const auto &other_collider = object->get_collider();
+            if (!this->_collider.detect_collision(other_collider))
+                return;
+
+            auto player_ptr = dynamic_cast<Player *>(object);
+            player_ptr->cause_damage(_caused_damage);
+            break;
+        }
+        default:break;
+    }
 }
 
 

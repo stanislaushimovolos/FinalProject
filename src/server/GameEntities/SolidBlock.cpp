@@ -19,6 +19,22 @@ SolidBlock::SolidBlock(Object &map_object) :
 
 void SolidBlock::interact(ser::GameObject *object, int delta_t)
 {
+    auto other_type = object->get_type();
+    if (!object->is_active())
+        return;
+    switch (other_type)
+    {
+        case (conf::game::Bullet):
+        {
+            const auto &other_collider = object->get_collider();
+            if (!this->_collider.detect_collision(other_collider))
+                return;
+
+            object->set_status(false);
+            break;
+        }
+        default:break;
+    }
 
 }
 

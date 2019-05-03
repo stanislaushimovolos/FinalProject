@@ -131,6 +131,13 @@ void Player::interact(ser::GameObject *object, int delta_t)
 
             break;
         }
+        case (conf::game::SolidBlock):
+        {
+            const auto &other_collider = object->get_collider();
+            if (!this->_collider.detect_collision(other_collider))
+                return;
+
+        }
         default:break;
     }
 }
