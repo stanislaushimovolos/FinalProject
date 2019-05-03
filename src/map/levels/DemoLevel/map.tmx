@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.1" orientation="orthogonal" renderorder="right-down" width="50" height="27" tilewidth="32" tileheight="32" infinite="0" backgroundcolor="#4d538c" nextlayerid="4" nextobjectid="82">
- <tileset firstgid="1" name="Tiny_Chao_Garden_SonicAdv_3_Tile_Sheet" tilewidth="32" tileheight="32" tilecount="3072" columns="64">
+<map version="1.2" tiledversion="1.2.1" orientation="orthogonal" renderorder="right-down" width="50" height="27" tilewidth="32" tileheight="32" infinite="0" backgroundcolor="#4d538c" nextlayerid="4" nextobjectid="90">
+ <tileset firstgid="1" name="../map/levels/DemoLevel/DemoTile.png" tilewidth="32" tileheight="32" tilecount="3072" columns="64">
   <image source="../map/levels/DemoLevel/DemoTile.png" width="2048" height="1536"/>
  </tileset>
  <layer id="2" name="Слой тайлов 2" width="50" height="27">
@@ -290,7 +290,7 @@
    <tile gid="963"/>
    <tile gid="1142"/>
    <tile gid="1142"/>
-   <tile gid="962"/>
+   <tile gid="1001"/>
    <tile gid="963"/>
    <tile gid="964"/>
    <tile gid="964"/>
@@ -532,7 +532,7 @@
    <tile gid="962"/>
    <tile gid="963"/>
    <tile gid="962"/>
-   <tile gid="962"/>
+   <tile gid="1001"/>
    <tile gid="962"/>
    <tile gid="962"/>
    <tile gid="962"/>
@@ -724,7 +724,7 @@
    <tile gid="848"/>
    <tile gid="849"/>
    <tile gid="850"/>
-   <tile gid="850"/>
+   <tile gid="796"/>
    <tile gid="847"/>
    <tile gid="848"/>
    <tile gid="849"/>
@@ -888,7 +888,7 @@
    <tile gid="848"/>
    <tile gid="847"/>
    <tile gid="848"/>
-   <tile gid="849"/>
+   <tile gid="1001"/>
    <tile gid="847"/>
    <tile gid="851"/>
    <tile gid="852"/>
@@ -1027,7 +1027,7 @@
    <tile gid="850"/>
    <tile gid="847"/>
    <tile gid="848"/>
-   <tile gid="849"/>
+   <tile gid="734"/>
    <tile gid="850"/>
    <tile gid="849"/>
    <tile gid="850"/>
@@ -1037,7 +1037,7 @@
    <tile gid="847"/>
    <tile gid="848"/>
    <tile gid="849"/>
-   <tile gid="848"/>
+   <tile gid="734"/>
    <tile gid="849"/>
    <tile gid="850"/>
    <tile gid="848"/>
@@ -1076,8 +1076,8 @@
    <tile gid="850"/>
    <tile gid="850"/>
    <tile gid="847"/>
-   <tile gid="848"/>
-   <tile gid="849"/>
+   <tile gid="734"/>
+   <tile gid="734"/>
    <tile gid="850"/>
    <tile gid="849"/>
    <tile gid="850"/>
@@ -1126,7 +1126,7 @@
    <tile gid="850"/>
    <tile gid="850"/>
    <tile gid="847"/>
-   <tile gid="848"/>
+   <tile gid="734"/>
    <tile gid="849"/>
    <tile gid="850"/>
    <tile gid="849"/>
@@ -1181,8 +1181,8 @@
    <tile gid="849"/>
    <tile gid="850"/>
    <tile gid="849"/>
-   <tile gid="847"/>
-   <tile gid="848"/>
+   <tile gid="734"/>
+   <tile gid="734"/>
    <tile gid="847"/>
    <tile gid="847"/>
    <tile gid="847"/>
@@ -1359,19 +1359,24 @@
  </layer>
  <objectgroup id="3" name="collision">
   <object id="60" name="player" x="536" y="227" width="53" height="56"/>
-  <object id="67" name="hole" x="1088.33" y="658" width="83" height="79">
+  <object id="67" name="hole" x="238.33" y="582" width="83" height="79">
    <properties>
-    <property name="direction" value="up"/>
-    <property name="time_one_side" value="500"/>
+    <property name="direction" value="right"/>
+    <property name="time_one_side" value="1500"/>
    </properties>
   </object>
-  <object id="71" name="hole" x="1241.17" y="154.833" width="83" height="79">
+  <object id="71" name="hole" x="963.17" y="127.833" width="83" height="79">
    <properties>
-    <property name="direction" value="rightdiag"/>
-    <property name="time_one_side" value="200"/>
+    <property name="direction" value="leftdiag"/>
+    <property name="time_one_side" value="700"/>
    </properties>
   </object>
-  <object id="80" name="player" x="1378.67" y="284" width="96" height="82.6667"/>
-  <object id="81" name="solidblock" x="1062" y="43" width="75" height="467"/>
+  <object id="81" name="solidblock" x="1057" y="31" width="95" height="477"/>
+  <object id="82" name="solidblock" x="1065" y="481" width="339" height="27"/>
+  <object id="85" name="solidblock" x="1" y="541" width="637" height="33"/>
+  <object id="86" name="solidblock" x="1" y="834" width="1596" height="28"/>
+  <object id="87" name="solidblock" x="0" y="-2" width="1597" height="33"/>
+  <object id="88" name="solidblock" x="-2" y="0" width="32" height="864"/>
+  <object id="89" name="solidblock" x="1569" y="8" width="31" height="826"/>
  </objectgroup>
 </map>

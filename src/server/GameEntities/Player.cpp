@@ -133,6 +133,39 @@ void Player::interact(ser::GameObject *object, int delta_t)
             if (!this->_collider.detect_collision(other_collider))
                 return;
 
+            auto other_position = object->get_position();
+            auto other_size = other_collider.get_size();
+
+            auto this_size = _collider.get_size();
+            auto this_position = _collider.get_position();
+
+            auto other_bottom = other_position.y + other_size.y;
+            auto other_right = other_position.x + other_size.x;
+            auto other_left = other_position.x;
+            auto other_top = other_position.y;
+
+            auto this_bottom = this_position.y + this_size.y;
+            auto this_right = this_position.x + this_size.x;
+            auto this_left = this_position.x;
+            auto this_top = this_position.y;
+
+
+            if (this_top > other_top && this_bottom < other_bottom)
+            {
+                if (this_left < other_right && this_right >= other_right)
+                    move({_speed * delta_t, 0});
+                else if (this_right >= other_left && other_left >= this_left)
+                    move({-_speed * delta_t, 0});
+            }
+
+            if (this_left > other_left && this_right < other_right)
+            {
+                if (this_bottom > other_top && this_top < other_top)
+                    move({0, -_speed * delta_t});
+                else if (this_top <= other_bottom && other_bottom <= this_bottom)
+                    move({0, _speed * delta_t});
+            }
+
             break;
         }
         default:break;
