@@ -129,6 +129,7 @@ int Server::start_session(GameManager &manager)
 int Server::send_id_to_clients(std::vector<uint64_t> ids)
 {
     int id_counter = 0;
+
     for (auto &it:_clients)
     {
         sf::Packet id_packet;

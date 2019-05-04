@@ -3,7 +3,7 @@ project(KillTheDevilMUlti)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_executable(KillTheDevilMUlti cmake-build-debug/main.cpp
+add_executable(KillTheDevilMUlti main.cpp
         server/Network/Server.h server/Network/Server.cpp server/Managers/GameManager.h server/Managers/GameManager.cpp server/Managers/Utils.h server/Network/ClientHandler.cpp server/Network/ClientHandler.h
         server/Engine/GameObject.cpp server/Engine/GameObject.h server/GameEntities/Player.cpp server/GameEntities/Player.h server server/GameEntities/Bullet.cpp server/GameEntities/Bullet.h
         client/Manager/ClientManager.cpp client/Manager/ClientManager.h client/Render/SpriteDrawer.cpp client/Render/SpriteDrawer.h

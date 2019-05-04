@@ -10,6 +10,8 @@ namespace cli
 {
 
 
+// Class which draws single textures
+
 class SpriteDrawer
 {
  public:
@@ -43,6 +45,7 @@ class SpriteDrawer
     sf::Vector2f _position;
     sf::Sprite _sprite;
 
+    // map ID - pointer on texture
     std::map<unsigned int, sf::Texture> *_textures;
 };
 

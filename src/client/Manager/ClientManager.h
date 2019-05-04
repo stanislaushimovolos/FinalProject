@@ -35,7 +35,7 @@ class Manager
 
     int update(sf::Packet &packet);
 
-    sf::Packet get_current_state();
+    sf::Packet get_user_input();
 
     bool is_window_active();
 
@@ -45,7 +45,10 @@ class Manager
 
  private:
 
+    // Unique ID of the client
     uint64_t _id;
+
+    KeyboardInterface _keyboard;
 
     // Window parameters
     sf::RenderWindow _window;
@@ -55,18 +58,21 @@ class Manager
     bool _is_window_focused;
     bool _is_window_opened;
 
-    KeyboardInterface _keyboard;
-
+    // Params of current scene
     uint32_t _current_num_of_objects;
     std::vector<SpriteDrawer> _graph_objects;
     std::map<unsigned int, sf::Texture> _textures;
 
+    // Object with all information about level
     Level _level;
-    std::vector<Layer> _map_tile_layers;
+
+    // Map properties
     sf::Vector2i _tile_size;
     float _map_width, _map_height;
+    std::vector<Layer> _map_tile_layers;
 
-    int _current_graph_property;
+    // Number of graph properties of all objects
+    int _number_of_graph_objects;
 };
 
 uint64_t make_long_long(uint32_t first_bits, uint32_t last_bits);

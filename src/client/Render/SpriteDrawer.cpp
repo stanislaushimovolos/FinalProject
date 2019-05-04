@@ -19,6 +19,10 @@ SpriteDrawer::SpriteDrawer() :
 {}
 
 
+/**
+ * Change current texture by texture from packet.
+ * @param pack packet with information about new texture.
+ */
 void SpriteDrawer::set_state_form_packet(sf::Packet &pack)
 {
     float x = 0, y = 0;
@@ -47,7 +51,6 @@ void SpriteDrawer::set_state_form_packet(sf::Packet &pack)
     // Check if texture exists
     if ((*_textures).count(texture_id))
         _sprite.setTexture((*_textures)[texture_id]);
-
 }
 
 
@@ -79,6 +82,5 @@ sf::Vector2f SpriteDrawer::get_position() const
 {
     return _position;
 }
-
 
 }

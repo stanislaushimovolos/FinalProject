@@ -2,10 +2,10 @@
 #include <SFML/Network.hpp>
 #include <SFML/Graphics.hpp>
 
-#include "../server/Network/Server.h"
-#include "../server/Managers/LevelManager.h"
+#include "server/Network/Server.h"
+#include "server/Managers/LevelManager.h"
 
-#include "../client/Network/Client.h"
+#include "client/Network/Client.h"
 
 
 int main()

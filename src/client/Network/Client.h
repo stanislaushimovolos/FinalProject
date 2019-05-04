@@ -8,9 +8,13 @@
 namespace cli
 {
 
+
+// Class which provides communication with server
+
 class Client
 {
  public:
+
     Client(const sf::IpAddress &remote_ip, uint32_t remote_port);
 
     std::pair<uint32_t, uint32_t> get_local_ip_port();
@@ -34,6 +38,7 @@ class Client
     uint32_t _local_port;
     uint32_t _local_ip;
 
+    // Unique ID of client
     uint64_t _id;
 };
 

@@ -61,14 +61,16 @@ int Client::start_session(Manager &manager)
     if (!connection_status)
         return 0;
 
-    auto send_pack = manager.get_current_state();
+    auto send_pack = manager.get_user_input();
 
     connection_status = send_packet(send_pack);
     if (!connection_status)
         return 0;
 
+    // Turn on window and load textures
     manager.activate();
 
+    // Send and receive data one by one while game is active
     while (manager.is_window_active())
     {
         // receive data
@@ -82,7 +84,7 @@ int Client::start_session(Manager &manager)
             return 0;
 
         // send user input
-        send_pack = manager.get_current_state();
+        send_pack = manager.get_user_input();
         connection_status = send_packet(send_pack);
         if (!connection_status)
             return 0;

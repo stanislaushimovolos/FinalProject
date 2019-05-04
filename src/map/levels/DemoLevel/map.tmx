@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.1" orientation="orthogonal" renderorder="right-down" width="50" height="27" tilewidth="32" tileheight="32" infinite="0" backgroundcolor="#4d538c" nextlayerid="4" nextobjectid="94">
+<map version="1.2" tiledversion="1.2.1" orientation="orthogonal" renderorder="right-down" width="50" height="27" tilewidth="32" tileheight="32" infinite="0" backgroundcolor="#4d538c" nextlayerid="4" nextobjectid="96">
  <tileset firstgid="1" name="../map/levels/DemoLevel/DemoTile.png" tilewidth="32" tileheight="32" tilecount="3072" columns="64">
   <image source="../map/levels/DemoLevel/DemoTile.png" width="2048" height="1536"/>
  </tileset>
@@ -1358,7 +1358,6 @@
   </data>
  </layer>
  <objectgroup id="3" name="collision">
-  <object id="60" name="player" x="536" y="227" width="53" height="56"/>
   <object id="67" name="hole" x="238.33" y="582" width="83" height="79">
    <properties>
     <property name="direction" value="right"/>
@@ -1378,7 +1377,6 @@
   <object id="87" name="solidblock" x="0" y="-2" width="1597" height="33"/>
   <object id="88" name="solidblock" x="-2" y="0" width="32" height="864"/>
   <object id="89" name="solidblock" x="1569" y="8" width="31" height="826"/>
-  <object id="90" name="player" x="798.5" y="589" width="53" height="56"/>
   <object id="92" name="hole" x="1045.5" y="510.5" width="83" height="79">
    <properties>
     <property name="direction" value="right"/>
@@ -1389,6 +1387,13 @@
    <properties>
     <property name="direction" value="leftdiag"/>
     <property name="time_one_side" value="1500"/>
+   </properties>
+  </object>
+  <object id="94" name="player" x="239.5" y="267" width="53" height="56"/>
+  <object id="95" name="hole" x="399.5" y="381.5" width="83" height="79">
+   <properties>
+    <property name="direction" value="leftdiag"/>
+    <property name="time_one_side" value="1000"/>
    </properties>
   </object>
  </objectgroup>
