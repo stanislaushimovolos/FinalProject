@@ -75,6 +75,7 @@ void MovingPlatform::interact(ser::GameObject *object, int delta_t)
     {
         case (conf::game::Player) :
         {
+            // Don't do anything if there is no collision
             const auto &other_collider = object->get_collider();
             if (!this->_collider.detect_collision(other_collider))
                 return;
@@ -87,8 +88,20 @@ void MovingPlatform::interact(ser::GameObject *object, int delta_t)
 
             auto other_position = object->get_position();
             sf::Vector2f radius_vector = compute_unit_vector(_position, other_position);
-
             move(radius_vector * _speed * delta_t);
+
+            break;
+        }
+        case (conf::game::Bullet):
+        {
+            // Don't do anything if there is no collision
+            const auto &other_collider = object->get_collider();
+            if (!this->_collider.detect_collision(other_collider))
+                return;
+
+            // Delete bullet after collision
+            object->set_status(false);
+
             break;
         }
         default:break;
@@ -101,6 +114,8 @@ void MovingPlatform::update(int delta_t)
 {
     GameObject::update(delta_t);
     _time_of_movement += delta_t;
+
+    // Change direction
     if (_time_of_movement >= _restart_movement_time)
     {
         _velocity.x = -_velocity.x;

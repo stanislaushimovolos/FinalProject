@@ -53,6 +53,7 @@ void Blast::interact(ser::GameObject *object, int delta_t)
     {
         case (conf::game::Player):
         {
+            // Don't do anything if there is no collision
             const auto &other_collider = object->get_collider();
             if (!this->_collider.detect_collision(other_collider))
                 return;

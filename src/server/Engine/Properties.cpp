@@ -71,13 +71,9 @@ void MatrixSprite::update(int delta_t)
 
     if (_direction != conf::game::Rest)
         _animation_timer += _animation_speed * delta_t;
+
+    // Compute number of new frame
     _current_frame_number = ((uint32_t) _animation_timer) % _number_of_frames;
-}
-
-
-void MatrixSprite::set_texture_id(uint32_t id)
-{
-    _texture_id = id;
 }
 
 
@@ -99,5 +95,12 @@ void MatrixSprite::set_color(sf::Color clr)
 {
     _fill_color = clr;
 }
+
+
+void MatrixSprite::set_texture_id(uint32_t id)
+{
+    _texture_id = id;
+}
+
 
 }

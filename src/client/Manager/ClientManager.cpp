@@ -13,7 +13,7 @@ Manager::Manager(uint32_t x_resolution, uint32_t y_resolution, std::string &&win
     _map_width(0),
     _map_height(0),
 
-    _graph_objects(conf::game::START_NUM_OF_OBJECTS),
+    _graph_objects(conf::game::start_num_of_objects),
     _view(sf::Vector2f(x_resolution / 2, y_resolution / 2),
           sf::Vector2f(x_resolution, y_resolution)
     )
@@ -27,9 +27,8 @@ void Manager::activate()
     _window.create(sf::VideoMode(_resolution.x, _resolution.y), _window_name);
     load_textures_of_objects();
 
-    // check
-
-    _level.LoadFromFile(conf::map::client_map_path);
+    // Check
+    _level.LoadFromFile(conf::map::map_path);
     _tile_size = _level.GetTileSize();
 
     _map_tile_layers = _level.GetLayers();

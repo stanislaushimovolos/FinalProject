@@ -174,7 +174,7 @@ sf::Vector2f GameObject::get_velocity() const
 }
 
 
-const RectCollider &GameObject::get_collider() const
+const RectangleCollider &GameObject::get_collider() const
 {
     return _collider;
 }
@@ -215,7 +215,6 @@ float fast_square_root(float n)
     i = 0x5f3759df - (i >> 1);
     y = *(float *) &i;
     y = y * (1.5f - (x * y * y));
-
     return y;
 }
 

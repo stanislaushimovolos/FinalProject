@@ -71,7 +71,7 @@ int GameManager::create_env(const std::list<ser::Handler> &clients)
     for (auto &cli:clients)
     {
         auto id = ser::ClientId(cli.get_id());
-        _players[id] = new Player(id.get_id(), player_objects[player_counter]);
+        _players[id] = new Player(player_objects[player_counter]);
         _objects.push_back(_players[id]);
         player_counter++;
     }

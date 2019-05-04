@@ -6,15 +6,15 @@
 namespace ser
 {
 
-class RectCollider
+class RectangleCollider
 {
  public:
 
-    RectCollider(sf::Vector2f &position, sf::Vector2f &size);
+    RectangleCollider(sf::Vector2f &position, sf::Vector2f &size);
 
-    RectCollider() = default;
+    RectangleCollider() = default;
 
-    bool detect_collision(const RectCollider &other_collider) const;
+    bool detect_collision(const RectangleCollider &other_collider) const;
 
     void set_position(const sf::Vector2f &new_position);
 

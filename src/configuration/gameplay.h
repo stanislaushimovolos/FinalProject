@@ -6,7 +6,7 @@ namespace conf
 namespace game
 {
 
-static const uint64_t START_NUM_OF_OBJECTS = 100;
+static const uint64_t start_num_of_objects = 100;
 
 // Player parameters
 static const float player_speed = 0.4;
@@ -48,13 +48,14 @@ enum ObjectTypes
     SolidBlock
 };
 
-// Type of textures (Rectangle is removed now)
+// Types of textures (Rectangle is removed now)
 enum Properties
 {
     Rectangle,
     MatrixSprite,
 };
 
+// Types of properties
 enum PropertyKeys
 {
     MainObjectSprite,

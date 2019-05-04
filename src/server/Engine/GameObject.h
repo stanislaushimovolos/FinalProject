@@ -4,7 +4,7 @@
 #include <SFML/Network/Packet.hpp>
 
 #include "Properties.h"
-#include "RectCollider.h"
+#include "RectangleCollider.h"
 #include "../../configuration/gameplay.h"
 #include "../../map/Level.h"
 
@@ -13,7 +13,7 @@ namespace ser
 
 class GraphProperty;
 
-// abstract class for all game entities
+// Abstract class for all game entities
 class GameObject
 {
  public:
@@ -55,7 +55,7 @@ class GameObject
 
     bool is_active() const;
 
-    const RectCollider &get_collider() const;
+    const RectangleCollider &get_collider() const;
 
     sf::Vector2f get_position() const;
 
@@ -65,8 +65,9 @@ class GameObject
 
 
  protected:
+
     std::map<uint32_t, GraphProperty *> _properties;
-    RectCollider _collider;
+    RectangleCollider _collider;
 
     sf::Vector2f _position;
     sf::Vector2f _velocity;
@@ -81,8 +82,8 @@ class GameObject
 
 float fast_square_root(float n);
 
-sf::Vector2f compute_unit_vector(const sf::Vector2f &first, const sf::Vector2f &second);
-
 sf::Vector2f operator*(const sf::Vector2f &first, float multiplier);
+
+sf::Vector2f compute_unit_vector(const sf::Vector2f &first, const sf::Vector2f &second);
 
 }

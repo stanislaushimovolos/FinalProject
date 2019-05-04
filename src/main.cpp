@@ -17,7 +17,7 @@ int main()
 
     if (type == "s")
     {
-        ser::GameManager game_manager(conf::map::server_map_path);
+        ser::GameManager game_manager(conf::map::map_path);
         ser::Server server
             (conf::net::DEFAULT_PORT, conf::net::CONNECTION_DELAY, game_manager.count_players());
 

@@ -3,7 +3,7 @@
 namespace ser
 {
 
-Player::Player(std::pair<uint32_t, uint32_t> ip_port, Object &map_object) :
+Player::Player(Object &map_object) :
     ser::GameObject({map_object.rect.left, map_object.rect.top},
                     {0, 0},
                     conf::game::Up,
@@ -11,13 +11,13 @@ Player::Player(std::pair<uint32_t, uint32_t> ip_port, Object &map_object) :
                     conf::game::player_speed,
                     conf::game::Player),
 
+    // It is possible to use value of pointer as unique id
     _ptr_id(reinterpret_cast<std::uintptr_t>(this)),
-    _ip(ip_port.first),
-    _port(ip_port.second),
+
     _shoot_clicks(0),
     _is_hit(false),
-    _health_points(conf::game::player_health_points),
-    _is_live(true)
+    _is_live(true),
+    _health_points(conf::game::player_health_points)
 {
     using namespace conf::render;
 
@@ -38,20 +38,19 @@ Player::Player(std::pair<uint32_t, uint32_t> ip_port, Object &map_object) :
 
 void Player::update(int delta_t)
 {
+    // Update position + animation
     GameObject::update(delta_t);
 
+    auto main_sprite_ptr = dynamic_cast< MatrixSprite *>(_properties[conf::game::MainObjectSprite]);
     if (_is_hit)
     {
         if (!_is_live)
-            dynamic_cast< MatrixSprite *>
-            (_properties[conf::game::MainObjectSprite])->set_texture_id(conf::render::GhostTexture);
+            main_sprite_ptr->set_texture_id(conf::render::GhostTexture);
         else
-            dynamic_cast< MatrixSprite *>
-            (_properties[conf::game::MainObjectSprite])->set_color(sf::Color::Red);
+            main_sprite_ptr->set_color(sf::Color::Red);
 
     } else
-        dynamic_cast< MatrixSprite *>
-        (_properties[conf::game::MainObjectSprite])->set_color(sf::Color::White);
+        main_sprite_ptr->set_color(sf::Color::White);
 
     _is_hit = false;
 }
@@ -59,6 +58,7 @@ void Player::update(int delta_t)
 
 void Player::interact(ser::GameObject *object, int delta_t)
 {
+    // Player can't interact with objects if he is dead:)
     auto other_type = object->get_type();
     if (!object->is_active() || !_is_live)
         return;
@@ -67,6 +67,7 @@ void Player::interact(ser::GameObject *object, int delta_t)
     {
         case (conf::game::Player) :
         {
+            // Don't do anything if there is no collision
             const auto &other_collider = object->get_collider();
             if (!this->_collider.detect_collision(other_collider))
                 return;
@@ -75,9 +76,11 @@ void Player::interact(ser::GameObject *object, int delta_t)
             if (!player_ptr->is_live())
                 break;
 
+            // Compute radius vector (unit) between 2 players
             auto other_position = object->get_position();
             sf::Vector2f radius_vector = compute_unit_vector(_position, other_position);
 
+            // Don't move "reset" players
             if (_direction != conf::game::Rest)
                 move(radius_vector * _speed * delta_t);
 
@@ -88,20 +91,25 @@ void Player::interact(ser::GameObject *object, int delta_t)
         }
         case (conf::game::Bullet):
         {
+            // Don't do anything if there is no collision
             const auto &other_collider = object->get_collider();
             if (!this->_collider.detect_collision(other_collider))
                 return;
 
+            // Do not cause damage it his bullet
             auto bullet_ptr = dynamic_cast<Bullet *>(object);
             if (bullet_ptr->get_owner() != reinterpret_cast<std::uintptr_t>(this))
             {
                 cause_damage(conf::game::bullet_damage);
+                // Delete bullet after collision
                 bullet_ptr->set_status(false);
             }
+
             break;
         }
         case (conf::game::MovingPlatform):
         {
+            // Don't do anything if there is no collision
             const auto &other_collider = object->get_collider();
             if (!this->_collider.detect_collision(other_collider))
                 return;
@@ -111,13 +119,13 @@ void Player::interact(ser::GameObject *object, int delta_t)
 
             auto other_position = object->get_position();
             sf::Vector2f radius_vector = compute_unit_vector(_position, other_position);
-
             move(radius_vector * _speed * delta_t);
 
             break;
         }
         case (conf::game::Blast):
         {
+            // Don't do anything if there is no collision
             const auto &other_collider = object->get_collider();
             if (!this->_collider.detect_collision(other_collider))
                 return;
@@ -129,6 +137,7 @@ void Player::interact(ser::GameObject *object, int delta_t)
         }
         case (conf::game::SolidBlock):
         {
+            // Don't do anything if there is no collision
             const auto &other_collider = object->get_collider();
             if (!this->_collider.detect_collision(other_collider))
                 return;
@@ -149,7 +158,7 @@ void Player::interact(ser::GameObject *object, int delta_t)
             auto this_left = this_position.x;
             auto this_top = this_position.y;
 
-
+            // Check where is collision (works only if player collider "smaller" than solid block)
             if (this_top > other_top && this_bottom < other_bottom)
             {
                 if (this_left < other_right && this_right >= other_right)
@@ -165,6 +174,8 @@ void Player::interact(ser::GameObject *object, int delta_t)
                 else if (this_top <= other_bottom && other_bottom <= this_bottom)
                     move({0, _speed * delta_t});
             }
+
+            // TODO : Check cases when player collider "bigger" than solidblock
 
             break;
         }

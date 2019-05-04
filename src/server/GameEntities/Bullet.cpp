@@ -50,16 +50,18 @@ void Bullet::interact(ser::GameObject *object, int delta_t)
             if (player_ptr->is_active())
                 player_ptr->cause_damage(_caused_damage);
 
-
+            // Delete bullet after collision
             set_status(false);
             break;
         }
         case (conf::game::SolidBlock):
         {
+            // Don't do anything if there is no collision
             const auto &other_collider = object->get_collider();
             if (!this->_collider.detect_collision(other_collider))
                 return;
 
+            // Delete bullet after collision
             set_status(false);
             break;
         }

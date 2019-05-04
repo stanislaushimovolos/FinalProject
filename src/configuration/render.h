@@ -9,7 +9,7 @@ namespace conf
 namespace render
 {
 
-enum Textures
+enum TextureId
 {
     DevilTexture,
     BulletTexture,
@@ -75,7 +75,6 @@ static const int blast_frame_amount = 15;
 static const float blast_texture_width = 200;
 static const float blast_texture_height = 200;
 static const float blast_animation_speed = 0.035;
-
 
 // Black Hole
 static const int hole_frame_amount = 8;
