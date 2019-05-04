@@ -5,6 +5,7 @@ namespace ser
 
 GameManager::GameManager(const std::string &file_name)
 {
+    // Add check
     _level.load_level(file_name);
     _level.get_all_objects();
 }
@@ -63,7 +64,7 @@ void GameManager::load_init_objects()
 }
 
 
-int GameManager::create_env(const std::list<ser::Handler> &clients)
+int GameManager::start_game(const std::list<ser::Handler> &clients)
 {
     auto player_objects = _level.get_objects_by_name(conf::map::player_object_name);
     int player_counter = 0;
@@ -93,6 +94,8 @@ int GameManager::update_player_states(std::vector<ser::Packet> &received_data)
 
         if (player->is_live())
         {
+
+            // Check if player is shooting
             uint32_t player_is_shoot = player_state.is_shoot;
             bool add_new_bullet = player->add_shoot_click(player_is_shoot);
 
@@ -106,7 +109,7 @@ int GameManager::update_player_states(std::vector<ser::Packet> &received_data)
 }
 
 
-int GameManager::update_environment(sf::Time &&delta_t)
+int GameManager::update_game(sf::Time &&delta_t)
 {
     auto delta_t_milliseconds = delta_t.asMilliseconds();
     for (auto it = _objects.begin(); it != _objects.end(); ++it)
@@ -124,6 +127,25 @@ int GameManager::update_environment(sf::Time &&delta_t)
 
     collect_garbage();
     return 1;
+}
+
+
+int GameManager::remove_disconnected_players(std::vector<ClientId> &dis_players)
+{
+    for (auto &id:dis_players)
+    {
+        for (auto it = _objects.begin(); it != _objects.end(); ++it)
+        {
+            if (*it == _players[id])
+            {
+                delete _players[id];
+                _players.erase(id);
+                _objects.erase(it);
+                break;
+            }
+        }
+    }
+    return 0;
 }
 
 
@@ -152,25 +174,6 @@ std::vector<uint64_t> GameManager::get_players_ptr_id(const std::list<ser::Handl
         players_id.push_back(ptr_id);
     }
     return players_id;
-}
-
-
-int GameManager::remove_disconnected_players(std::vector<ClientId> &dis_players)
-{
-    for (auto &id:dis_players)
-    {
-        for (auto it = _objects.begin(); it != _objects.end(); ++it)
-        {
-            if (*it == _players[id])
-            {
-                delete _players[id];
-                _players.erase(id);
-                _objects.erase(it);
-                break;
-            }
-        }
-    }
-    return 0;
 }
 
 

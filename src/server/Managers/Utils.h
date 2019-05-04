@@ -23,7 +23,7 @@ class ClientHasher
     }
 };
 
-class ClientState
+class ClientInput
 {
  public:
     uint32_t is_shoot;
@@ -31,7 +31,7 @@ class ClientState
 
     ClientId _id;
 
-    ClientState(uint32_t dir, uint32_t is_shoot, std::pair<uint32_t, uint32_t> id) :
+    ClientInput(uint32_t dir, uint32_t is_shoot, std::pair<uint32_t, uint32_t> id) :
         direction(dir),
         is_shoot(is_shoot),
         _id(id)

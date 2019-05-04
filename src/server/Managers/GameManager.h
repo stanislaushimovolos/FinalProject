@@ -24,10 +24,16 @@ class GameManager
 
  private:
 
+    // Object with all information about level
     LevelManager _level;
 
+    // Map of clients ip-port and their game objects
     std::unordered_map<ClientId, Player *, ClientHasher, EqualClients> _players;
-    std::list<ClientState> _players_states;
+
+    // Consists information about player's keyboard
+    std::list<ClientInput> _players_states;
+
+    // All game objects (players too)
     std::list<GameObject *> _objects;
 
  public:
@@ -42,9 +48,9 @@ class GameManager
 
     int update_player_states(std::vector<ser::Packet> &received_data);
 
-    int create_env(const std::list<ser::Handler> &clients);
+    int start_game(const std::list<ser::Handler> &clients);
 
-    int update_environment(sf::Time &&delta_t);
+    int update_game(sf::Time &&delta_t);
 
     int remove_disconnected_players(std::vector<ClientId> &dis_players);
 

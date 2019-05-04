@@ -10,11 +10,11 @@ Server::Server(uint16_t port, uint32_t connection_delay, uint32_t max_num_of_pla
     _connection_delay(connection_delay),
     _required_num_of_clients(max_num_of_players)
 {
-    std::cout << "Server ip is: " << _ip_address << std::endl;
     _listener.listen(_port);
     _selector.add(_listener);
-
     _received_data.reserve(max_num_of_players);
+
+    std::cout << "Server ip is: " << _ip_address << std::endl;
 }
 
 
@@ -76,18 +76,20 @@ void Server::receive_packets()
 
             if (client_socket_ptr->receive(pkg.data()) == sf::Socket::Done)
             {
-                ++it;
                 _received_data.push_back(pkg);
+                it++;
             } else
             {
-                std::cout << "couldn't receive data" << std::endl;
+                // Remove not responding client
                 _selector.remove(*client_socket_ptr);
                 it = _clients.erase(it);
 
-                std::cout << "client was disconnected" << std::endl;
-
+                // Information for manager
                 _disconnected_clients.emplace_back(client.get_id());
                 _current_num_of_clients--;
+
+                std::cout << "couldn't receive data" << std::endl;
+                std::cout << "client was disconnected" << std::endl;
             }
         }
     }
@@ -96,19 +98,22 @@ void Server::receive_packets()
 
 int Server::start_session(GameManager &manager)
 {
-    manager.create_env(_clients);
+    manager.start_game(_clients);
+
     auto players_ptr_id = manager.get_players_ptr_id(_clients);
     send_id_to_clients(players_ptr_id);
 
-    sf::Packet current_state;
-    sf::Clock connection_timer, env_update_clock;
+    sf::Packet current_game_state;
+
+    //
+    sf::Clock connection_timer;
     while (true)
     {
         auto time_after_last_connection = connection_timer.getElapsedTime().asMilliseconds();
         if (time_after_last_connection > _connection_delay)
         {
-            manager.update_environment(env_update_clock.restart());
-            send_state_to_clients(current_state);
+            manager.update_game(connection_timer.restart());
+            send_state_to_clients(current_game_state);
 
             receive_packets();
             if (!_disconnected_clients.empty())
@@ -118,9 +123,7 @@ int Server::start_session(GameManager &manager)
             }
 
             manager.update_player_states(_received_data);
-            current_state = manager.create_current_state_packet();
-
-            connection_timer.restart();
+            current_game_state = manager.create_current_state_packet();
         }
     }
 }
@@ -130,6 +133,7 @@ int Server::send_id_to_clients(std::vector<uint64_t> ids)
 {
     int id_counter = 0;
 
+    // Send clients their unique id
     for (auto &it:_clients)
     {
         sf::Packet id_packet;
@@ -159,14 +163,16 @@ int Server::send_state_to_clients(sf::Packet &current_state)
 
         if (client_socket_ptr->send(current_state) != sf::Socket::Done)
         {
-            std::cout << "couldn't send state" << std::endl;
+            // Remove not responding client
             _selector.remove(*client_socket_ptr);
             it = _clients.erase(it);
 
-            std::cout << "client was disconnected" << std::endl;
-
+            // Information for manager
             _disconnected_clients.emplace_back(client->get_id());
             _current_num_of_clients--;
+
+            std::cout << "couldn't send state" << std::endl;
+            std::cout << "client was disconnected" << std::endl;
         } else
         {
             ++it;

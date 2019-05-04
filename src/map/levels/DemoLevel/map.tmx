@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.1" orientation="orthogonal" renderorder="right-down" width="50" height="27" tilewidth="32" tileheight="32" infinite="0" backgroundcolor="#4d538c" nextlayerid="4" nextobjectid="96">
+<map version="1.2" tiledversion="1.2.1" orientation="orthogonal" renderorder="right-down" width="50" height="27" tilewidth="32" tileheight="32" infinite="0" backgroundcolor="#4d538c" nextlayerid="4" nextobjectid="99">
  <tileset firstgid="1" name="../map/levels/DemoLevel/DemoTile.png" tilewidth="32" tileheight="32" tilecount="3072" columns="64">
   <image source="../map/levels/DemoLevel/DemoTile.png" width="2048" height="1536"/>
  </tileset>
@@ -1396,5 +1396,8 @@
     <property name="time_one_side" value="1000"/>
    </properties>
   </object>
+  <object id="96" name="player" x="822.5" y="562" width="53" height="56"/>
+  <object id="97" name="player" x="827.5" y="272" width="53" height="56"/>
+  <object id="98" name="player" x="790.5" y="140" width="53" height="56"/>
  </objectgroup>
 </map>
