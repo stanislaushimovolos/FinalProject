@@ -63,18 +63,19 @@ int Client::start_session(Manager &manager)
 
 
     // Start new thread for keyboard input
+
+    /* Create window and load textures
+    * The event loop (more precisely, the pollEvent or waitEvent function)
+    * must be called in the same thread that created the window.
+    * SFML 2.3 docs
+    */
+    manager.activate();
+
     sf::TcpSocket *socket_ptr = &_socket;
     std::future<int> async_input = std::async
         (std::launch::async,
          [socket_ptr, &manager]
          {
-             /* Create window and load textures
-              * The event loop (more precisely, the pollEvent or waitEvent function)
-              * must be called in the same thread that created the window.
-              * SFML 2.3 docs
-              */
-             manager.activate();
-
              while (true)
              {
                  sf::sleep(sf::milliseconds(conf::net::CONNECTION_DELAY));

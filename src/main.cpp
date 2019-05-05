@@ -27,9 +27,13 @@ int main()
             // Remove if you do not use X Window System
             XInitThreads();
 
+            std::string s;
+            std::cin >> s;
+            sf::IpAddress ip(s);
+
             auto remote_ip_port = sf::IpAddress::getLocalAddress();
             cli::Manager server_manager(800, 600, "Synchronized!!!!");
-            cli::Client client(remote_ip_port, conf::net::DEFAULT_PORT);
+            cli::Client client(ip, conf::net::DEFAULT_PORT);
             client.start_session(server_manager);
         }
         catch (std::exception &exception)
