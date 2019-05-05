@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.1" orientation="orthogonal" renderorder="right-down" width="50" height="27" tilewidth="32" tileheight="32" infinite="0" backgroundcolor="#4d538c" nextlayerid="4" nextobjectid="108">
+<map version="1.2" tiledversion="1.2.1" orientation="orthogonal" renderorder="right-down" width="50" height="27" tilewidth="32" tileheight="32" infinite="0" backgroundcolor="#4d538c" nextlayerid="4" nextobjectid="110">
  <tileset firstgid="1" name="../map/levels/DemoLevel/DemoTile.png" tilewidth="32" tileheight="32" tilecount="3072" columns="64">
   <image source="../map/levels/DemoLevel/DemoTile.png" width="2048" height="1536"/>
  </tileset>
@@ -1365,8 +1365,8 @@
   <object id="87" name="solidblock" x="0" y="-2" width="1597" height="33"/>
   <object id="88" name="solidblock" x="-2" y="0" width="32" height="864"/>
   <object id="89" name="solidblock" x="1569" y="8" width="31" height="826"/>
-  <object id="96" name="player" x="822.5" y="562" width="53" height="56"/>
   <object id="106" name="player" x="800.5" y="174" width="53" height="56"/>
-  <object id="107" name="player" x="1372.5" y="329" width="53" height="56"/>
+  <object id="108" name="player" x="921.5" y="484" width="53" height="56"/>
+  <object id="109" name="player" x="744.5" y="442" width="53" height="56"/>
  </objectgroup>
 </map>

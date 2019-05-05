@@ -162,11 +162,11 @@ int Manager::process_scene(sf::Packet &packet)
                     _view.setCenter(view_coord);
 
                     // Compute borders of visible area
-                    _left_border = (view_coord.x - _resolution.x / 2 - _tile_size.x);
-                    _right_border = (view_coord.x + _resolution.x / 2 + _tile_size.x);
+                    _left_border = (view_coord.x - _resolution.x / 2 - 5 * _tile_size.x);
+                    _right_border = (view_coord.x + _resolution.x / 2 + 5 * _tile_size.x);
 
-                    _top_border = (view_coord.y - _resolution.y / 2 - _tile_size.y);
-                    _bottom_border = (view_coord.y + _resolution.y / 2 + _tile_size.y);
+                    _top_border = (view_coord.y - _resolution.y / 2 - 5 * _tile_size.y);
+                    _bottom_border = (view_coord.y + _resolution.y / 2 + 5 * _tile_size.y);
                 }
 
                 break;
