@@ -1,8 +1,6 @@
 #pragma once
 
-#include <SFML/Graphics.hpp>
 #include <SFML/Network.hpp>
-#include <X11/Xlib.h>
 
 #include "../Manager/ClientManager.h"
 #include "../../configuration/network.h"

@@ -65,30 +65,26 @@ int Client::start_session(Manager &manager)
     // Turn on window and load textures
     manager.activate();
 
+    // Start new thread for keyboard input
     sf::TcpSocket *socket_ptr = &_socket;
-    auto f = std::async(std::launch::async,
-                        [socket_ptr, &manager]
-                        {
-                            sf::Clock connection_timer;
-                            while (true)
-                            {
-                                auto time_after_last_connection =
-                                    connection_timer.getElapsedTime().asMilliseconds();
+    std::future<int> async_input = std::async
+        (std::launch::async,
+         [socket_ptr, &manager]
+         {
+             while (true)
+             {
+                 sf::sleep(sf::milliseconds(conf::net::CONNECTION_DELAY * 2));
 
-                                if (time_after_last_connection >= conf::net::CONNECTION_DELAY * 5)
-                                {
-                                    sf::Packet pack = manager.get_user_input();
-                                    auto connection_status = socket_ptr->send(pack);
-                                    if (connection_status != sf::Socket::Done)
-                                    {
-                                        std::cout << "Disconnected" << std::endl;
-                                        return 0;
-                                    }
-                                    connection_timer.restart();
-                                }
-                            }
-                            return 1;
-                        });
+                 sf::Packet pack = manager.get_user_input();
+                 auto status = socket_ptr->send(pack);
+                 if (status != sf::Socket::Done)
+                 {
+                     std::cout << "Disconnected" << std::endl;
+                     return 0;
+
+                 }
+             }
+         });
 
     // Send and receive data one by one while game is active
     while (manager.is_window_active())

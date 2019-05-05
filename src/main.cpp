@@ -1,11 +1,8 @@
-#include <iostream>
-#include <SFML/Network.hpp>
-#include <SFML/Graphics.hpp>
-
 #include "server/Network/Server.h"
-#include "server/Managers/LevelManager.h"
-
 #include "client/Network/Client.h"
+
+// Remove if you do not use X Window System
+#include <X11/Xlib.h>
 
 
 int main()
@@ -27,7 +24,9 @@ int main()
     {
         try
         {
+            // Remove if you do not use X Window System
             XInitThreads();
+
             auto remote_ip_port = sf::IpAddress::getLocalAddress();
             cli::Manager server_manager(800, 600, "Synchronized!!!!");
             cli::Client client(remote_ip_port, conf::net::DEFAULT_PORT);

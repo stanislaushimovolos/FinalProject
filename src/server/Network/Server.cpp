@@ -40,6 +40,9 @@ int Server::add_new_client()
     // Create new socket
     auto new_client_socket = new sf::TcpSocket;
 
+    // Make it non-blocking
+    new_client_socket->setBlocking(false);
+
     if (_listener.accept(*new_client_socket) == sf::Socket::Done)
     {
         // Add the new client to the selector
@@ -64,7 +67,7 @@ void Server::receive_packets()
 
     // Waiting for all clients to send data
 
-    if (_selector.wait(sf::milliseconds(1)))
+    if (_selector.wait(sf::Time::Zero))
     {
         for (auto it = _clients.begin(); it != _clients.end();)
         {
@@ -75,14 +78,19 @@ void Server::receive_packets()
             if (_selector.isReady(*client_socket_ptr))
             {
                 // The client has sent some data, we can receive it
-                Packet pkg(client.get_id());
+                sf::Packet packet;
+                ser::Packet new_client_state(client.get_id());
+                auto receive_status = client_socket_ptr->receive(packet);
 
-                auto receive_status = client_socket_ptr->receive(pkg.data());
-
-                // TODO : ckeck if there are multiple packets
+                // If there are several packets,
+                // we need to read the first one and remove others from socket
                 if (receive_status == sf::Socket::Done)
                 {
-                    _received_data.push_back(pkg);
+                    new_client_state.data() = packet;
+                    while (client_socket_ptr->receive(packet) == sf::Socket::Done)
+                        packet.clear();
+
+                    _received_data.emplace_back(new_client_state);
                     it++;
                 } else if
                     (receive_status == sf::Socket::Disconnected ||
@@ -172,22 +180,19 @@ int Server::send_state_to_clients(sf::Packet &current_state)
         auto &client = it;
         auto client_socket_ptr = client->get_socket_ptr();
 
-        if (client_socket_ptr->send(current_state) != sf::Socket::Done)
-        {
-            // Remove not responding client
-            _selector.remove(*client_socket_ptr);
-            it = _clients.erase(it);
+        /* If sf::Socket::Partial is returned, you must make sure to handle the partial send properly
+         * When sending sf::Packets, the byte offset is saved within the sf::Packet itself.
+         * In this case, you we make sure to keep attempting to send the exact same unmodified
+         * sf::Packet object over and over until a status other than sf::Socket::Partial is returned.
+         * SFML 2.3 docs
+         */
 
-            // Information for manager
-            _disconnected_clients.emplace_back(client->get_id());
-            _current_num_of_clients--;
+        auto status = client_socket_ptr->send(current_state);
+        while (status == sf::Socket::Partial)
+            status = client_socket_ptr->send(current_state);
 
-            std::cout << "couldn't send state" << std::endl;
-            std::cout << "client was disconnected" << std::endl;
-        } else
-        {
-            ++it;
-        }
+        it++;
+
     }
     return 1;
 }
