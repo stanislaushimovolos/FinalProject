@@ -20,15 +20,15 @@ class Manager
 
     Manager(uint32_t x_resolution, uint32_t y_resolution, std::string &&window_name);
 
-    void draw_objects(const sf::Vector2f &view_coord);
-
-    void draw_map(const sf::Vector2f &view_coord);
-
     void load_textures_of_objects();
 
     void set_id(uint64_t id);
 
+    void draw_objects();
+
     void draw_scene();
+
+    void draw_map();
 
     void activate();
 
@@ -63,6 +63,10 @@ class Manager
     uint32_t _current_num_of_objects;
     std::vector<SpriteDrawer> _graph_objects;
     std::map<unsigned int, sf::Texture> _textures;
+
+    // Visible part of map
+    float _left_border, _right_border,
+        _top_border, _bottom_border;
 
     // Object with all information about level
     Level _level;

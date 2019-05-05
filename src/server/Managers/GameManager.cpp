@@ -126,6 +126,9 @@ int GameManager::update_game(sf::Time &&delta_t)
         obj->update(delta_t_milliseconds);
 
     collect_garbage();
+
+    if (_players.empty())
+        return 0;
     return 1;
 }
 

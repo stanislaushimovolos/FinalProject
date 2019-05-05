@@ -73,7 +73,7 @@ int Client::start_session(Manager &manager)
          {
              while (true)
              {
-                 sf::sleep(sf::milliseconds(conf::net::CONNECTION_DELAY * 2));
+                 sf::sleep(sf::milliseconds(conf::net::CONNECTION_DELAY));
 
                  sf::Packet pack = manager.get_user_input();
                  auto status = socket_ptr->send(pack);

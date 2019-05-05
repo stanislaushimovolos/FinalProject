@@ -131,7 +131,9 @@ int Server::start_session(GameManager &manager)
         auto time_after_last_connection = connection_timer.getElapsedTime().asMilliseconds();
         if (time_after_last_connection > _connection_delay)
         {
-            manager.update_game(connection_timer.restart());
+            // Check if game is over
+            if (!manager.update_game(connection_timer.restart()))
+                break;
             send_state_to_clients(current_game_state);
 
             receive_packets();
@@ -145,6 +147,7 @@ int Server::start_session(GameManager &manager)
             current_game_state = manager.create_current_state_packet();
         }
     }
+    return 1;
 }
 
 

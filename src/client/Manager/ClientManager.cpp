@@ -12,6 +12,10 @@ Manager::Manager(uint32_t x_resolution, uint32_t y_resolution, std::string &&win
     _tile_size(0, 0),
     _map_width(0),
     _map_height(0),
+    _top_border(0),
+    _left_border(0),
+    _right_border(0),
+    _bottom_border(0),
 
     _graph_objects(conf::game::start_num_of_objects),
     _view(sf::Vector2f(x_resolution / 2, y_resolution / 2),
@@ -61,23 +65,22 @@ void Manager::load_textures_of_objects()
 void Manager::draw_scene()
 {
     // Draw objects in view
-    sf::Vector2f view_coord = _view.getCenter();
-    draw_map(view_coord);
-    draw_objects(view_coord);
+    draw_map();
+    draw_objects();
 
     _window.display();
     _window.clear(sf::Color::Black);
 }
 
 
-void Manager::draw_objects(const sf::Vector2f &view_coord)
+void Manager::draw_objects()
 {
     for (int i = 0; i < _number_of_graph_objects; i++)
     {
         // Draw only close objects
         auto obj_pos = _graph_objects[i].get_position();
-        if (abs(obj_pos.x - view_coord.x) < _resolution.x
-            && abs(obj_pos.y - view_coord.y) < _resolution.y)
+        if (obj_pos.x >= _left_border && obj_pos.x <= _right_border
+            && obj_pos.y >= _top_border && obj_pos.y <= _bottom_border)
         {
             _graph_objects[i].draw(_window);
         }
@@ -85,22 +88,15 @@ void Manager::draw_objects(const sf::Vector2f &view_coord)
 }
 
 
-void Manager::draw_map(const sf::Vector2f &view_coord)
+void Manager::draw_map()
 {
-    // Compute borders of visible area
-    float left_border = (view_coord.x - _resolution.x / 2 - _tile_size.x);
-    float right_border = (view_coord.x + _resolution.x / 2 + _tile_size.x);
-
-    float top_border = (view_coord.y - _resolution.y / 2 - _tile_size.y);
-    float bottom_border = (view_coord.y + _resolution.y / 2 + _tile_size.y);
-
     for (auto &layer:_map_tile_layers)
     {
         for (auto &tile:layer.tiles)
         {
             auto tile_pos = tile.getPosition();
-            if (tile_pos.x >= left_border && tile_pos.x <= right_border &&
-                tile_pos.y >= top_border && tile_pos.y <= bottom_border)
+            if (tile_pos.x >= _left_border && tile_pos.x <= _right_border &&
+                tile_pos.y >= _top_border && tile_pos.y <= _bottom_border)
             {
                 _window.draw(tile);
             }
@@ -164,6 +160,13 @@ int Manager::process_scene(sf::Packet &packet)
                         view_coord.y = _resolution.y / 2;
 
                     _view.setCenter(view_coord);
+
+                    // Compute borders of visible area
+                    _left_border = (view_coord.x - _resolution.x / 2 - _tile_size.x);
+                    _right_border = (view_coord.x + _resolution.x / 2 + _tile_size.x);
+
+                    _top_border = (view_coord.y - _resolution.y / 2 - _tile_size.y);
+                    _bottom_border = (view_coord.y + _resolution.y / 2 + _tile_size.y);
                 }
 
                 break;
