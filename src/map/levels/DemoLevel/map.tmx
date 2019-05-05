@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.1" orientation="orthogonal" renderorder="right-down" width="69" height="69" tilewidth="32" tileheight="32" infinite="0" backgroundcolor="#4d538c" nextlayerid="5" nextobjectid="143">
+<map version="1.2" tiledversion="1.2.1" orientation="orthogonal" renderorder="right-down" width="69" height="69" tilewidth="32" tileheight="32" infinite="0" backgroundcolor="#4d538c" nextlayerid="5" nextobjectid="153">
  <tileset firstgid="1" name="../map/levels/DemoLevel/DemoTile.png" tilewidth="32" tileheight="32" tilecount="3072" columns="64">
   <image source="../map/levels/DemoLevel/DemoTile.png" width="2048" height="1536"/>
  </tileset>
@@ -4784,14 +4784,43 @@
   <object id="130" name="solidblock" x="247.5" y="1559.5" width="51" height="49"/>
   <object id="131" name="solidblock" x="1152.5" y="1719.5" width="77" height="44"/>
   <object id="132" name="solidblock" x="1235.5" y="1561.5" width="92" height="49"/>
-  <object id="134" name="player" x="1116" y="1306" width="72" height="69"/>
   <object id="135" name="solidblock" x="881.167" y="1514.17" width="67" height="75.6667"/>
   <object id="136" name="solidblock" x="1258.5" y="912.833" width="76.3333" height="75.6667"/>
   <object id="137" name="solidblock" x="1383.83" y="1107.5" width="79" height="75.6667"/>
   <object id="138" name="solidblock" x="1226.5" y="1196.83" width="87" height="75.6667"/>
   <object id="139" name="solidblock" x="1250.5" y="1538.17" width="67" height="75.6667"/>
   <object id="140" name="solidblock" x="1157.17" y="1704.83" width="67" height="75.6667"/>
-  <object id="141" name="player" x="1689.33" y="1001.5" width="72" height="69"/>
-  <object id="142" name="player" x="821.333" y="1193.5" width="72" height="69"/>
+  <object id="143" name="hole" x="457.333" y="452" width="156" height="125.333">
+   <properties>
+    <property name="direction" value="rightdiag"/>
+    <property name="time_one_side" value="3000"/>
+   </properties>
+  </object>
+  <object id="146" name="hole" x="482" y="1284" width="156" height="125.333">
+   <properties>
+    <property name="direction" value="right"/>
+    <property name="time_one_side" value="1000"/>
+   </properties>
+  </object>
+  <object id="147" name="hole" x="944.667" y="85.3335" width="156" height="125.333">
+   <properties>
+    <property name="direction" value="down"/>
+    <property name="time_one_side" value="2000"/>
+   </properties>
+  </object>
+  <object id="148" name="hole" x="1931.33" y="133.333" width="156" height="125.333">
+   <properties>
+    <property name="direction" value="leftdiag"/>
+    <property name="time_one_side" value="700"/>
+   </properties>
+  </object>
+  <object id="149" name="hole" x="78" y="2048" width="156" height="125.333">
+   <properties>
+    <property name="direction" value="right"/>
+    <property name="time_one_side" value="1500"/>
+   </properties>
+  </object>
+  <object id="150" name="player" x="861.333" y="1224.17" width="72" height="69"/>
+  <object id="152" name="player" x="1649.33" y="1190.83" width="72" height="69"/>
  </objectgroup>
 </map>

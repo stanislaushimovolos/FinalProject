@@ -61,47 +61,61 @@ int Client::start_session(Manager &manager)
     if (!connection_status)
         return 0;
 
-
-    // Start new thread for keyboard input
-    /* Create window and load textures
+    /*
     * The event loop (more precisely, the pollEvent or waitEvent function)
     * must be called in the same thread that created the window.
     * SFML 2.3 docs
     */
+
+    // Create window and load textures
     manager.activate();
+
+    // Start new thread for keyboard input
     sf::TcpSocket *socket_ptr = &_socket;
+    Manager *manager_ptr = &manager;
+
     std::future<int> async_input = std::async
         (std::launch::async,
-         [socket_ptr, &manager]
+         [socket_ptr, manager_ptr]
          {
+
              while (true)
              {
-                 sf::sleep(sf::milliseconds(conf::net::CONNECTION_DELAY/2));
+                 sf::sleep(sf::milliseconds(2 * conf::net::CONNECTION_DELAY));
 
-                 sf::Packet pack = manager.get_user_input();
-                 auto status = socket_ptr->send(pack);
-                 if (status != sf::Socket::Done)
+                 if (manager_ptr->is_window_active())
                  {
-                     std::cout << "Disconnected" << std::endl;
+                     sf::Packet pack = manager_ptr->get_user_input();
+                     auto status = socket_ptr->send(pack);
+                     if (status != sf::Socket::Done)
+                     {
+                         std::cout << "Disconnected" << std::endl;
+                         return 0;
+                     }
+                 } else
+                 {
+                     std::cout << "is not active now" << std::endl;
                      return 0;
-
                  }
              }
          });
 
-    // Send and receive data one by one while game is active
+
+// Send and receive data one by one while game is active
     while (manager.is_window_active())
     {
         // receive data
         connection_status = receive_packet(received_packet);
         if (!connection_status)
-            return 0;
+            break;
 
-        // update local environment
+        // Update local environment
         connection_status = manager.update(received_packet);
         if (!connection_status)
-            return 0;
+            break;
     }
+
+    //async_input.get();
     return 1;
 }
 
@@ -131,7 +145,6 @@ std::pair<uint32_t, uint32_t> Client::get_local_ip_port()
 Client::~Client()
 {
     std::cout << "client was destroyed!!!" << std::endl;
-    _socket.disconnect();
 }
 
 }

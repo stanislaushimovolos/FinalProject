@@ -111,6 +111,38 @@ int Manager::update(sf::Packet &packet)
     if (!status)
         return 0;
 
+    sf::Event event;
+    while (_window.pollEvent(event))
+    {
+        switch (event.type)
+        {
+            case sf::Event::Closed:
+            {
+                _is_window_opened = false;
+                _window.close();
+                break;
+            }
+            case sf::Event::GainedFocus:
+            {
+                _is_window_focused = true;
+                break;
+            }
+            case sf::Event::LostFocus:
+            {
+                _is_window_focused = false;
+                break;
+            }
+            case sf::Event::Resized:
+            {
+                // TODO
+                //_view.setSize(event.size.width, event.size.height);
+                //_resolution = _window.getSize();
+                break;
+            }
+            default:break;
+        }
+    }
+
     _window.setView(_view);
     this->draw_scene();
     return 1;
@@ -215,35 +247,6 @@ int Manager::process_scene(sf::Packet &packet)
 
 sf::Packet Manager::get_user_input()
 {
-    sf::Event event;
-    while (_window.pollEvent(event))
-    {
-        switch (event.type)
-        {
-            case sf::Event::Closed:
-            {
-                _is_window_opened = false;
-                _window.close();
-                break;
-            }
-            case sf::Event::GainedFocus:
-            {
-                _is_window_focused = true;
-                break;
-            }
-            case sf::Event::LostFocus:
-            {
-                _is_window_focused = false;
-                break;
-            }
-            case sf::Event::Resized:
-            {
-                _view.setSize(event.size.width, event.size.height);
-                _resolution = _window.getSize();
-            }
-            default:break;
-        }
-    }
 
     // Check pressed keys
     uint32_t current_direction = conf::game::Rest;
@@ -289,6 +292,12 @@ sf::Packet &operator>>(sf::Packet &packet, uint64_t &number)
 
     number = make_long_long(first_part, second_part);
     return packet;
+}
+
+
+Manager::~Manager()
+{
+    std::cout << "manager was destroyed!!" << std::endl;
 }
 
 }

@@ -40,7 +40,7 @@ class Manager
 
     bool is_window_active();
 
-    ~Manager() = default;
+    ~Manager();
 
     sf::View _view;
 
@@ -56,7 +56,7 @@ class Manager
 
     sf::Vector2u _resolution;
     std::string _window_name;
-    bool _is_window_focused;
+    std::atomic_bool _is_window_focused;
     bool _is_window_opened;
 
     // Params of current scene
