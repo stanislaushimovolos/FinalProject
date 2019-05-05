@@ -2,6 +2,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <unordered_set>
+#include <future>
 
 #include "KeyboardInterface.h"
 #include "../Render/SpriteDrawer.h"

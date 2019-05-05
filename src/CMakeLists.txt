@@ -12,5 +12,7 @@ add_executable(KillTheDevilMUlti main.cpp
         map/tinyxml/tinystr.cpp map/tinyxml/tinystr.h map/tinyxml/tinyxml.cpp map/tinyxml/tinyxml.h map/tinyxml/tinyxmlerror.cpp map/tinyxml/tinyxmlparser.cpp map/Level.h map/Level.cpp map/Level.h server/Managers/LevelManager.cpp server/Managers/LevelManager.h configuration/map.h server/GameEntities/SolidBlock.cpp server/GameEntities/SolidBlock.h)
 
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake_modules" ${CMAKE_MODULE_PATH})
+find_package (Threads)
+find_package(X11 REQUIRED)
 find_package(SFML 2 REQUIRED COMPONENTS network audio graphics window system)
-target_link_libraries(${PROJECT_NAME} ${SFML_LIBRARIES} ${SFML_DEPENDENCIES})
+target_link_libraries(${PROJECT_NAME} ${X11_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT} ${SFML_LIBRARIES} ${SFML_DEPENDENCIES})

@@ -61,14 +61,34 @@ int Client::start_session(Manager &manager)
     if (!connection_status)
         return 0;
 
-    auto send_pack = manager.get_user_input();
-
-    connection_status = send_packet(send_pack);
-    if (!connection_status)
-        return 0;
 
     // Turn on window and load textures
     manager.activate();
+
+    sf::TcpSocket *socket_ptr = &_socket;
+    auto f = std::async(std::launch::async,
+                        [socket_ptr, &manager]
+                        {
+                            sf::Clock connection_timer;
+                            while (true)
+                            {
+                                auto time_after_last_connection =
+                                    connection_timer.getElapsedTime().asMilliseconds();
+
+                                if (time_after_last_connection >= conf::net::CONNECTION_DELAY * 5)
+                                {
+                                    sf::Packet pack = manager.get_user_input();
+                                    auto connection_status = socket_ptr->send(pack);
+                                    if (connection_status != sf::Socket::Done)
+                                    {
+                                        std::cout << "Disconnected" << std::endl;
+                                        return 0;
+                                    }
+                                    connection_timer.restart();
+                                }
+                            }
+                            return 1;
+                        });
 
     // Send and receive data one by one while game is active
     while (manager.is_window_active())
@@ -80,12 +100,6 @@ int Client::start_session(Manager &manager)
 
         // update local environment
         connection_status = manager.update(received_packet);
-        if (!connection_status)
-            return 0;
-
-        // send user input
-        send_pack = manager.get_user_input();
-        connection_status = send_packet(send_pack);
         if (!connection_status)
             return 0;
     }

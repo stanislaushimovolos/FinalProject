@@ -27,6 +27,7 @@ int main()
     {
         try
         {
+            XInitThreads();
             auto remote_ip_port = sf::IpAddress::getLocalAddress();
             cli::Manager server_manager(800, 600, "Synchronized!!!!");
             cli::Client client(remote_ip_port, conf::net::DEFAULT_PORT);

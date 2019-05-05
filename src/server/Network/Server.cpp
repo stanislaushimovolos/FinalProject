@@ -64,32 +64,44 @@ void Server::receive_packets()
 
     // Waiting for all clients to send data
 
-    if (_selector.wait())
+    if (_selector.wait(sf::milliseconds(1)))
     {
-        for (auto it = std::begin(_clients); it != std::end(_clients);)
+        for (auto it = _clients.begin(); it != _clients.end();)
         {
             ser::Handler &client = *it;
             auto client_socket_ptr = client.get_socket_ptr();
 
-            // The client has sent some data, we can receive it
-            Packet pkg(client.get_id());
-
-            if (client_socket_ptr->receive(pkg.data()) == sf::Socket::Done)
+            // Test if client sent data
+            if (_selector.isReady(*client_socket_ptr))
             {
-                _received_data.push_back(pkg);
-                it++;
+                // The client has sent some data, we can receive it
+                Packet pkg(client.get_id());
+
+                auto receive_status = client_socket_ptr->receive(pkg.data());
+
+                // TODO : ckeck if there are multiple packets
+                if (receive_status == sf::Socket::Done)
+                {
+                    _received_data.push_back(pkg);
+                    it++;
+                } else if
+                    (receive_status == sf::Socket::Disconnected ||
+                        receive_status == sf::Socket::Error)
+                {
+                    // Remove not responding client
+                    _selector.remove(*client_socket_ptr);
+                    it = _clients.erase(it);
+
+                    // Information for manager
+                    _disconnected_clients.emplace_back(client.get_id());
+                    _current_num_of_clients--;
+
+                    std::cout << "couldn't receive data" << std::endl;
+                    std::cout << "client was disconnected" << std::endl;
+                }
             } else
             {
-                // Remove not responding client
-                _selector.remove(*client_socket_ptr);
-                it = _clients.erase(it);
-
-                // Information for manager
-                _disconnected_clients.emplace_back(client.get_id());
-                _current_num_of_clients--;
-
-                std::cout << "couldn't receive data" << std::endl;
-                std::cout << "client was disconnected" << std::endl;
+                it++;
             }
         }
     }
@@ -105,7 +117,6 @@ int Server::start_session(GameManager &manager)
 
     sf::Packet current_game_state;
 
-    //
     sf::Clock connection_timer;
     while (true)
     {
