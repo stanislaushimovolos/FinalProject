@@ -134,9 +134,10 @@ int Server::start_session(GameManager &manager)
             // Check if game is over
             if (!manager.update_game(connection_timer.restart()))
                 break;
-            send_state_to_clients(current_game_state);
 
+            send_state_to_clients(current_game_state);
             receive_packets();
+
             if (!_disconnected_clients.empty())
             {
                 manager.remove_disconnected_players(_disconnected_clients);

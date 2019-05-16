@@ -29,7 +29,6 @@ class GraphProperty
     uint32_t _type;
 };
 
-
 // Deprecated
 class SimpleRectangleTexture : public GraphProperty
 {

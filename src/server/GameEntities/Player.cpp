@@ -63,15 +63,15 @@ void Player::interact(ser::GameObject *object, int delta_t)
     if (!object->is_active() || !_is_live)
         return;
 
+    // Don't do anything if there is no collision
+    const auto &other_collider = object->get_collider();
+    if (!this->_collider.detect_collision(other_collider))
+        return;
+
     switch (other_type)
     {
         case (conf::game::Player) :
         {
-            // Don't do anything if there is no collision
-            const auto &other_collider = object->get_collider();
-            if (!this->_collider.detect_collision(other_collider))
-                return;
-
             auto player_ptr = dynamic_cast<Player *>(object);
             if (!player_ptr->is_live())
                 break;
@@ -91,11 +91,6 @@ void Player::interact(ser::GameObject *object, int delta_t)
         }
         case (conf::game::Bullet):
         {
-            // Don't do anything if there is no collision
-            const auto &other_collider = object->get_collider();
-            if (!this->_collider.detect_collision(other_collider))
-                return;
-
             // Do not cause damage it his bullet
             auto bullet_ptr = dynamic_cast<Bullet *>(object);
             if (bullet_ptr->get_owner() != reinterpret_cast<std::uintptr_t>(this))
@@ -109,11 +104,6 @@ void Player::interact(ser::GameObject *object, int delta_t)
         }
         case (conf::game::MovingPlatform):
         {
-            // Don't do anything if there is no collision
-            const auto &other_collider = object->get_collider();
-            if (!this->_collider.detect_collision(other_collider))
-                return;
-
             auto platform_ptr = dynamic_cast<MovingPlatform *>(object);
             cause_damage(platform_ptr->get_damage());
 
@@ -125,11 +115,6 @@ void Player::interact(ser::GameObject *object, int delta_t)
         }
         case (conf::game::Blast):
         {
-            // Don't do anything if there is no collision
-            const auto &other_collider = object->get_collider();
-            if (!this->_collider.detect_collision(other_collider))
-                return;
-
             auto blast_ptr = dynamic_cast<Blast *>(object);
             cause_damage(blast_ptr->get_damage());
 
@@ -137,11 +122,6 @@ void Player::interact(ser::GameObject *object, int delta_t)
         }
         case (conf::game::SolidBlock):
         {
-            // Don't do anything if there is no collision
-            const auto &other_collider = object->get_collider();
-            if (!this->_collider.detect_collision(other_collider))
-                return;
-
             auto other_position = object->get_position();
             auto other_size = other_collider.get_size();
 

@@ -51,11 +51,10 @@ void GameManager::collect_garbage()
 
 void GameManager::load_init_objects()
 {
-
-    // Do better
+    // TODO : do it automatically
     auto black_hole_objects = _level.get_objects_by_name(conf::map::hole_object_name);
-    for (auto &obj :black_hole_objects)
-        _objects.push_back(new MovingPlatform(obj, conf::game::hole_speed));
+    for (auto &level_obj :black_hole_objects)
+        _objects.push_back(new MovingPlatform(level_obj, conf::game::hole_speed));
 
     auto solid_blocks_objects = _level.get_objects_by_name(conf::map::solid_block_object_name);
     for (auto &obj :solid_blocks_objects)

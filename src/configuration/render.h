@@ -9,6 +9,9 @@ namespace conf
 namespace render
 {
 
+static const int x_resolution = 1920;
+static const int y_resolution = 1080;
+
 enum TextureId
 {
     DevilTexture,

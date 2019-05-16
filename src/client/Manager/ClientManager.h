@@ -44,6 +44,8 @@ class Manager
 
     sf::View _view;
 
+    std::vector<Layer> _map_tile_layers;
+
  private:
 
     // Unique ID of the client
@@ -74,7 +76,7 @@ class Manager
     // Map properties
     sf::Vector2i _tile_size;
     float _map_width, _map_height;
-    std::vector<Layer> _map_tile_layers;
+    std::vector<TileLayer> _tiles;
 
     // Number of graph properties of all objects
     int _number_of_graph_objects;

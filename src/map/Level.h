@@ -34,6 +34,19 @@ struct Layer//слои
     std::vector<sf::Sprite> tiles;//закидываем в вектор тайлы
 };
 
+class TileLayer
+{
+ public:
+    std::vector<std::vector<sf::Sprite *>> sprites;
+
+    TileLayer(size_t height, size_t width)
+    {
+        sprites.resize(height);
+        for (auto &row: sprites)
+            row.resize(width);
+    }
+};
+
 class Level//главный класс - уровень
 {
  public:

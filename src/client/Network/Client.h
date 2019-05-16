@@ -21,9 +21,9 @@ class Client
 
     int receive_packet(sf::Packet &packet);
 
-    int send_packet(sf::Packet &pack);
-
     int start_session(Manager &manager);
+
+    int connect();
 
     int receive_id();
 

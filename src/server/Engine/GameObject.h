@@ -5,8 +5,8 @@
 
 #include "Properties.h"
 #include "RectangleCollider.h"
-#include "../../configuration/gameplay.h"
 #include "../../map/Level.h"
+#include "../../configuration/gameplay.h"
 
 namespace ser
 {
@@ -29,9 +29,9 @@ class GameObject
 
     virtual void compress_to_packet(sf::Packet &pack) const = 0;
 
-    virtual void set_direction(uint32_t new_direction);
-
     virtual void interact(GameObject *obj, int delta_t) = 0;
+
+    virtual void set_direction(uint32_t new_direction);
 
     virtual void update(int delta_t);
 

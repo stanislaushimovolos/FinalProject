@@ -26,17 +26,22 @@ int main()
     {
         try
         {
-            // Remove if you do not use X Window System
-            XInitThreads();
-
             std::string s;
             std::cout << "Enter server IP: " << std::endl;
             std::cin >> s;
             sf::IpAddress remote_ip(s);
 
             cli::Client client(remote_ip, conf::net::DEFAULT_PORT);
-            cli::Manager server_manager(800, 600, "Synchronized!!!!");
-            client.start_session(server_manager);
+            if (!client.connect())
+                return EXIT_FAILURE;
+
+            // Remove if you do not use X Window System
+            XInitThreads();
+
+            cli::Manager client_manager
+                (conf::render::x_resolution, conf::render::y_resolution, "Postavte 10 pls");
+
+            client.start_session(client_manager);
         }
         catch (std::exception &exception)
         {

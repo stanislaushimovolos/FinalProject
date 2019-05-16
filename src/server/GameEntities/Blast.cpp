@@ -20,10 +20,10 @@ Blast::Blast(uint64_t owner, sf::Vector2f position, float damage) :
 
 
     _life_time = blast_frame_amount / blast_animation_speed;
-    _collider.set_size({blast_texture_width,
-                        blast_texture_height});
-    _collider.set_position({_position.x - blast_texture_width / 2,
-                            _position.y - blast_texture_height / 2});
+    _collider.set_size({blast_texture_width / 2,
+                        blast_texture_height / 2});
+    _collider.set_position({_position.x - blast_texture_width / 4,
+                            _position.y - blast_texture_height / 4});
 }
 
 

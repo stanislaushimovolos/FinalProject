@@ -38,6 +38,21 @@ void Manager::activate()
     _map_tile_layers = _level.GetLayers();
     _map_width = _level.GetMapSize().x * _tile_size.x;
     _map_height = _level.GetMapSize().y * _tile_size.y;
+
+    //TODO : do better
+    for (auto &tile_layer: _map_tile_layers)
+    {
+        _tiles.emplace_back(_level.GetMapSize().y, _level.GetMapSize().x);
+
+        for (sf::Sprite &tile : tile_layer.tiles)
+        {
+            int column = (int) (tile.getPosition().x / _tile_size.x);
+            int row = (int) (tile.getPosition().y / _tile_size.y);
+
+            _tiles.back().sprites[row][column] = &tile;
+        }
+
+    }
 }
 
 
@@ -69,7 +84,7 @@ void Manager::draw_scene()
     draw_objects();
 
     _window.display();
-    _window.clear(sf::Color::Black);
+    _window.clear();
 }
 
 
@@ -90,16 +105,22 @@ void Manager::draw_objects()
 
 void Manager::draw_map()
 {
-    for (auto &layer:_map_tile_layers)
+    int right_tile_idx = ((int) _right_border / _tile_size.x);
+    int left_tile_idx = ((int) _left_border / _tile_size.x);
+    if (right_tile_idx != _level.GetMapSize().x)
+        right_tile_idx++;
+
+    int top_tile_idx = ((int) _top_border / _tile_size.y);
+    int bot_tile_idx = ((int) _bottom_border / _tile_size.y);
+    if (bot_tile_idx != _level.GetMapSize().x)
+        bot_tile_idx++;
+
+    for (auto &layer:_tiles)
     {
-        for (auto &tile:layer.tiles)
+        for (int i = top_tile_idx; i < bot_tile_idx; i++)
         {
-            auto tile_pos = tile.getPosition();
-            if (tile_pos.x >= _left_border && tile_pos.x <= _right_border &&
-                tile_pos.y >= _top_border && tile_pos.y <= _bottom_border)
-            {
-                _window.draw(tile);
-            }
+            for (int j = left_tile_idx; j < right_tile_idx; j++)
+                _window.draw(*layer.sprites[i][j]);
         }
     }
 }
@@ -134,9 +155,8 @@ int Manager::update(sf::Packet &packet)
             }
             case sf::Event::Resized:
             {
-                // TODO
-                //_view.setSize(event.size.width, event.size.height);
-                //_resolution = _window.getSize();
+                _view.setSize(event.size.width, event.size.height);
+                _resolution = _window.getSize();
                 break;
             }
             default:break;
@@ -194,11 +214,11 @@ int Manager::process_scene(sf::Packet &packet)
                     _view.setCenter(view_coord);
 
                     // Compute borders of visible area
-                    _left_border = (view_coord.x - _resolution.x / 2 - 5 * _tile_size.x);
-                    _right_border = (view_coord.x + _resolution.x / 2 + 5 * _tile_size.x);
+                    _left_border = (view_coord.x - _resolution.x / 2);
+                    _right_border = (view_coord.x + _resolution.x / 2);
 
-                    _top_border = (view_coord.y - _resolution.y / 2 - 5 * _tile_size.y);
-                    _bottom_border = (view_coord.y + _resolution.y / 2 + 5 * _tile_size.y);
+                    _top_border = (view_coord.y - _resolution.y / 2);
+                    _bottom_border = (view_coord.y + _resolution.y / 2);
                 }
 
                 break;

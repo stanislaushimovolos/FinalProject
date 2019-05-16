@@ -1,4 +1,5 @@
 #include <iostream>
+
 #include "Client.h"
 
 namespace cli
@@ -10,22 +11,17 @@ Client::Client(const sf::IpAddress &remote_ip, uint32_t remote_port) :
     _id(0)
 {
     _local_ip = sf::IpAddress(sf::IpAddress::getLocalAddress()).toInteger();
-
-    // Try connect to server
-    auto status = _socket.connect(_remote_ip, (uint16_t) _remote_port);
-    if (status != sf::Socket::Done)
-        throw std::runtime_error("can't connect server");
-
     _local_port = _socket.getLocalPort();
 }
 
 
-int Client::send_packet(sf::Packet &pack)
+int Client::connect()
 {
-    auto status = _socket.send(pack);
+    // Try connect to server
+    auto status = _socket.connect(_remote_ip, (uint16_t) _remote_port);
     if (status != sf::Socket::Done)
     {
-        std::cout << "server doesn't response" << std::endl;
+        std::cout << "can't connect server" << std::endl;
         return 0;
     }
     return 1;
@@ -78,10 +74,9 @@ int Client::start_session(Manager &manager)
         (std::launch::async,
          [socket_ptr, manager_ptr]
          {
-
              while (true)
              {
-                 sf::sleep(sf::milliseconds(2 * conf::net::CONNECTION_DELAY));
+                 sf::sleep(sf::milliseconds(2* conf::net::CONNECTION_DELAY));
 
                  if (manager_ptr->is_window_active())
                  {
@@ -100,8 +95,7 @@ int Client::start_session(Manager &manager)
              }
          });
 
-
-// Send and receive data one by one while game is active
+    // Send and receive data one by one while game is active
     while (manager.is_window_active())
     {
         // receive data
@@ -115,7 +109,7 @@ int Client::start_session(Manager &manager)
             break;
     }
 
-    //async_input.get();
+    async_input.get();
     return 1;
 }
 
