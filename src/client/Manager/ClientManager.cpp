@@ -92,8 +92,10 @@ void Manager::draw_objects()
     {
         // Draw only close objects
         auto obj_pos = _graph_objects[i].get_position();
-        if (obj_pos.x >= _left_border && obj_pos.x <= _right_border
-            && obj_pos.y >= _top_border && obj_pos.y <= _bottom_border)
+        if (obj_pos.x >= _left_border - 2 * _tile_size.x
+            && obj_pos.x <= _right_border + 2 * _tile_size.x
+            && obj_pos.y >= _top_border - 5 * _tile_size.y
+            && obj_pos.y <= _bottom_border + 2 * _tile_size.y)
         {
             _graph_objects[i].draw(_window);
         }
