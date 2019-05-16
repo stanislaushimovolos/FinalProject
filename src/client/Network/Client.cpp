@@ -1,9 +1,8 @@
-#include <iostream>
-
 #include "Client.h"
 
 namespace cli
 {
+
 
 Client::Client(const sf::IpAddress &remote_ip, uint32_t remote_port) :
     _remote_port(remote_port),
@@ -22,19 +21,6 @@ int Client::connect()
     if (status != sf::Socket::Done)
     {
         std::cout << "can't connect server" << std::endl;
-        return 0;
-    }
-    return 1;
-}
-
-
-int Client::receive_packet(sf::Packet &packet)
-{
-    packet.clear();
-    auto status = _socket.receive(packet);
-    if (status != sf::Socket::Done)
-    {
-        std::cout << "server doesn't response" << std::endl;
         return 0;
     }
     return 1;
@@ -69,31 +55,8 @@ int Client::start_session(Manager &manager)
     // Start new thread for keyboard input
     sf::TcpSocket *socket_ptr = &_socket;
     Manager *manager_ptr = &manager;
-
-    std::future<int> async_input = std::async
-        (std::launch::async,
-         [socket_ptr, manager_ptr]
-         {
-             while (true)
-             {
-                 sf::sleep(sf::milliseconds(2* conf::net::CONNECTION_DELAY));
-
-                 if (manager_ptr->is_window_active())
-                 {
-                     sf::Packet pack = manager_ptr->get_user_input();
-                     auto status = socket_ptr->send(pack);
-                     if (status != sf::Socket::Done)
-                     {
-                         std::cout << "Disconnected" << std::endl;
-                         return 0;
-                     }
-                 } else
-                 {
-                     std::cout << "is not active now" << std::endl;
-                     return 0;
-                 }
-             }
-         });
+    std::thread input(read_input, socket_ptr, manager_ptr);
+    input.detach();
 
     // Send and receive data one by one while game is active
     while (manager.is_window_active())
@@ -108,8 +71,6 @@ int Client::start_session(Manager &manager)
         if (!connection_status)
             break;
     }
-
-    async_input.get();
     return 1;
 }
 
@@ -130,6 +91,24 @@ int Client::receive_id()
 }
 
 
+int Client::receive_packet(sf::Packet &packet)
+{
+    sf::Packet pack;
+    auto status = _socket.receive(packet);
+    if (status == sf::Socket::Error || status == sf::Socket::Disconnected)
+    {
+        std::cout << "server doesn't response" << std::endl;
+        return 0;
+    }
+
+    // TODO : do better
+    _socket.setBlocking(false);
+    while (_socket.receive(pack) == sf::Socket::Done);
+    _socket.setBlocking(true);
+    return 1;
+}
+
+
 std::pair<uint32_t, uint32_t> Client::get_local_ip_port()
 {
     return std::make_pair(_local_ip, _local_port);
@@ -139,6 +118,30 @@ std::pair<uint32_t, uint32_t> Client::get_local_ip_port()
 Client::~Client()
 {
     std::cout << "client was destroyed!!!" << std::endl;
+}
+
+
+void read_input(sf::TcpSocket *socket_ptr, Manager *manager_ptr)
+{
+    while (true)
+    {
+        usleep(2 * conf::net::CONNECTION_DELAY);
+
+        if (manager_ptr->is_window_active())
+        {
+            sf::Packet pack = manager_ptr->get_user_input();
+            auto status = socket_ptr->send(pack);
+            if (status != sf::Socket::Done)
+            {
+                std::cout << "Disconnected" << std::endl;
+                return;
+            }
+        } else
+        {
+            std::cout << "is not active now" << std::endl;
+            return;
+        }
+    }
 }
 
 }

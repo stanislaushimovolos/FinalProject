@@ -9,8 +9,8 @@ namespace conf
 namespace render
 {
 
-static const int x_resolution = 1920;
-static const int y_resolution = 1080;
+static const int x_resolution = 800;
+static const int y_resolution = 600;
 
 enum TextureId
 {

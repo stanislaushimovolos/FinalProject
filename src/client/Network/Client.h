@@ -1,6 +1,9 @@
 #pragma once
 
 #include <SFML/Network.hpp>
+#include <iostream>
+#include <thread>
+#include <unistd.h>
 
 #include "../Manager/ClientManager.h"
 #include "../../configuration/network.h"
@@ -41,5 +44,7 @@ class Client
     // Unique ID of client
     uint64_t _id;
 };
+
+void read_input(sf::TcpSocket *socket_ptr, Manager *manager_ptr);
 
 }

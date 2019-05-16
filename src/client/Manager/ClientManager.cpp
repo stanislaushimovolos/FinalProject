@@ -43,12 +43,10 @@ void Manager::activate()
     for (auto &tile_layer: _map_tile_layers)
     {
         _tiles.emplace_back(_level.GetMapSize().y, _level.GetMapSize().x);
-
         for (sf::Sprite &tile : tile_layer.tiles)
         {
             int column = (int) (tile.getPosition().x / _tile_size.x);
             int row = (int) (tile.getPosition().y / _tile_size.y);
-
             _tiles.back().sprites[row][column] = &tile;
         }
 
@@ -105,13 +103,13 @@ void Manager::draw_objects()
 
 void Manager::draw_map()
 {
-    int right_tile_idx = ((int) _right_border / _tile_size.x);
-    int left_tile_idx = ((int) _left_border / _tile_size.x);
+    int right_tile_idx = (int) (_right_border / _tile_size.x);
+    int left_tile_idx = (int) (_left_border / _tile_size.x);
     if (right_tile_idx != _level.GetMapSize().x)
         right_tile_idx++;
 
-    int top_tile_idx = ((int) _top_border / _tile_size.y);
-    int bot_tile_idx = ((int) _bottom_border / _tile_size.y);
+    int top_tile_idx = (int) (_top_border / _tile_size.y);
+    int bot_tile_idx = (int) (_bottom_border / _tile_size.y);
     if (bot_tile_idx != _level.GetMapSize().x)
         bot_tile_idx++;
 
