@@ -5,6 +5,7 @@
 #include <future>
 
 #include "KeyboardInterface.h"
+#include "../Menu/Menu.h"
 #include "../Render/SpriteDrawer.h"
 #include "../../configuration/render.h"
 #include "../../configuration/map.h"
@@ -80,6 +81,8 @@ class Manager
 
     // Number of graph properties of all objects
     int _number_of_graph_objects;
+
+    //Menu menu;
 };
 
 uint64_t make_long_long(uint32_t first_bits, uint32_t last_bits);

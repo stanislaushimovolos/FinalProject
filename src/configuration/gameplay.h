@@ -21,7 +21,7 @@ static const float hole_damage = 0.1;
 static const float hole_speed = 1;
 
 // Blast parameters
-static const float blast_damage = 0.3;
+static const float blast_damage = 1;
 
 static const uint32_t one_shoot_required_clicks = 7;
 

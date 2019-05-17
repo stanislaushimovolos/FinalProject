@@ -5,14 +5,23 @@
 #include <X11/Xlib.h>
 
 
+#include "client/Menu/Menu.h"
+
+
 int main()
 {
+    // Remove if you do not use X Window System
+    XInitThreads();
 
-    std::string type;
-    std::cout << "Enter type of connection" << std::endl;
-    std::cin >> type;
+    Menu menu(conf::render::x_resolution, conf::render::y_resolution);
+    sf::RenderWindow window
+        (sf::VideoMode(conf::render::x_resolution, conf::render::y_resolution), "Postavte 10 pls");
 
-    if (type == "s")
+    menu.set_lines({"Host", "Join", "Exit"});
+    auto user_choice = menu.update(window);
+    window.close();
+
+    if (user_choice == 0)
     {
         ser::GameManager game_manager(conf::map::map_path);
         ser::Server server
@@ -22,30 +31,21 @@ int main()
 
         server.connect_clients();
         server.start_session(game_manager);
-    } else
+    } else if (user_choice == 1)
     {
-        try
-        {
-            std::string s;
-            std::cout << "Enter server IP: " << std::endl;
-            std::cin >> s;
-            sf::IpAddress remote_ip(s);
+        std::string s;
+        std::cout << "Enter server IP: " << std::endl;
+        std::cin >> s;
+        sf::IpAddress remote_ip(s);
 
-            cli::Client client(remote_ip, conf::net::DEFAULT_PORT);
-            if (!client.connect())
-                return EXIT_FAILURE;
+        cli::Client client(remote_ip, conf::net::DEFAULT_PORT);
+        if (!client.connect())
+            return EXIT_FAILURE;
 
-            // Remove if you do not use X Window System
-            XInitThreads();
+        cli::Manager client_manager
+            (conf::render::x_resolution, conf::render::y_resolution, "Postavte 10 pls");
 
-            cli::Manager client_manager
-                (conf::render::x_resolution, conf::render::y_resolution, "Postavte 10 pls");
-
-            client.start_session(client_manager);
-        }
-        catch (std::exception &exception)
-        {
-            std::cout << exception.what() << std::endl;
-        }
+        client.start_session(client_manager);
     }
+    return 0;
 }

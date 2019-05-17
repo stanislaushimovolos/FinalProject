@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.1" orientation="orthogonal" renderorder="right-down" width="64" height="64" tilewidth="32" tileheight="32" infinite="0" nextlayerid="4" nextobjectid="85">
+<map version="1.2" tiledversion="1.2.1" orientation="orthogonal" renderorder="right-down" width="64" height="64" tilewidth="32" tileheight="32" infinite="0" nextlayerid="4" nextobjectid="90">
  <tileset firstgid="1" name="imgonline-com-ua-2to1-2HXzIy9o4am" tilewidth="32" tileheight="32" tilecount="6144" columns="64">
   <image source="../map/levels/DemoLevel/main_sprite.png" width="2048" height="3072"/>
  </tileset>
@@ -8242,16 +8242,43 @@
   <object id="62" name="solidblock" x="319.04" y="1672.96" width="132.8" height="153.92"/>
   <object id="63" name="solidblock" x="-0.96" y="1918.08" width="214.08" height="143.04"/>
   <object id="64" name="solidblock" x="1.92" y="1824" width="70.08" height="120"/>
-  <object id="65" name="solidblock" x="-3.84" y="2032" width="1050.88" height="21.12"/>
+  <object id="65" name="solidblock" x="-31.84" y="2046" width="1050.88" height="21.12">
+   <properties>
+    <property name="direction" value="leftdiag"/>
+    <property name="time_one_step" type="float" value="300"/>
+   </properties>
+  </object>
   <object id="66" name="solidblock" x="1022.08" y="2031.04" width="984" height="15.04"/>
   <object id="68" name="solidblock" x="1857.92" y="2032.96" width="204.16" height="15.04"/>
   <object id="69" name="solidblock" x="2015.04" y="0" width="36.48" height="2051.52"/>
   <object id="72" name="solidblock" x="-6.08" y="-2.88" width="2054.72" height="42.24"/>
   <object id="73" name="solidblock" x="-6.08" y="6.08" width="33.28" height="2018.24"/>
   <object id="74" name="solidblock" x="12.16" y="754.56" width="175.68" height="166.72"/>
-  <object id="79" name="player" x="642.88" y="712" width="104" height="103.04"/>
-  <object id="81" name="hole" x="664.96" y="56" width="130.88" height="125.12"/>
-  <object id="82" name="hole" x="196.16" y="1082.88" width="133.76" height="136"/>
-  <object id="83" name="hole" x="1758.08" y="1344.96" width="128.96" height="128"/>
+  <object id="83" name="hole" x="1476.08" y="1068.96" width="128.96" height="128">
+   <properties>
+    <property name="direction" value="rightdiag"/>
+    <property name="time_one_side" type="float" value="500"/>
+   </properties>
+  </object>
+  <object id="85" name="player" x="1566" y="994.48" width="104" height="103.04"/>
+  <object id="86" name="hole" x="1477.52" y="502" width="128.96" height="128">
+   <properties>
+    <property name="direction" value="left"/>
+    <property name="time_one_side" type="float" value="1300"/>
+   </properties>
+  </object>
+  <object id="87" name="hole" x="675.52" y="118" width="128.96" height="128">
+   <properties>
+    <property name="direction" value="down"/>
+    <property name="time_one_side" type="float" value="1500"/>
+   </properties>
+  </object>
+  <object id="88" name="hole" x="905.52" y="276" width="128.96" height="128">
+   <properties>
+    <property name="direction" value="leftdiag"/>
+    <property name="time_one_side" type="float" value="1500"/>
+   </properties>
+  </object>
+  <object id="89" name="player" x="390.424" y="690.904" width="104" height="103.04"/>
  </objectgroup>
 </map>

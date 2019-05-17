@@ -52,8 +52,8 @@ MovingPlatform::MovingPlatform(Object &map_object,
 
     _collider.set_size({hole_texture_width,
                         hole_texture_height});
-    _collider.set_position({_position.x - blast_texture_width / 2,
-                            _position.y - blast_texture_height / 2});
+    _collider.set_position({_position.x - hole_texture_width / 2,
+                            _position.y - hole_texture_height / 2});
 
 }
 

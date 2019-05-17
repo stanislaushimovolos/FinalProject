@@ -23,6 +23,7 @@ Manager::Manager(uint32_t x_resolution, uint32_t y_resolution, std::string &&win
     )
 {
     _window.setView(_view);
+    //menu
 }
 
 
